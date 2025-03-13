@@ -2,10 +2,9 @@ from fastapi import FastAPI
 import random
 from typing import Dict, List
 from pydantic import BaseModel
+from starlette.websockets import WebSocket, WebSocketDisconnect
 
 app = FastAPI()
-
-ROOMS: List[int] = []      # Zawiera listę pinów wszystkich obecnie działających pokoi
 
 class Player(BaseModel):
     id: int                     # unikalne id gracza
@@ -39,10 +38,12 @@ class Room:
                 break
         self.pin: int = p
         self.limit: int = 4
-        self.players: List[Player] = []
+        self.players: List[WebSocket] = []
 
     def get_pin(self) -> int:
         return self.pin
+
+ROOMS: Dict[int, Room] = {}     # Zawiera listę obiektów wszystkich otwartych pokoi
 
 @app.get("/")
 async def root():
@@ -53,4 +54,26 @@ async def root():
 @app.get("/create")
 async def create_room():
     room = Room()
+    ROOMS[room.pin] = room
     return {"PIN": room.get_pin()}
+
+# Dołącza gracza do pokoju
+@app.websocket("/ws/{room_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: int):
+    await websocket.accept()
+    if room_id not in ROOMS:
+        await websocket.close()
+        return {"message": "Room not found"}
+
+    room = ROOMS[room_id]
+    room.players.append(websocket)
+
+    try:
+        while True:
+            data = await websocket.receive_json()
+            for player in room.players:
+                if player != websocket:
+                    await player.send_json(data)
+    except WebSocketDisconnect:
+        room.players.remove(websocket)
+        await websocket.close()
