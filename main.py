@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-ROOMS = []
+ROOMS: List[int] = []      # Zawiera listę pinów wszystkich obecnie działających pokoi
 
 class Player(BaseModel):
     id: int                     # unikalne id gracza
@@ -46,7 +46,7 @@ class Room:
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to poker chips!!!"}
+    return {"status": True, "rooms": len(ROOMS)}
 
 
 # Tworzy nowy pokój i zwraca do niego pin
