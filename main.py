@@ -43,6 +43,12 @@ class Room:
     def get_pin(self) -> int:
         return self.pin
 
+    def get_limit(self) -> int:
+        return self.limit
+
+    def get_players(self) -> List[WebSocket]:
+        return self.players
+
 ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
 
 @app.get("/")
@@ -66,6 +72,16 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         return {"message": "Room not found"}
 
     room = ROOMS[pin]
+    players = room.get_players()
+
+    if websocket in players:
+        await websocket.close()
+        return {"message": "Player already in room"}
+
+    elif len(players) >= room.get_limit():
+        await websocket.close()
+        return {"message": "Room is full"}
+
     room.players.append(websocket)
 
     try:
