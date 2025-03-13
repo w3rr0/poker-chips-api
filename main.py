@@ -43,7 +43,7 @@ class Room:
     def get_pin(self) -> int:
         return self.pin
 
-ROOMS: Dict[int, Room] = {}     # Zawiera listę obiektów wszystkich otwartych pokoi
+ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
 
 @app.get("/")
 async def root():
@@ -51,7 +51,7 @@ async def root():
 
 
 # Tworzy nowy pokój i zwraca do niego pin
-@app.get("/create")
+@app.post("/create_room")
 async def create_room():
     room = Room()
     ROOMS[room.pin] = room
