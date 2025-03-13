@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/hello/User
+POST http://127.0.0.1:8000/create_room
 Accept: application/json
 
 ###
