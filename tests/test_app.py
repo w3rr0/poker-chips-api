@@ -25,21 +25,18 @@ def test_create_room(client):
 async def test_websocket_connection(client):
     # Najpierw tworzymy pokój
     response = client.post("/create_room")
-    room_id = response.json()["room_id"]
+    pin = response.json()["PIN"]
 
     # Łączymy dwóch klientów do pokoju (graczy)
-    websocket_1 = client.websocket_connect(f"/ws/{room_id}")
-    websocket_2 = client.websocket_connect(f"/ws/{room_id}")
+    with client.websocket_connect(f"/ws/{pin}") as websocket_1:
+        with client.websocket_connect(f"/ws/{pin}") as websocket_2:
+            # Sprawdzamy czy połączenie się udało
+            assert websocket_1 is not None
+            assert websocket_2 is not None
 
-    # Sprawdzamy, czy połączenie się udało
-    assert websocket_1 is not None
-    assert websocket_2 is not None
+            # Test przesyłania wiadomości
+            websocket_1.send_text('{"Test": True}')
 
-    # Test przesyłania wiadomości
-    websocket_1.send_text("Hello from player 1")
-    message = websocket_2.receive_text()
-    assert message == "Player says: Hello from player 1"
-
-    # Zamykamy połączenia
-    websocket_1.close()
-    websocket_2.close()
+            # Sprawdzanie odbierania wiadomości
+            message = websocket_2.receive_text()
+            assert message == '{"Test": True}'

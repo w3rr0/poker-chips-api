@@ -58,22 +58,22 @@ async def create_room():
     return {"PIN": room.get_pin()}
 
 # Dołącza gracza do pokoju
-@app.websocket("/ws/{room_id}")
-async def websocket_endpoint(websocket: WebSocket, room_id: int):
+@app.websocket("/ws/{pin}")
+async def websocket_endpoint(websocket: WebSocket, pin: int):
     await websocket.accept()
-    if room_id not in ROOMS:
+    if pin not in ROOMS:
         await websocket.close()
         return {"message": "Room not found"}
 
-    room = ROOMS[room_id]
+    room = ROOMS[pin]
     room.players.append(websocket)
 
     try:
         while True:
-            data = await websocket.receive_json()
+            data = await websocket.receive_text()
             for player in room.players:
                 if player != websocket:
-                    await player.send_json(data)
+                    await player.send_text(data)
     except WebSocketDisconnect:
         room.players.remove(websocket)
         await websocket.close()
