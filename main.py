@@ -41,11 +41,16 @@ class Room:
         self.limit: int = 4
         self.players: List[Player] = []
 
+    def get_pin(self) -> int:
+        return self.pin
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to poker chips!!!"}
 
 
+# Tworzy nowy pokój i zwraca do niego pin
 @app.get("/create")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+async def create_room():
+    room = Room()
+    return {"PIN": room.get_pin()}
