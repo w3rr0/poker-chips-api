@@ -19,12 +19,18 @@ class Player(BaseModel):
 class Room(BaseModel):
     pin: int
     max_players: int = 4
-    players: Dict[str, Player] = {}  # klucz id gracza
-    lock: asyncio.Lock = asyncio.Lock()
+    players: Dict[str, Player] = {}  # Unikatowy klucz id gracza
 
+    # Asynchronous lock - only one task at a time can modify the resource
+    def __init__(self, **data):
+        super().__init__(**data)
+        self.lock = asyncio.Lock()
+
+    # Sprawdza czy pokoj jest zapelniony
     def is_full(self) -> bool:
         return len(self.players) >= self.max_players
 
+    # dodaje gracza do pokoju
     def add_player(self, player: Player) -> None:
         if player.id in self.players:
             raise ValueError("Player already in room")
@@ -33,6 +39,7 @@ class Room(BaseModel):
     def remove_player(self, player_id: str) -> None:
         if player_id in self.players:
             del self.players[player_id]
+
 
 ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
 ROOMS_LOCK = asyncio.Lock()
