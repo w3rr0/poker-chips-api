@@ -39,8 +39,9 @@ ROOMS_LOCK = asyncio.Lock()
 
 MAX_ROOMS: int = 100
 
-def generate_unique_pin() -> int:
-    while True:
+def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
+    for attempt in range(max_attempts):
         pin = int(f"{uuid.uuid4().int % 10_000_000:06d}")
         if pin not in ROOMS:
             return pin
+    raise RuntimeError("No available PINs")
