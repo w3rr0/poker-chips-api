@@ -5,8 +5,8 @@ from starlette.websockets import WebSocket
 import asyncio
 
 class AuthData(BaseModel):
-    username: str
     player_id: str
+    username: str
     amount: int
 
 class Player(BaseModel):
@@ -40,6 +40,6 @@ ROOMS_LOCK = asyncio.Lock()
 # TODO: potencjalny wyciek pamięci przy pełnej ilości pokoi
 def generate_unique_pin() -> int:
     while True:
-        pin = int(f"{uuid.uuid4().int % 1_000_000:04d}")
+        pin = int(f"{uuid.uuid4().int % 10_000_000:06d}")
         if pin not in ROOMS:
             return pin

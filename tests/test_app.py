@@ -19,7 +19,7 @@ def test_create_room(client):
     assert response.status_code == 200
     room_data = response.json()
     assert 'PIN' in room_data
-    assert  1000 <= room_data['PIN'] <= 9999   # Sprawdzamy, czy pin jest poprawnym 4 cyfrowym intem
+    assert  100000 <= room_data['PIN'] <= 999999   # Sprawdzamy, czy pin jest poprawnym 4 cyfrowym intem
 
 
 # Test połączenia WebSocket

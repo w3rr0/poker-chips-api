@@ -28,9 +28,9 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         raw_data = await websocket.receive_json()
         auth_data = AuthData(**raw_data)
 
-        player_id = auth_data["player_id"]
-        username = auth_data["username"]
-        amount = auth_data["amount"]
+        player_id = auth_data.player_id
+        username = auth_data.username
+        amount = auth_data.amount
 
         if not player_id:
             await websocket.close(code=4000)
