@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin
+from utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData
 
 app = FastAPI()
 
@@ -25,8 +25,12 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
     try:
         # Odbieranie ID gracza
-        auth_data = await websocket.receive_json()
-        player_id = auth_data.get("player_id")
+        raw_data = await websocket.receive_json()
+        auth_data = AuthData(**raw_data)
+
+        player_id = auth_data["player_id"]
+        username = auth_data["username"]
+        amount = auth_data["amount"]
 
         if not player_id:
             await websocket.close(code=4000)
@@ -43,7 +47,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         # Weryfikacja
         async with room.lock:
             if player_id in room.players:
-                await websocket.send_json({"error": "Room already connected"})
+                await websocket.send_json({"error": "Player already connected"})
                 await websocket.close(code=4002)
                 return
 
@@ -53,14 +57,18 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 return
 
             # dodawanie gracza
-            auth_data = await websocket.receive_json()
             player = Player(
-                id=auth_data["player_id"],
-                username=auth_data["username"],
-                amount=auth_data["amount"],
+                id=player_id,
+                username=username,
+                amount=amount,
                 websocket=websocket
             )
-            room.add_player(player)
+            try:
+                room.add_player(player)
+            except ValueError as e:
+                await websocket.send_json({"error": str(e)})
+                await websocket.close()
+                return
 
     except WebSocketDisconnect:
         return
@@ -80,7 +88,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                         try:
                             await p.websocket.send_json(data)
                         except (WebSocketDisconnect, RuntimeError):
-                            await room.remove_player(p.id)
+                            room.remove_player(p.id)
 
     except WebSocketDisconnect:
         async with room.lock:

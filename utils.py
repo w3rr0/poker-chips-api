@@ -4,6 +4,11 @@ from pydantic import BaseModel
 from starlette.websockets import WebSocket
 import asyncio
 
+class AuthData(BaseModel):
+    username: str
+    player_id: str
+    amount: int
+
 class Player(BaseModel):
     id: str                     # unikalne id gracza
     username: str               # nazwa gracza
@@ -32,8 +37,9 @@ class Room(BaseModel):
 ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
 ROOMS_LOCK = asyncio.Lock()
 
+# TODO: potencjalny wyciek pamięci przy pełnej ilości pokoi
 def generate_unique_pin() -> int:
     while True:
-        pin = int(str(uuid.uuid4().int)[:4])
+        pin = int(f"{uuid.uuid4().int % 1_000_000:04d}")
         if pin not in ROOMS:
             return pin
