@@ -1,6 +1,6 @@
 import uuid
 from typing import Dict
-from pydantic import BaseModel, ConfigDict, PrivateAttr
+from pydantic import BaseModel, PrivateAttr
 from starlette.websockets import WebSocket
 import asyncio
 
