@@ -1,10 +1,7 @@
 import pytest
-import httpx
-import asyncio
-import websockets
 from fastapi.testclient import TestClient
 from main import app
-import json
+
 
 @pytest.fixture
 def client():
