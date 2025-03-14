@@ -62,39 +62,25 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         return
 
     # główna pętla komunikacyjna
-
-
-
-    async with ROOMS_LOCK:
-        if pin not in ROOMS:
-            await websocket.send_json({"error": "Room not found"})
-            await websocket.close(code=4000)
-            return
-
-        room = ROOMS[pin]
-        players = room.get_players()
-
-    # porównuje instancje obiektu które są unikalne dla każdego połączenia
-    # Nigdy nie będzie True, nawet dla tego samego użytkownika
-    # TODO: Wprowdzić unikalne id graczy i po nich sprawdzać
-    if websocket in players:
-        await websocket.close()
-        return {"message": "Player already in room"}
-
-    elif len(players) >= room.get_limit():
-        await websocket.close()
-        return {"message": "Room is full"}
-
-    room.players.append(websocket)
-
     try:
         while True:
-            data = await websocket.receive_text()
-            for player in room.players:
-                if player != websocket:
-                    await player.send_text(data)
+            data = await websocket.receive_json()
+
+            async with room.lock:
+                for p in room.players.values():
+                    if p.id != player_id:
+                        await p.websocket.send_json(data)
+
     except WebSocketDisconnect:
-        room.players.remove(websocket)
+        async with room.lock:
+            room.remove_player(player_id)
+
+            # automatyczne usuwanie pokoi
+            async with ROOMS_LOCK:
+                if len(room.players) == 0:
+                    del ROOMS[pin]
+
     except Exception as e:
-        print(f"Unexpected error: {e}")
-        room.players.remove(websocket)
+        print(f"Connection error: {e}")
+    finally:
+        await websocket.close()
