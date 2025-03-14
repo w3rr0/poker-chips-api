@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from utils import Player, Room, ROOMS_LOCK, ROOMS
+from utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin
 
 app = FastAPI()
 
@@ -11,11 +11,12 @@ async def root():
 
 # Tworzy nowy pokój i zwraca do niego pin
 @app.post("/create_room")
-async def create_room():
-    room = Room()
+async def create_room(max_players: int = 4):
     async with ROOMS_LOCK:
-        ROOMS[room.pin] = room
-    return {"PIN": room.get_pin()}
+        pin = generate_unique_pin()
+        room = Room(pin=pin, max_players=max_players)
+        ROOMS[pin] = room
+    return {"PIN": room.pin}
 
 # Dołącza gracza do pokoju
 @app.websocket("/ws/{pin}")
@@ -49,9 +50,16 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             if room.is_full():
                 await websocket.send_json({"error": "Room full"})
                 await websocket.close(code=4003)
+                return
 
             # dodawanie gracza
-            player = Player(id=player_id, websocket=websocket)
+            auth_data = await websocket.receive_json()
+            player = Player(
+                id=auth_data["player_id"],
+                username=auth_data["username"],
+                amount=auth_data["amount"],
+                websocket=websocket
+            )
             room.add_player(player)
 
     except WebSocketDisconnect:
@@ -67,9 +75,12 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             data = await websocket.receive_json()
 
             async with room.lock:
-                for p in room.players.values():
+                for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     if p.id != player_id:
-                        await p.websocket.send_json(data)
+                        try:
+                            await p.websocket.send_json(data)
+                        except (WebSocketDisconnect, RuntimeError):
+                            await room.remove_player(p.id)
 
     except WebSocketDisconnect:
         async with room.lock:
@@ -77,7 +88,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
             # automatyczne usuwanie pokoi
             async with ROOMS_LOCK:
-                if len(room.players) == 0:
+                if pin in ROOMS and len(ROOMS[pin].players) == 0:
                     del ROOMS[pin]
 
     except Exception as e:
