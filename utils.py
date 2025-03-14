@@ -39,7 +39,6 @@ ROOMS_LOCK = asyncio.Lock()
 
 MAX_ROOMS: int = 100
 
-# TODO: potencjalny wyciek pamięci przy pełnej ilości pokoi
 def generate_unique_pin() -> int:
     while True:
         pin = int(f"{uuid.uuid4().int % 10_000_000:06d}")
