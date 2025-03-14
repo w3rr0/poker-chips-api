@@ -1,17 +1,15 @@
-import httpx
 import pytest
-from fastapi import FastAPI
+import httpx
+import asyncio
+import websockets
 from fastapi.testclient import TestClient
-from fastapi import WebSocket, WebSocketDisconnect
 from main import app
+import json
 
-
-# Używamy TestClient do testowania WebSocketów w FastAPI
 @pytest.fixture
 def client():
     with TestClient(app) as client:
         yield client
-
 
 # Test tworzenia pokoju
 def test_create_room(client):
@@ -19,26 +17,33 @@ def test_create_room(client):
     assert response.status_code == 200
     room_data = response.json()
     assert 'PIN' in room_data
-    assert  100000 <= room_data['PIN'] <= 999999   # Sprawdzamy, czy pin jest poprawnym 4 cyfrowym intem
+    assert 100000 <= room_data['PIN'] <= 999999  # Sprawdzamy, czy PIN jest 6-cyfrowym intem
 
 
-# Test połączenia WebSocket
-@pytest.mark.asyncio
-async def test_websocket_connection(client):
-    # Najpierw tworzymy pokój
+def test_websocket_connection(client):
     response = client.post("/create_room")
     pin = response.json()["PIN"]
 
-    # Łączymy dwóch klientów do pokoju (graczy)
-    with client.websocket_connect(f"/ws/{pin}") as websocket_1:
-        with client.websocket_connect(f"/ws/{pin}") as websocket_2:
-            # Sprawdzamy czy połączenie się udało
-            assert websocket_1 is not None
-            assert websocket_2 is not None
+    # Gracz 1
+    with client.websocket_connect(f"/ws/{pin}") as ws1:
+        ws1.send_json({
+            "player_id": "player1",
+            "username": "Gracz 1",
+            "amount": 1000
+        })
 
-            # Test przesyłania wiadomości
-            websocket_1.send_text('{"Test": True}')
+        # Gracz 2
+        with client.websocket_connect(f"/ws/{pin}") as ws2:
+            ws2.send_json({
+                "player_id": "player2",
+                "username": "Gracz 2",
+                "amount": 2000
+            })
 
-            # Sprawdzanie odbierania wiadomości
-            message = websocket_2.receive_text()
-            assert message == '{"Test": True}'
+            # Test komunikacji
+            test_msg = {"action": "bet", "value": 100}
+            ws1.send_json(test_msg)
+
+            # Odbierz wiadomość
+            response = ws2.receive_json()
+            assert response == test_msg

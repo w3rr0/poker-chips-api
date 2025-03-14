@@ -1,6 +1,6 @@
 import uuid
 from typing import Dict
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, PrivateAttr
 from starlette.websockets import WebSocket
 import asyncio
 
@@ -15,16 +15,18 @@ class Player(BaseModel):
     amount: int                 # łączna wartość żetonów
     websocket: WebSocket
 
+    class Config:
+        arbitrary_types_allowed = True      # Pozwala na uzycie WebSocket w pytest
+
 
 class Room(BaseModel):
     pin: int
     max_players: int = 4
     players: Dict[str, Player] = {}  # Unikatowy klucz id gracza
+    _lock: asyncio.Lock = PrivateAttr(default_factory=asyncio.Lock) # obiekty asyncio.Lock nie są serializowane (jawnie zdefiniowane), czyli muszą być prywatne aby przeszły walidacje pydantic
 
-    # Asynchronous lock - only one task at a time can modify the resource
-    def __init__(self, **data):
-        super().__init__(**data)
-        self.lock = asyncio.Lock()
+    class Config:
+        arbitrary_types_allowed = True      # Polzwala na uzycie typow takich jak asyncio.Lock w pytest
 
     # Sprawdza czy pokoj jest zapelniony
     def is_full(self) -> bool:
@@ -48,7 +50,7 @@ MAX_ROOMS: int = 100
 
 def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
     for attempt in range(max_attempts):
-        pin = int(f"{uuid.uuid4().int % 10_000_000:06d}")
-        if pin not in ROOMS:
+        pin = uuid.uuid4().int % 1_000_000
+        if pin >= 100_000 and pin not in ROOMS:
             return pin
     raise RuntimeError("No available PINs")

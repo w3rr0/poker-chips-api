@@ -13,7 +13,7 @@ async def root():
 @app.post("/create_room")
 async def create_room(max_players: int = 4):
     async with ROOMS_LOCK:
-        if len(ROOMS) < MAX_ROOMS:
+        if len(ROOMS) >= MAX_ROOMS:
             return {"error": "Server room limit reached"}
         pin = generate_unique_pin()
         room = Room(pin=pin, max_players=max_players)
@@ -47,7 +47,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 return
 
         # Weryfikacja
-        async with room.lock:
+        async with room._lock:
             if player_id in room.players:
                 await websocket.send_json({"error": "Player already connected"})
                 await websocket.close(code=4002)
@@ -84,7 +84,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         while True:
             data = await websocket.receive_json()
 
-            async with room.lock:
+            async with room._lock:
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     if p.id != player_id:
                         try:
@@ -93,7 +93,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                             room.remove_player(p.id)
 
     except WebSocketDisconnect:
-        async with room.lock:
+        async with room._lock:
             room.remove_player(player_id)
 
             # automatyczne usuwanie pokoi
