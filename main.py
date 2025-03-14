@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData
+from utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
 
 app = FastAPI()
 
@@ -13,6 +13,8 @@ async def root():
 @app.post("/create_room")
 async def create_room(max_players: int = 4):
     async with ROOMS_LOCK:
+        if len(ROOMS) < MAX_ROOMS:
+            return {"error": "Server room limit reached"}
         pin = generate_unique_pin()
         room = Room(pin=pin, max_players=max_players)
         ROOMS[pin] = room
