@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
+from api.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
 
 app = FastAPI()
 
