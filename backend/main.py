@@ -12,11 +12,13 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Zwraca status serwerow i ilosc obecnych pokoi
 @app.get("/")
 async def root():
+    print(f"ROOMS: {len(ROOMS)}")
     return {"status": True, "rooms": len(ROOMS)}
 
 # Tworzy nowy pokój i zwraca do niego pin
@@ -28,17 +30,23 @@ async def create_room(max_players: int = 4):
         pin = generate_unique_pin()
         room = Room(pin=pin, max_players=max_players)
         ROOMS[pin] = room
+        print(f"Created new room {pin}")
     return {"PIN": room.pin}
 
 # Dołącza gracza do pokoju
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
+    print(f"🔵 Starting connection for room {pin}")
     await websocket.accept()
+    print(f"🟢 WebSocket accepted for room {pin}")
 
     try:
         # Odbieranie ID gracza
+        print("🕒 Waiting for auth data...")
         raw_data = await websocket.receive_json()
+        print(f"Received data: {raw_data}")
         auth_data = AuthData(**raw_data)
+        print(f"Auth Data: {auth_data}")
 
         player_id = auth_data.player_id
         username = auth_data.username

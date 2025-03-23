@@ -1,167 +1,192 @@
-// App.js
-import React, { useState, useEffect } from 'react';
-import {BrowserRouter as Router, Routes, Route, useNavigate, useParams, useLocation} from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+// App.jsx
+import { useState, useEffect, useRef } from 'react'
+import {BrowserRouter as Router, Routes, Route, useNavigate, useParams, useLocation} from 'react-router-dom'
 
 const Home = () => {
-    const navigate = useNavigate();
-    const [pin, setPin] = useState('');
-    const [username, setUsername] = useState('');
-    const [maxPlayers, setMaxPlayers] = useState(4);
-    const [playerId] = useState(localStorage.getItem('playerId') || uuidv4());
+    const navigate = useNavigate()
+    const [pin, setPin] = useState('')
+    const [username, setUsername] = useState('')
+    const [maxPlayers, setMaxPlayers] = useState(4)
+    const playerId = useRef(localStorage.getItem('playerId') || crypto.randomUUID()).current
 
     useEffect(() => {
-        localStorage.setItem('playerId', playerId);
-    }, [playerId]);
+        localStorage.setItem('playerId', playerId)
+    }, [playerId])
 
     const createRoom = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/create_room', {
+            const response = await fetch('http://localhost:8000/create_room', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ max_players: maxPlayers })
-            });
-            const data = await response.json();
-            navigate(`/room/${data.PIN}`, { state: { username, playerId } });
-        } catch (error) {
-            console.error('Error creating room:', error);
-        }
-    };
+            })
 
-    const joinRoom = (e) => {
-        e.preventDefault();
-        navigate(`/room/${pin}`, { state: { username, playerId } });
-    };
+            if (!response.ok) throw new Error('Failed to create room')
+
+            const { PIN } = await response.json()
+            navigate(`/room/${PIN}`, { state: { username, playerId } })
+        } catch (error) {
+            console.error('Error creating room:', error)
+            alert('Failed to create room')
+        }
+    }
 
     return (
-        <div>
-            <h1>Poker Online</h1>
+        <div className="container">
+            <h1>Poker Rooms</h1>
 
-            <div>
+            <div className="section">
                 <h2>Create New Room</h2>
-                <input
-                    type="number"
-                    value={maxPlayers}
-                    onChange={(e) => setMaxPlayers(e.target.value)}
-                    min="2"
-                    max="8"
-                />
+                <div className="input-group">
+                    <label>Max Players:</label>
+                    <input
+                        type="number"
+                        min="2"
+                        max="8"
+                        value={maxPlayers}
+                        onChange={(e) => setMaxPlayers(Math.max(2, Math.min(8, e.target.valueAsNumber)))}
+                    />
+                </div>
                 <button onClick={createRoom}>Create Room</button>
             </div>
 
-            <form onSubmit={joinRoom}>
+            <div className="section">
                 <h2>Join Existing Room</h2>
-                <input
-                    type="number"
-                    placeholder="Enter PIN"
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value)}
-                />
-                <input
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <button type="submit">Join Room</button>
-            </form>
+                <div className="input-group">
+                    <input
+                        type="number"
+                        placeholder="Enter PIN"
+                        value={pin}
+                        onChange={(e) => setPin(e.target.value.replace(/\D/, '').slice(0, 6))}
+                    />
+                    <input
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value.slice(0, 15))}
+                    />
+                </div>
+                <button onClick={() => navigate(`/room/${pin}`, { state: { username, playerId } })}>
+                    Join Room
+                </button>
+            </div>
         </div>
-    );
-};
+    )
+}
 
 const Room = () => {
-    const [players, setPlayers] = useState([]);
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-    const [websocket, setWebsocket] = useState(null);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { pin } = useParams();
-    const { username, playerId } = location.state || {};
+    const [players, setPlayers] = useState([])
+    const [message, setMessage] = useState('')
+    const [messages, setMessages] = useState([])
+    const ws = useRef(null)
+    const { pin } = useParams()
+    const { state } = useLocation()
+    const { username, playerId } = state || {}
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!username || !playerId) {
-            navigate('/');
-            return;
+            navigate('/')
+            return
         }
 
-        const ws = new WebSocket(`ws://localhost:8000/ws/${pin}`);
+        const connectWebSocket = () => {
+            ws.current = new WebSocket(`ws://localhost:8000/ws/${pin}`)
 
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                player_id: playerId,
-                username,
-                amount: 1000 // Initial amount
-            }));
-        };
-
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.error) {
-                console.error(data.error);
-                navigate('/');
-            } else if (data.players) {
-                setPlayers(data.players);
-            } else {
-                setMessages(prev => [...prev, data]);
+            ws.current.onopen = () => {
+                console.log('WebSocket connected')
+                ws.current.send(JSON.stringify({
+                    player_id: playerId,
+                    username,
+                    amount: 1000
+                }))
             }
-        };
 
-        ws.onclose = () => {
-            navigate('/');
-        };
+            ws.current.onmessage = (event) => {
+                const data = JSON.parse(event.data)
 
-        setWebsocket(ws);
+                if (data.error) {
+                    console.error('Server error:', data.error)
+                    navigate('/')
+                    return
+                }
+
+                if (data.players) {
+                    setPlayers(Object.values(data.players))
+                } else {
+                    setMessages(prev => [...prev, data])
+                }
+            }
+
+            ws.current.onclose = () => {
+                console.log('WebSocket closed')
+                navigate('/')
+            }
+
+            ws.current.onerror = (error) => {
+                console.error('WebSocket error:', error)
+                navigate('/')
+            }
+        }
+
+        connectWebSocket()
 
         return () => {
-            ws.close();
-        };
-    }, [pin, playerId, username, navigate]);
+            if (ws.current?.readyState === WebSocket.OPEN) {
+                ws.current.close()
+            }
+        }
+    }, [pin, username, playerId, navigate])
 
     const sendMessage = () => {
-        if (websocket && message) {
-            websocket.send(JSON.stringify({
+        if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.send(JSON.stringify({
                 type: 'message',
-                content: message,
+                content: message.trim(),
                 sender: username
-            }));
-            setMessage('');
+            }))
+            setMessage('')
         }
-    };
+    }
 
-    if (!username) return null;
+    if (!username) return null
 
     return (
-        <div>
+        <div className="container">
             <h2>Room PIN: {pin}</h2>
 
-            <div>
-                <h3>Players:</h3>
-                <ul>
+            <div className="game-layout">
+                <div className="players-list">
+                    <h3>Players:</h3>
                     {players.map(player => (
-                        <li key={player.id}>
-                            {player.username} - ${player.amount}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <div>
-                <h3>Chat:</h3>
-                <div>
-                    {messages.map((msg, i) => (
-                        <p key={i}>{msg.sender}: {msg.content}</p>
+                        <div key={player.id} className="player-card">
+                            <span>{player.username}</span>
+                            <span>${player.amount}</span>
+                        </div>
                     ))}
                 </div>
-                <input
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                />
-                <button onClick={sendMessage}>Send</button>
+
+                <div className="chat-section">
+                    <div className="messages">
+                        {messages.map((msg, i) => (
+                            <div key={i} className="message">
+                                <strong>{msg.sender}:</strong> {msg.content}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="message-input">
+                        <input
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                            placeholder="Type a message..."
+                        />
+                        <button onClick={sendMessage}>Send</button>
+                    </div>
+                </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default function App() {
     return (
@@ -171,5 +196,5 @@ export default function App() {
                 <Route path="/room/:pin" element={<Room />} />
             </Routes>
         </Router>
-    );
+    )
 }
