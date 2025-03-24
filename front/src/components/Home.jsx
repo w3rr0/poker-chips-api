@@ -35,6 +35,18 @@ const Home = () => {
             <h1>Poker Rooms</h1>
 
             <div className="section">
+                <h2>Enter your username</h2>
+                <div className="input-group">
+                    <input
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value.slice(0, 15))}
+                    />
+                </div>
+            </div>
+
+
+            <div className="section">
                 <h2>Create New Room</h2>
                 <div className="input-group">
                     <label>Max Players:</label>
@@ -57,11 +69,6 @@ const Home = () => {
                         placeholder="Enter PIN"
                         value={pin}
                         onChange={(e) => setPin(e.target.value.replace(/\D/, '').slice(0, 6))}
-                    />
-                    <input
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value.slice(0, 15))}
                     />
                 </div>
                 <button onClick={() => navigate(`/room/${pin}`, { state: { username, playerId } })}>
