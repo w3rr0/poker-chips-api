@@ -59,6 +59,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         # Znajdowanie pokoju
         async with ROOMS_LOCK:
             room = ROOMS.get(pin, None)
+            print(f"znaleziono pokoj: {room}")
             if not room:
                 await websocket.send_json({"error": "Room not found"})
                 await websocket.close(code=4001)
@@ -76,6 +77,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 await websocket.close(code=4003)
                 return
 
+            print("rozpoczyna dodawanie gracza")
             # dodawanie gracza
             player = Player(
                 id=player_id,
@@ -83,14 +85,19 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 amount=amount,
                 websocket=websocket
             )
+            print(f"Player {player_id}: {player}")
             try:
+                print("trying to add player")
                 room.add_player(player)
+                print("player added")
             except ValueError as e:
                 await websocket.send_json({"error": str(e)})
+                print("value error, closing websocket")
                 await websocket.close()
                 return
 
     except WebSocketDisconnect:
+        print(f"WebSocket disconnected for room {pin}")
         return
     except Exception as e:
         print(f"Init error: {e}")
@@ -101,25 +108,31 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
     try:
         while True:
             data = await websocket.receive_json()
+            print(f"MESSAGE: Received data: {data}")
 
             async with room._lock:
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     if p.id != player_id:
                         try:
                             await p.websocket.send_json(data)
+                            print(f"Player {p.id}: {p}, sending {data}")
                         except (WebSocketDisconnect, RuntimeError):
+                            print(f"WebSocket disconnected for room {p.id}")
                             room.remove_player(p.id)
 
     except WebSocketDisconnect:
         async with room._lock:
+            print(f"Player {player_id} disconnected")
             room.remove_player(player_id)
 
             # automatyczne usuwanie pokoi
             async with ROOMS_LOCK:
                 if pin in ROOMS and len(ROOMS[pin].players) == 0:
                     del ROOMS[pin]
+                    print(f"Auto delete room {pin}")
 
     except Exception as e:
         print(f"Connection error: {e}")
     finally:
         await websocket.close()
+        print(f"WebSocket closed for room {pin}")
