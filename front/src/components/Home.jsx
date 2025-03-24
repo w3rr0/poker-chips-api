@@ -37,11 +37,16 @@ const Home = () => {
             <div className="section">
                 <h2 className="center">Enter your username</h2>
                 <div className="input-group center">
-                    <input
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value.slice(0, 15))}
-                    />
+                    <div className="form__group field">
+                        <input
+                            type="input"
+                            className="form__field"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value.slice(0, 15))}
+                        />
+                        <label htmlFor="Username" className="form__label">Username</label>
+                    </div>
                 </div>
                 <div className="button-container center">
                     <button>Create room</button>
