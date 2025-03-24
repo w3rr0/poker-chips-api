@@ -95,3 +95,34 @@ button:hover {
   display: flex;
   gap: 10px;
 }
+
+.center {
+  justify-content: center;
+  text-align: center;
+}
+
+.button-container button {
+  margin: 5px 10px;
+}
+
+.button-container button {
+  background-color:#6fba26;
+  padding:10px;
+  position:relative;
+  font-family: 'Open Sans', sans-serif;
+  font-size:12px;
+  text-decoration:none;
+  color:#fff;
+  background-image: linear-gradient(bottom, rgb(100,170,30) 0%, rgb(129,212,51) 100%);
+  box-shadow: inset 0px 1px 0px #b2f17f, 0px 6px 0px #3d6f0d;
+  border-radius: 5px;
+}
+
+.button-container button:active {
+  top:7px;
+  background-image: linear-gradient(bottom, rgb(100,170,30) 100%, rgb(129,212,51) 0%);
+  box-shadow: inset 0px 1px 0px #b2f17f, inset 0px -1px 0px #3d6f0d;
+  color: #156785;
+  text-shadow: 0px 1px 1px rgba(255,255,255,0.3);
+  background: rgb(44,160,202);
+}

@@ -32,16 +32,20 @@ const Home = () => {
 
     return (
         <div className="container">
-            <h1>Poker Rooms</h1>
+            <h1 className="center">Poker Rooms</h1>
 
             <div className="section">
-                <h2>Enter your username</h2>
-                <div className="input-group">
+                <h2 className="center">Enter your username</h2>
+                <div className="input-group center">
                     <input
                         placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value.slice(0, 15))}
                     />
+                </div>
+                <div className="button-container center">
+                    <button>Create room</button>
+                    <button>Join room</button>
                 </div>
             </div>
 
