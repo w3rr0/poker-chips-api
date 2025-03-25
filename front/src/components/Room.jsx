@@ -80,7 +80,7 @@ const Room = () => {
     if (!username) return null
 
     return (
-        <div className="container" style={{display: "flex", flexDirection: "column", height: "calc(100vh - 40px)"}}>
+        <div className="container room-container">
             <h2>Room PIN: {pin}</h2>
 
             <div className="game-layout" style={{paddingBottom: "20px"}}>

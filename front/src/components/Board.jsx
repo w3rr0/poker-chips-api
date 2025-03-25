@@ -11,6 +11,7 @@ const Board = () => {
 
 const StyledWrapper = styled.div`
     height: 100vh;
+    height: 100dvh;         // Nadpisuje wartośc vh tylko jeśli przeglądakrka wspiera Dynamic Viewport Height (rozwiązanie dla starszych przeglądarek)
     display: flex;
     justify-content: center;
     align-items: center;
