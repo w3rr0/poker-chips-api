@@ -54,14 +54,3 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
         if pin >= 100_000 and pin not in ROOMS:
             return pin
     raise RuntimeError("No available PINs")
-
-async def send_to_room(room_pin: int, data: dict):
-    if room_pin in ROOMS:
-        room = ROOMS[room_pin]
-        for player in room.players.values():
-            try:
-                await player.websocket.send_json(data)
-            except Exception as e:
-                print(f"Error while sending message to player {player.id} in room {room_pin}: {e}")
-    else:
-        print(f"room {room_pin} does not exist")

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Player from "./Player.jsx";
 
 const EnemyGroup = ({ players }) => {
     return (
@@ -7,7 +8,7 @@ const EnemyGroup = ({ players }) => {
                 {players.length > 0 ? (
                     players.map(player => (
                         <div key={player.id}>
-                            <span>{player.username}: ${player.amount}</span>
+                            <Player player={player} />
                         </div>
                     ))
                 ) : (
@@ -27,6 +28,7 @@ const StyledWrapper = styled.div`
     position: relative;
     z-index: 1;
     margin-top: 30px;
+    gap: 20px 50px;
 `;
 
 export default EnemyGroup
