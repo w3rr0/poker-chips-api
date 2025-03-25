@@ -47,7 +47,6 @@ const CreateRoom = ({ username }) => {
                 </div>
                 <Button caption={"Create New Room"} onClick={createNewRoom}></Button>
             </div>
-
         </div>
     )
 }
