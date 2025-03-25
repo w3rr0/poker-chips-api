@@ -1,12 +1,14 @@
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import Button from "./Button.jsx";
 
 
-const JoinRoom = ({ username }) => {
+const JoinRoom = () => {
     const navigate = useNavigate();
     const [pin, setPin] = useState('')
     const playerId = useRef(localStorage.getItem('playerId') || crypto.randomUUID()).current
+    const { state } = useLocation()
+    const { username } = state || {}
 
     useEffect(() => {
         localStorage.setItem('playerId', playerId)
