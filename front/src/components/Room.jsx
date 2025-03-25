@@ -40,6 +40,7 @@ const Room = () => {
                 }
 
                 if (data.players) {
+                    console.log('Received players list:', data.players)
                     setPlayers(Object.values(data.players))
                 } else {
                     setMessages(prev => [...prev, data])

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
+from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, send_to_room
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -89,6 +89,10 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             try:
                 print("trying to add player")
                 room.add_player(player)
+                current_players = []
+                for p in room.players.values():
+                    current_players.append({"id": p.id, "username": p.username, "amount": p.amount})
+                await websocket.send_json({"players": current_players})
                 print("player added")
             except ValueError as e:
                 await websocket.send_json({"error": str(e)})
