@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
+import Board from "./Board.jsx";
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -79,10 +80,10 @@ const Room = () => {
     if (!username) return null
 
     return (
-        <div className="container">
+        <div className="container" style={{display: "flex", flexDirection: "column", height: "calc(100vh - 40px)"}}>
             <h2>Room PIN: {pin}</h2>
 
-            <div className="game-layout">
+            <div className="game-layout" style={{paddingBottom: "20px"}}>
                 <div className="players-list">
                     <h3>Players:</h3>
                     {players.map(player => (
@@ -112,6 +113,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
+            <Board></Board>
         </div>
     )
 }
