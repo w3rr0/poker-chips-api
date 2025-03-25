@@ -26,8 +26,8 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="button-container">
-                    <Button caption={"Create room"} onClick={() => {navigate(`/create-room/${username}}`, { state: { username, playerId } })}}></Button>
-                    <Button caption={"Join room"} onClick={() => {navigate(`/join-room/${username}}`, { state: { username, playerId } })}}></Button>
+                    <Button caption={"Create room"} onClick={() => {navigate('/create-room', { state: { username, playerId } })}}></Button>
+                    <Button caption={"Join room"} onClick={() => {navigate('/join-room', { state: { username, playerId } })}}></Button>
                 </div>
             </div>
         </div>

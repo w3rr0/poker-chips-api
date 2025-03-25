@@ -10,8 +10,8 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/room/:pin" element={<Room />} />
-                <Route path="/create-room/:username" element={<CreateRoom />} />
-                <Route path="/join-room/:username" element={<JoinRoom />} />
+                <Route path="/create-room" element={<CreateRoom />} />
+                <Route path="/join-room" element={<JoinRoom />} />
             </Routes>
         </Router>
     )
