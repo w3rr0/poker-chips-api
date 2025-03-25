@@ -32,6 +32,7 @@ const Room = () => {
 
             ws.current.onmessage = (event) => {
                 const data = JSON.parse(event.data)
+                console.log("Received data:", data)
 
                 if (data.error) {
                     console.error('Server error:', data.error)
@@ -40,7 +41,6 @@ const Room = () => {
                 }
 
                 if (data.players) {
-                    console.log('Received players list:', data.players)
                     setPlayers(Object.values(data.players))
                 } else {
                     setMessages(prev => [...prev, data])
@@ -66,6 +66,10 @@ const Room = () => {
             }
         }
     }, [pin, username, playerId, navigate])
+
+    useEffect(() => {
+        console.log("Players updated:", players)
+    }, [players]);
 
     const sendMessage = () => {
         if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
