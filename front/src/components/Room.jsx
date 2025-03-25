@@ -113,7 +113,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
-            <Board></Board>
+            <Board players={players} ></Board>
         </div>
     )
 }

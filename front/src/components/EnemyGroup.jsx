@@ -5,7 +5,7 @@ const EnemyGroup = ({ players }) => {
     return (
         <StyledWrapper>
             <div>
-                {players}
+                {players.length}
             </div>
         </StyledWrapper>
     )
