@@ -4,9 +4,15 @@ import styled from "styled-components";
 const EnemyGroup = ({ players }) => {
     return (
         <StyledWrapper>
-            <div>
-                {players.length}
-            </div>
+                {players.length > 0 ? (
+                    players.map(player => (
+                        <div key={player.id}>
+                            <span>{player.username}: ${player.amount}</span>
+                        </div>
+                    ))
+                ) : (
+                    <p>No players yet.</p>
+                )}
         </StyledWrapper>
     )
 }
