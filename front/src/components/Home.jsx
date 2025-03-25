@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
+import Button from "./Button.jsx";
 
 const Home = () => {
     const navigate = useNavigate()
@@ -48,9 +49,9 @@ const Home = () => {
                         <label htmlFor="Username" className="form__label">Username</label>
                     </div>
                 </div>
-                <div className="button-container center">
-                    <button>Create room</button>
-                    <button>Join room</button>
+                <div className="button-container">
+                    <Button caption={"Create room"}></Button>
+                    <Button caption={"Join room"}></Button>
                 </div>
             </div>
 
