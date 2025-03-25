@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 
-const Button = ({ caption }) => {
+const Button = ({ caption, onClick }) => {
     return (
         <StyledWrapper>
-            <button>
+            <button onClick={onClick}>
                 {caption}
             </button>
         </StyledWrapper>
@@ -16,7 +16,7 @@ const StyledWrapper = styled.div`
   button {
     width: 10em;
     position: relative;
-    height: 3.5em;
+    height: 3.6em;
     border: 3px ridge #149CEA;
     outline: none;
     background-color: transparent;
