@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import EnemyGroup from "./EnemyGroup.jsx";
 
 const Board = () => {
     return (
         <StyledWrapper>
-            <div className="container" />
+            <div className="container">
+                <EnemyGroup players={"player"} />
+            </div>
         </StyledWrapper>
     );
 }
