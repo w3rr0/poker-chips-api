@@ -1,12 +1,15 @@
 import styled from "styled-components";
-
+import Token from "./Token.jsx";
 
 const Chips = () => {
     return (
         <StyleWrapper>
-            <label>token 1</label>
-            <label>token 2</label>
-            <label>token 3</label>
+            <Token amount={1} />
+            <Token amount={5} />
+            <Token amount={25} />
+            <Token amount={50} />
+            <Token amount={100} />
+            <Token amount={500} />
         </StyleWrapper>
     )
 }
@@ -18,6 +21,7 @@ const StyleWrapper = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 `;
 
 export default Chips;
