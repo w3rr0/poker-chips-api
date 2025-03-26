@@ -1,12 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import EnemyGroup from "./EnemyGroup.jsx";
+import PlayerView from "./PlayerView.jsx";
 
-const Board = ({ players }) => {
+const Board = ({ players, playerId }) => {
+    console.log('oryginalna lista (chyba):', players);
+    const { filteredPlayers, currentPlayer } = players.reduce(
+        (acc, player) => {
+            console.log('iteracja gracza:', player);
+            if (player.id === playerId) {
+                acc.currentPlayer = player;
+            } else {
+                acc.filteredPlayers.push(player);
+            }
+            return acc;
+        },
+        { filteredPlayers: [], currentPlayer: null }
+    );
+    console.log('po przeiterowaniu:', players);
+    console.log('szukane id:', playerId);
+    console.log('nowa lista:', filteredPlayers);
+    console.log('znaleziony gracz:', currentPlayer);
+    //console.log(currentPlayer.amount);
+
     return (
         <StyledWrapper>
             <div className="container">
-                <EnemyGroup players={players} />
+                <EnemyGroup players={filteredPlayers} />
+                <PlayerView amount={1000} />
             </div>
         </StyledWrapper>
     );
@@ -26,6 +47,8 @@ const StyledWrapper = styled.div`
         border-radius: 20px;
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     .container::before {

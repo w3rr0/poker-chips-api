@@ -11,6 +11,7 @@ const Room = () => {
     const { state } = useLocation()
     const { username, playerId } = state || {}
     const navigate = useNavigate()
+    const messageQueue = useRef([]);
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -23,11 +24,22 @@ const Room = () => {
 
             ws.current.onopen = () => {
                 console.log('WebSocket connected')
-                ws.current.send(JSON.stringify({
+
+                while (messageQueue.current.length > 0) {
+                    ws.current.send(JSON.stringify(messageQueue.current.shift()));
+                }
+
+                sendWhenOpen({
                     player_id: playerId,
                     username,
                     amount: 1000
-                }))
+                });
+
+                // ws.current.send(JSON.stringify({
+                //     player_id: playerId,
+                //     username,
+                //     amount: 1000
+                // }))
             }
 
             ws.current.onmessage = (event) => {
@@ -70,6 +82,15 @@ const Room = () => {
     useEffect(() => {
         console.log("Players updated:", players)
     }, [players]);
+
+    const sendWhenOpen = (data) => {
+        if (ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.send(JSON.stringify(data));
+        } else {
+            messageQueue.current.push(data);
+            console.warn("WebSocket not open, message queued.");
+        }
+    };
 
     const sendMessage = () => {
         if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
@@ -118,7 +139,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
-            <Board players={players} ></Board>
+            <Board players={players} playerId={playerId} ></Board>
         </div>
     )
 }
