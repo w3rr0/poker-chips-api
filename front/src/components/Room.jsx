@@ -34,12 +34,6 @@ const Room = () => {
                     username,
                     amount: 1000
                 });
-
-                // ws.current.send(JSON.stringify({
-                //     player_id: playerId,
-                //     username,
-                //     amount: 1000
-                // }))
             }
 
             ws.current.onmessage = (event) => {
@@ -54,8 +48,10 @@ const Room = () => {
 
                 if (data.players) {
                     setPlayers(Object.values(data.players))
-                } else {
+                } else if (data.type === 'message') {
                     setMessages(prev => [...prev, data])
+                } else {
+                    console.log('Unhandled message:', data)
                 }
             }
 

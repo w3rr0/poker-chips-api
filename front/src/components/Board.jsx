@@ -4,10 +4,8 @@ import EnemyGroup from "./EnemyGroup.jsx";
 import PlayerView from "./PlayerView.jsx";
 
 const Board = ({ players, playerId }) => {
-    console.log('oryginalna lista (chyba):', players);
     const { filteredPlayers, currentPlayer } = players.reduce(
         (acc, player) => {
-            console.log('iteracja gracza:', player);
             if (player.id === playerId) {
                 acc.currentPlayer = player;
             } else {
@@ -17,17 +15,14 @@ const Board = ({ players, playerId }) => {
         },
         { filteredPlayers: [], currentPlayer: null }
     );
-    console.log('po przeiterowaniu:', players);
-    console.log('szukane id:', playerId);
-    console.log('nowa lista:', filteredPlayers);
-    console.log('znaleziony gracz:', currentPlayer);
-    //console.log(currentPlayer.amount);
+
+    const amount = currentPlayer?.amount || 0;
 
     return (
         <StyledWrapper>
             <div className="container">
                 <EnemyGroup players={filteredPlayers} />
-                <PlayerView amount={1000} />
+                <PlayerView amount={amount} />
             </div>
         </StyledWrapper>
     );
