@@ -31,6 +31,7 @@ const StyledWrapper = styled.div`
         flex-direction: row;
         gap: 10px;
         width: 100%;
+        align-items: flex-end;
     }
     
     .player-info {
