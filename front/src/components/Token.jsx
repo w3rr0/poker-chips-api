@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import Chips from "./Chips.jsx";
 
-const Token = ({ amount }) => {
+const Token = ({ value }) => {
     const putMoney = () => {
-        console.log("puttedMoney", amount);
+        console.log("puttedMoney", value);
     }
 
     return (
         <StyleWrapper>
-            <img src={`/tokens-img/${amount}.png`} alt={`$${amount} Token`} width="40px" height="40px" onClick={putMoney} />
+            <img src={`/tokens-img/${value}.png`} alt={`$${value} Token`} width="40px" height="40px" onClick={putMoney} />
         </StyleWrapper>
     )
 }
