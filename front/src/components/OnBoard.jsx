@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const OnBoard = () => {
+const OnBoard = ({ puttedAmount }) => {
     return (
         <StyledWrapper>
-            ${"amount"}
+            ${puttedAmount}
         </StyledWrapper>
     )
 }

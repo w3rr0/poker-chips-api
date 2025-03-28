@@ -51,6 +51,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         player_id = auth_data.player_id
         username = auth_data.username
         amount = auth_data.amount
+        putted = auth_data.putted
 
         if not player_id:
             await websocket.close(code=4000)
@@ -83,6 +84,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 id=player_id,
                 username=username,
                 amount=amount,
+                putted=putted,
                 websocket=websocket
             )
             print(f"Player {player_id}: {player}")
@@ -117,13 +119,13 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
             async with room._lock:
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
-                    if p.id != player_id:
-                        try:
-                            await p.websocket.send_json(data)
-                            print(f"Player {p.id}: {p}, sending {data}")
-                        except (WebSocketDisconnect, RuntimeError):
-                            print(f"WebSocket disconnected for room {p.id}")
-                            room.remove_player(p.id)
+                    #if p.id != player_id:
+                    try:
+                        await p.websocket.send_json(data)
+                        print(f"Player {p.id}: {p}, sending {data}")
+                    except (WebSocketDisconnect, RuntimeError):
+                        print(f"WebSocket disconnected for room {p.id}")
+                        room.remove_player(p.id)
 
     except WebSocketDisconnect:
         async with room._lock:

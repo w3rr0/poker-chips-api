@@ -8,11 +8,13 @@ class AuthData(BaseModel):
     player_id: str
     username: str
     amount: int
+    putted: int
 
 class Player(BaseModel):
     id: str                     # unikalne id gracza
     username: str               # nazwa gracza
     amount: int                 # łączna wartość żetonów
+    putted: int             # żetony postawione przez gracza
     websocket: WebSocket
 
     class Config:

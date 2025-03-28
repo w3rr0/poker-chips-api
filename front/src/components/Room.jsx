@@ -12,6 +12,7 @@ const Room = () => {
     const { username, playerId } = state || {}
     const navigate = useNavigate()
     const messageQueue = useRef([]);
+    const [puttedAmount, setPuttedAmount] = useState(0)
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -32,7 +33,8 @@ const Room = () => {
                 sendWhenOpen({
                     player_id: playerId,
                     username,
-                    amount: 1000
+                    amount: 1000,
+                    putted: puttedAmount,
                 });
             }
 
@@ -50,6 +52,8 @@ const Room = () => {
                     setPlayers(Object.values(data.players))
                 } else if (data.type === 'message') {
                     setMessages(prev => [...prev, data])
+                } else if (data.type === 'put_token') {
+                    setPuttedAmount(prev => prev + data.content)
                 } else {
                     console.log('Unhandled message:', data)
                 }
@@ -145,7 +149,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
-            <Board players={players} playerId={playerId} handlePutToken={putToken} ></Board>
+            <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} ></Board>
         </div>
     )
 }
