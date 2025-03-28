@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import EnemyGroup from "./EnemyGroup.jsx";
 import PlayerView from "./PlayerView.jsx";
+import OnBoard from "./OnBoard.jsx";
 
 const Board = ({ players, playerId }) => {
     const { filteredPlayers, currentPlayer } = players.reduce(
@@ -22,6 +23,7 @@ const Board = ({ players, playerId }) => {
         <StyledWrapper>
             <div className="container">
                 <EnemyGroup players={filteredPlayers} />
+                <OnBoard/>
                 <PlayerView amount={amount} />
             </div>
         </StyledWrapper>
