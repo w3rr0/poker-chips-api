@@ -4,7 +4,7 @@ import styled from "styled-components";
 const OnBoard = () => {
     return (
         <StyledWrapper>
-            {"amount"}
+            ${"amount"}
         </StyledWrapper>
     )
 }

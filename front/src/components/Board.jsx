@@ -4,7 +4,7 @@ import EnemyGroup from "./EnemyGroup.jsx";
 import PlayerView from "./PlayerView.jsx";
 import OnBoard from "./OnBoard.jsx";
 
-const Board = ({ players, playerId }) => {
+const Board = ({ players, playerId, handlePutToken }) => {
     const { filteredPlayers, currentPlayer } = players.reduce(
         (acc, player) => {
             if (player.id === playerId) {
@@ -24,7 +24,7 @@ const Board = ({ players, playerId }) => {
             <div className="container">
                 <EnemyGroup players={filteredPlayers} />
                 <OnBoard/>
-                <PlayerView amount={amount} />
+                <PlayerView amount={amount} handlePutToken={handlePutToken} />
             </div>
         </StyledWrapper>
     );

@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
-const Token = ({ value }) => {
+const Token = ({ value, putToken }) => {
     const putMoney = () => {
         console.log("puttedMoney", value);
+        putToken(value);
     }
 
     return (

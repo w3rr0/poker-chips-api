@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Chips from "./Chips.jsx";
 
-const PlayerView = ({ amount }) => {
+const PlayerView = ({ amount, handlePutToken }) => {
     return (
         <StyledWrapper>
             <div className="player-view">
@@ -10,7 +10,7 @@ const PlayerView = ({ amount }) => {
                     <label>You</label>
                     <label>${amount}</label>
                 </div>
-                <Chips amount={amount} />
+                <Chips amount={amount} handlePutToken={handlePutToken} />
             </div>
         </StyledWrapper>
     );

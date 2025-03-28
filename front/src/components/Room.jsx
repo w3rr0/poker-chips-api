@@ -99,6 +99,16 @@ const Room = () => {
         }
     }
 
+    const putToken = (amount) => {
+        if (ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.send(JSON.stringify({
+                type: 'put_token',
+                content: amount,
+                playerId: playerId,
+            }))
+        }
+    }
+
     if (!username) return null
 
     return (
@@ -135,7 +145,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
-            <Board players={players} playerId={playerId} ></Board>
+            <Board players={players} playerId={playerId} handlePutToken={putToken} ></Board>
         </div>
     )
 }

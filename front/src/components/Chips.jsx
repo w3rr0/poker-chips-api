@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Token from "./Token.jsx";
 import {chipsValue} from "../../public/static.js";
 
-const Chips = ({ amount }) => {
+const Chips = ({ amount, handlePutToken }) => {
     return (
         <StyleWrapper>
             {chipsValue
                 .filter(value => value < amount)
-                .map(value => <Token key={value} value={value} />)}
+                .map(value => <Token key={value} value={value} putToken={handlePutToken} />)}
         </StyleWrapper>
     )
 }
