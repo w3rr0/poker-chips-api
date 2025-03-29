@@ -23,8 +23,9 @@ class Player(BaseModel):
 
 class Room(BaseModel):
     pin: int
-    max_players: int = 4
-    players: Dict[str, Player] = {}  # Unikatowy klucz id gracza
+    max_players: int
+    players: Dict[str, Player] = {}     # Unikatowy klucz id gracza
+    putted: int                         # Łączna wartość żetonów na stole
     _lock: asyncio.Lock = PrivateAttr(default_factory=asyncio.Lock) # obiekty asyncio.Lock nie są serializowane (jawnie zdefiniowane), czyli muszą być prywatne aby przeszły walidacje pydantic
 
     class Config:

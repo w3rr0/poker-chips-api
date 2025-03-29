@@ -27,10 +27,10 @@ async def create_room(max_players: int = 4):
     async with ROOMS_LOCK:
         if len(ROOMS) >= MAX_ROOMS:
             return {"error": "Server room limit reached"}
-        pin = generate_unique_pin()
-        room = Room(pin=pin, max_players=max_players)
-        ROOMS[pin] = room
-        print(f"Created new room {pin}")
+        new_pin = generate_unique_pin()
+        room = Room(pin=new_pin, max_players=max_players, putted=0)
+        ROOMS[new_pin] = room
+        print(f"Created new room {new_pin}")
     return {"PIN": room.pin}
 
 # Dołącza gracza do pokoju
@@ -95,7 +95,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 for p in room.players.values():
                     current_players.append({"id": p.id, "username": p.username, "amount": p.amount})
                 for p in room.players.values():
-                    await p.websocket.send_json({"type": "players_update", "players": current_players})
+                    await p.websocket.send_json({"type": "players_update", "players": current_players, "putted": room.putted})
                 print("player added")
             except ValueError as e:
                 await websocket.send_json({"error": str(e)})
@@ -118,8 +118,12 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             print(f"MESSAGE: Received data: {data}")
 
             async with room._lock:
+                if data.get("type") == "put_token":
+                    ROOMS[pin].putted += data["content"]
+                    for p in room.players.values():
+                        await p.websocket.send_json({"type": "putted_update", "amount": ROOMS[pin].putted})
+
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
-                    #if p.id != player_id:
                     try:
                         await p.websocket.send_json(data)
                         print(f"Player {p.id}: {p}, sending {data}")

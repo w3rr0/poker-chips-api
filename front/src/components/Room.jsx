@@ -13,6 +13,7 @@ const Room = () => {
     const navigate = useNavigate()
     const messageQueue = useRef([]);
     const [puttedAmount, setPuttedAmount] = useState(0)
+    const [yourPutted, setYourPutted] = useState(0)
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -50,10 +51,16 @@ const Room = () => {
 
                 if (data.players) {
                     setPlayers(Object.values(data.players))
+                    setPuttedAmount(data.putted)
                 } else if (data.type === 'message') {
                     setMessages(prev => [...prev, data])
                 } else if (data.type === 'put_token') {
-                    setPuttedAmount(prev => prev + data.content)
+                    //setPuttedAmount(prev => prev + data.content)
+                    if (data.playerId === playerId) {
+                        setYourPutted(prev => prev + data.content)
+                    }
+                } else if (data.type === 'putted_update') {
+                    setPuttedAmount(data.amount)
                 } else {
                     console.log('Unhandled message:', data)
                 }
@@ -149,7 +156,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
-            <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} ></Board>
+            <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted}></Board>
         </div>
     )
 }
