@@ -1,10 +1,32 @@
-import React from "react";
+import React, {useLayoutEffect, useRef, useState} from "react";
 import styled from "styled-components";
 
-const OnBoard = ({ puttedAmount, yourPutted }) => {
+const OnBoard = ({ puttedAmount, yourPutted, onCenterChange }) => {
+    const imgRef = useRef();
+    const [lastCenter, setLastCenter] = useState(null);
+
+    useLayoutEffect(() => {
+        if (imgRef.current) {
+            const rect = imgRef.current.getBoundingClientRect();
+            const center = {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2
+            };
+
+            if (
+                !lastCenter ||
+                center.x !== lastCenter.x ||
+                center.y !== lastCenter.y
+            ) {
+                setLastCenter(center);
+                onCenterChange?.(center);
+            }
+        }
+    }, []);
+
     return (
         <StyledWrapper>
-            <img src="/chips-stack.png" alt="token stack" width="40px" height="40px"/>
+            <img ref={imgRef} src="/chips-stack.png" alt="token stack" width="40px" height="40px"/>
             <div className="bet-container">
                 <label style={{fontWeight: "bold"}}>${puttedAmount}</label>
                 <label>Your: ${yourPutted}</label>
