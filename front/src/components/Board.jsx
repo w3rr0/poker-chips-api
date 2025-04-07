@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React  from 'react';
 import styled from 'styled-components';
 import EnemyGroup from "./EnemyGroup.jsx";
 import PlayerView from "./PlayerView.jsx";
 import OnBoard from "./OnBoard.jsx";
 
-const Board = ({ players, playerId, handlePutToken, puttedAmount, yourPutted }) => {
-    const [center, setCenter] = useState({ x: 0, y: 0 });
+const Board = ({ players, playerId, handlePutToken, puttedAmount, yourPutted, handleCenterChange }) => {
 
     const { filteredPlayers, currentPlayer } = players.reduce(
         (acc, player) => {
@@ -20,12 +19,6 @@ const Board = ({ players, playerId, handlePutToken, puttedAmount, yourPutted }) 
     );
 
     const amount = currentPlayer?.amount || 0;
-
-    const handleCenterChange = (newCenter) => {
-        setCenter(newCenter);
-    }
-
-    console.log("Center:", center);
 
     return (
         <StyledWrapper>

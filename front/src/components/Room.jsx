@@ -14,6 +14,7 @@ const Room = () => {
     const messageQueue = useRef([]);
     const [puttedAmount, setPuttedAmount] = useState(0)
     const [yourPutted, setYourPutted] = useState(0)
+    const [center, setCenter] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -120,6 +121,12 @@ const Room = () => {
         }
     }
 
+    const handleCenterChange = (newCenter) => {
+        setCenter(newCenter);
+    }
+
+    console.log("Center:", center);
+
     if (!username) return null
 
     return (
@@ -156,7 +163,7 @@ const Room = () => {
                     </div>
                 </div>
             </div>
-            <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted}></Board>
+            <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
         </div>
     )
 }

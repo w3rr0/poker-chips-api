@@ -22,7 +22,7 @@ const OnBoard = ({ puttedAmount, yourPutted, onCenterChange }) => {
                 onCenterChange?.(center);
             }
         }
-    }, []);
+    }, [lastCenter, onCenterChange]);
 
     return (
         <StyledWrapper>
