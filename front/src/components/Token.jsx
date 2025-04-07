@@ -8,15 +8,18 @@ const Token = ({ value, putToken }) => {
 
     return (
         <StyleWrapper>
-            <img src={`/tokens-img/${value}.png`} alt={`$${value} Token`} width="40px" height="40px" onClick={putMoney} />
+            <img src={`/tokens-img/${value}.png`} alt={`$${value} Token`} width="40px" height="40px" onClick={putMoney} style={{cursor: 'pointer'}} />
         </StyleWrapper>
     )
 }
 
 const StyleWrapper = styled.button`
-    cursor: pointer;
-    border-radius: 50%;
     background: transparent;
+    cursor: default;
+    
+    &:hover {
+        background: transparent;
+    }
 `;
 
 export default Token;
