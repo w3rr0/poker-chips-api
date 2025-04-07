@@ -1,6 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import Board from "./Board.jsx";
+// eslint-disable-next-line no-unused-vars
+import { useSpring, animated } from '@react-spring/web';
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -15,6 +17,7 @@ const Room = () => {
     const [puttedAmount, setPuttedAmount] = useState(0)
     const [yourPutted, setYourPutted] = useState(0)
     const [center, setCenter] = useState({ x: 0, y: 0 });
+    const [animatedToken, setAnimatedToken] = useState(null);
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -85,7 +88,7 @@ const Room = () => {
                 ws.current.close()
             }
         }
-    }, [pin, username, playerId, navigate])
+    }, [pin, username, playerId, navigate, puttedAmount])
 
     useEffect(() => {
         console.log("Players updated:", players)
@@ -111,13 +114,36 @@ const Room = () => {
         }
     }
 
-    const putToken = (amount) => {
+    const animationProps = useSpring({
+        from: {
+            x: animatedToken?.startX || 0,
+            y: animatedToken?.startY || 0,
+            opacity: 1
+        },
+        to: {
+            x: animatedToken?.endX || 0,
+            y: animatedToken?.endY || 0,
+            opacity: 0
+        },
+        config: { duration: 1000 },
+        reset: true,
+        onRest: () => setAnimatedToken(null),
+    });
+
+    const putToken = (amount, startPosition) => {
         if (ws.current?.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify({
                 type: 'put_token',
                 content: amount,
                 playerId: playerId,
             }))
+            setAnimatedToken({
+                startX: startPosition.x,
+                startY: startPosition.y,
+                endX: center.x,
+                endY: center.y,
+                amount: amount
+            });
         }
     }
 
@@ -164,6 +190,24 @@ const Room = () => {
                 </div>
             </div>
             <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
+            {animatedToken && (
+                <animated.div
+                    style={{
+                        position: 'fixed',
+                        left: animationProps.x.to(x => `${x}px`),
+                        top: animationProps.y.to(y => `${y}px`),
+                        opacity: animationProps.opacity,
+                        pointerEvents: 'none',
+                        zIndex: 1000
+                    }}>
+                    <img
+                        src={`/tokens-img/${animatedToken.amount}.png`}
+                        alt="token"
+                        width="40px"
+                        height="40px"
+                    />
+                </animated.div>
+            )}
         </div>
     )
 }

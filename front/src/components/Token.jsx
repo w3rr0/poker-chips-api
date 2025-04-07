@@ -1,13 +1,20 @@
 import styled from "styled-components";
+import {useRef} from "react";
 
 const Token = ({ value, putToken }) => {
+    const tokenRef = useRef()
+
     const putMoney = () => {
-        console.log("puttedMoney", value);
-        putToken(value);
+        const rect = tokenRef.current.getBoundingClientRect();
+        const position = {
+            x: rect.left + window.scrollX,
+            y: rect.top + window.scrollY
+        };
+        putToken(value, position);
     }
 
     return (
-        <StyleWrapper>
+        <StyleWrapper ref={tokenRef}>
             <img src={`/tokens-img/${value}.png`} alt={`$${value} Token`} width="40px" height="40px" onClick={putMoney} style={{cursor: 'pointer'}} />
         </StyleWrapper>
     )
