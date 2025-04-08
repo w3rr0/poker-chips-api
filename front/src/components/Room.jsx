@@ -4,6 +4,7 @@ import Board from "./Board.jsx";
 // eslint-disable-next-line no-unused-vars
 import { useSpring, animated } from '@react-spring/web';
 import TopBar from "./TopBar.jsx";
+import CollectButton from "./CollectButton.jsx";
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -160,15 +161,13 @@ const Room = () => {
         <div className="container room-container">
             <TopBar pin={pin} players_amount={players.length} max_players={4}/>
 
-            <div className="game-layout" style={{paddingBottom: "20px"}}>
+            <div className="game-layout">
                 <div className="players-list">
-                    <h3>Players:</h3>
-                    {players.map(player => (
-                        <div key={player.id} className="player-card">
-                            <span>{player.username}</span>
-                            <span>${player.amount}</span>
-                        </div>
-                    ))}
+                    <label>Actions:</label>
+                    <div className="actions">
+                        <CollectButton text="All" />
+                        <CollectButton text="Yours" />
+                    </div>
                 </div>
 
                 <div className="chat-section">
