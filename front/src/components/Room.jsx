@@ -46,6 +46,7 @@ const Room = () => {
 
             ws.current.onmessage = (event) => {
                 const data = JSON.parse(event.data)
+                data.playerAmount = 0;
                 console.log("Received data:", data)
 
                 if (data.error) {
@@ -54,13 +55,12 @@ const Room = () => {
                     return
                 }
 
-                if (data.players) {
+                if (data.type === 'players_update') {
                     setPlayers(Object.values(data.players))
                     setPuttedAmount(data.putted)
                 } else if (data.type === 'message') {
                     setMessages(prev => [...prev, data])
                 } else if (data.type === 'put_token') {
-                    //setPuttedAmount(prev => prev + data.content)
                     if (data.playerId === playerId) {
                         setYourPutted(prev => prev + data.content)
                     }

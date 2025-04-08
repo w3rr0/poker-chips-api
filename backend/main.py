@@ -120,8 +120,15 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             async with room._lock:
                 if data.get("type") == "put_token":
                     ROOMS[pin].putted += data["content"]
+                    ROOMS[pin].players[data["playerId"]].amount -= data["content"]
+                    current_players = [
+                        {"id": p.id, "username": p.username, "amount": p.amount}
+                        for p in room.players.values()
+                    ]
                     for p in room.players.values():
                         await p.websocket.send_json({"type": "putted_update", "amount": ROOMS[pin].putted})
+                        await p.websocket.send_json(
+                            {"type": "players_update", "players": current_players, "putted": room.putted})
 
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     try:
