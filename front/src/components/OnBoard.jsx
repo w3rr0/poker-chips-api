@@ -9,8 +9,8 @@ const OnBoard = ({ puttedAmount, yourPutted, onCenterChange }) => {
         if (imgRef.current) {
             const rect = imgRef.current.getBoundingClientRect();
             const center = {
-                x: rect.left + rect.width / 2,
-                y: rect.top + rect.height / 2
+                x: rect.left + rect.width / 8,
+                y: rect.top + rect.height / 8
             };
 
             if (
