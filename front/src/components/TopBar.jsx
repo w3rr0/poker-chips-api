@@ -5,7 +5,7 @@ const TopBar = ({ pin, players_amount, max_players }) => {
     return (
         <StyledWrapper>
             <div className="appName">
-                <img src="/logo.png" alt="logo" />
+                <img src="/table.png" alt="logo" />
                 <label>POKERCHIP$</label>
             </div>
             <div className="roomInfo">
