@@ -88,7 +88,7 @@ const Room = () => {
                 ws.current.close()
             }
         }
-    }, [pin, username, playerId, navigate, puttedAmount])
+    }, [pin, username, playerId, navigate])
 
     useEffect(() => {
         console.log("Players updated:", players)
@@ -125,7 +125,7 @@ const Room = () => {
             y: animatedToken?.endY || 0,
             opacity: 0
         },
-        config: { duration: 1000 },
+        config: { duration: 250 },
         reset: true,
         onRest: () => setAnimatedToken(null),
     });
