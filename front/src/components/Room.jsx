@@ -165,8 +165,9 @@ const Room = () => {
                 <div className="players-list">
                     <label>Actions:</label>
                     <div className="actions">
-                        <CollectButton text="All" />
-                        <CollectButton text="Yours" />
+                        <CollectButton text="All" type="collect"/>
+                        <CollectButton text="Yours" type="collect"/>
+                        <CollectButton text="Leave Room" type="leave"/>
                     </div>
                 </div>
 

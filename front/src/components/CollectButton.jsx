@@ -1,11 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ text }) => {
+const Button = ({ text, type }) => {
+    const addPrefix = () => {
+        if (type === "collect") {
+            return "Collect ";
+        }
+        return null;
+    }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper $type={type}>
       <button className="button">
-        <div><span>Collect {text}</span></div>
+        <div><span>{addPrefix()}{text}</span></div>
       </button>
     </StyledWrapper>
   );
@@ -15,7 +22,7 @@ const StyledWrapper = styled.div`
   .button {
     --stone-50: #fafaf9;
     --stone-800: #292524;
-    --yellow-400: #facc15;
+    --yellow-400: ${({ $type }) => $type === 'leave' ? 'red' : '#facc15'};
 
     font-size: 1rem;
     cursor: pointer;
