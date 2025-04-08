@@ -7,8 +7,8 @@ const Token = ({ value, putToken }) => {
     const putMoney = () => {
         const rect = tokenRef.current.getBoundingClientRect();
         const position = {
-            x: rect.left + window.scrollX,
-            y: rect.top + window.scrollY
+            x: rect.left + rect.width / 4 + window.scrollX,
+            y: rect.top + rect.height / 4 + window.scrollY
         };
         putToken(value, position);
     }
