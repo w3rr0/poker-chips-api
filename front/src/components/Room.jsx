@@ -3,6 +3,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import Board from "./Board.jsx";
 // eslint-disable-next-line no-unused-vars
 import { useSpring, animated } from '@react-spring/web';
+import TopBar from "./TopBar.jsx";
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -157,7 +158,7 @@ const Room = () => {
 
     return (
         <div className="container room-container">
-            <h2>Room PIN: {pin}</h2>
+            <TopBar pin={pin} players_amount={players.length} max_players={4}/>
 
             <div className="game-layout" style={{paddingBottom: "20px"}}>
                 <div className="players-list">
