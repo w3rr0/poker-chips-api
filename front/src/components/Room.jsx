@@ -65,8 +65,6 @@ const Room = () => {
                     if (data.playerId === playerId) {
                         setYourPutted(prev => prev + data.content)
                     }
-                } else if (data.type === 'putted_update') {
-                    setPuttedAmount(data.amount)
                 } else {
                     console.log('Unhandled message:', data)
                 }

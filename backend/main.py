@@ -118,8 +118,6 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                     ROOMS[pin].putted += data["content"]
                     ROOMS[pin].players[data["playerId"]].amount -= data["content"]
                     await room.update_players()
-                    for p in room.players.values():
-                        await p.websocket.send_json({"type": "putted_update", "amount": ROOMS[pin].putted})
 
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     try:
