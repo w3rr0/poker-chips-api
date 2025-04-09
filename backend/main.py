@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
+from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, update_players
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -91,11 +91,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             try:
                 print("trying to add player")
                 room.add_player(player)
-                current_players = []
-                for p in room.players.values():
-                    current_players.append({"id": p.id, "username": p.username, "amount": p.amount})
-                for p in room.players.values():
-                    await p.websocket.send_json({"type": "players_update", "players": current_players, "putted": room.putted})
+                await room.update_players()
                 print("player added")
             except ValueError as e:
                 await websocket.send_json({"error": str(e)})
@@ -121,14 +117,9 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 if data.get("type") == "put_token":
                     ROOMS[pin].putted += data["content"]
                     ROOMS[pin].players[data["playerId"]].amount -= data["content"]
-                    current_players = [
-                        {"id": p.id, "username": p.username, "amount": p.amount}
-                        for p in room.players.values()
-                    ]
+                    await room.update_players()
                     for p in room.players.values():
                         await p.websocket.send_json({"type": "putted_update", "amount": ROOMS[pin].putted})
-                        await p.websocket.send_json(
-                            {"type": "players_update", "players": current_players, "putted": room.putted})
 
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     try:
@@ -142,6 +133,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         async with room._lock:
             print(f"Player {player_id} disconnected")
             room.remove_player(player_id)
+            await room.update_players()
 
             # automatyczne usuwanie pokoi
             async with ROOMS_LOCK:

@@ -45,6 +45,17 @@ class Room(BaseModel):
         if player_id in self.players:
             del self.players[player_id]
 
+    async def update_players(self) -> None:
+        current_players = []
+        for p in self.players.values():
+            current_players.append({"id": p.id, "username": p.username, "amount": p.amount})
+        for player in self.players.values():
+            await player.websocket.send_json({
+                "type": "players_update",
+                "players": current_players,
+                "putted": self.putted
+            })
+
 
 ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
 ROOMS_LOCK = asyncio.Lock()
@@ -57,3 +68,16 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
         if pin >= 100_000 and pin not in ROOMS:
             return pin
     raise RuntimeError("No available PINs")
+
+def update_players(room: Room) -> None:
+    current_players = [
+        {"id": p.id, "username": p.username, "amount": p.amount}
+        for p in room.players.values()
+    ]
+    for player in room.players.values():
+        player.websocket.send_json({
+            "type": "players_update",
+            #"players": [p.model_dump() for p in room.players.values()],
+            "players": current_players,
+            "putted": room.putted
+        })
