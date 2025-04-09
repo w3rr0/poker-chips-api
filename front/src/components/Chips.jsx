@@ -6,7 +6,7 @@ const Chips = ({ amount, handlePutToken }) => {
     return (
         <StyleWrapper>
             {chipsValue
-                .filter(value => value < amount)
+                .filter(value => value <= amount)
                 .map(value => <Token key={value} value={value} putToken={handlePutToken} />)}
         </StyleWrapper>
     )
