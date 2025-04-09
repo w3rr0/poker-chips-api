@@ -22,7 +22,7 @@ const StyledWrapper = styled.div`
   .button {
     --stone-50: #fafaf9;
     --stone-800: #292524;
-    --yellow-400: ${({ $type }) => $type === 'leave' ? 'red' : '#facc15'};
+    --yellow-400: ${({ $type }) => $type === 'leave' ? '#FF6347' : '#facc15'};
 
     font-size: 1rem;
     cursor: pointer;
