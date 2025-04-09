@@ -53,7 +53,8 @@ class Room(BaseModel):
             await player.websocket.send_json({
                 "type": "players_update",
                 "players": current_players,
-                "putted": self.putted
+                "putted": self.putted,
+                "maxPlayers": self.max_players
             })
 
 

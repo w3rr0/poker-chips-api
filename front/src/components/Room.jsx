@@ -20,6 +20,7 @@ const Room = () => {
     const [yourPutted, setYourPutted] = useState(0)
     const [center, setCenter] = useState({ x: 0, y: 0 });
     const [animatedToken, setAnimatedToken] = useState(null);
+    const [playersLimit, setPlayersLimit] = useState(maxPlayers);
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -59,6 +60,7 @@ const Room = () => {
                 if (data.type === 'players_update') {
                     setPlayers(Object.values(data.players))
                     setPuttedAmount(data.putted)
+                    setPlayersLimit(data.maxPlayers)
                 } else if (data.type === 'message') {
                     setMessages(prev => [...prev, data])
                 } else if (data.type === 'put_token') {
@@ -157,7 +159,7 @@ const Room = () => {
 
     return (
         <div className="container room-container">
-            <TopBar pin={pin} players_amount={players.length} max_players={maxPlayers}/>
+            <TopBar pin={pin} players_amount={players.length} max_players={playersLimit}/>
 
             <div className="game-layout">
                 <div className="action-buttons">
