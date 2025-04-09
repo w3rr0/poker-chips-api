@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, update_players
+from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -118,6 +118,9 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                     ROOMS[pin].putted += data["content"]
                     ROOMS[pin].players[data["playerId"]].amount -= data["content"]
                     await room.update_players()
+
+                if data.get("type") == "claim_all":
+                    await room.claim_all(data["playerId"])
 
                 for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
                     try:

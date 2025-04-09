@@ -67,6 +67,10 @@ const Room = () => {
                     if (data.playerId === playerId) {
                         setYourPutted(prev => prev + data.content)
                     }
+                } else if (data.type === 'claim_all') {
+                    setPlayers(Object.values(data.players))
+                    setPuttedAmount(0)
+                    setYourPutted(0)
                 } else {
                     console.log('Unhandled message:', data)
                 }
@@ -154,7 +158,6 @@ const Room = () => {
     }
 
     const handleCollectYours = () => {
-        console.log("CollectYours");
         if (ws.current?.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify({
                 type: "put_token",
@@ -164,7 +167,12 @@ const Room = () => {
         }
     }
     const handleCollectAll = () => {
-        console.log("CollectAll");
+        if (ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.send(JSON.stringify({
+                type: "claim_all",
+                playerId: playerId,
+            }))
+        }
     }
     const handleLeaveRoom = () => {
         if (ws.current?.readyState === WebSocket.OPEN) {

@@ -1,5 +1,5 @@
 import uuid
-from typing import Dict
+from typing import Dict, List
 from pydantic import BaseModel, PrivateAttr
 from starlette.websockets import WebSocket
 import asyncio
@@ -45,18 +45,30 @@ class Room(BaseModel):
         if player_id in self.players:
             del self.players[player_id]
 
+    def current_players(self) -> List[Dict]:
+        current_players = [
+            {"id": p.id, "username": p.username, "amount": p.amount}
+            for p in self.players.values()
+        ]
+        return current_players
+
     async def update_players(self) -> None:
-        current_players = []
-        for p in self.players.values():
-            current_players.append({"id": p.id, "username": p.username, "amount": p.amount})
         for player in self.players.values():
             await player.websocket.send_json({
                 "type": "players_update",
-                "players": current_players,
+                "players": self.current_players(),
                 "putted": self.putted,
                 "maxPlayers": self.max_players
             })
 
+    async def claim_all(self, player_id: str) -> None:
+        self.players[player_id].amount += self.putted
+        self.putted = 0
+        for player in self.players.values():
+            await player.websocket.send_json({
+                "type": "claim_all",
+                "players": self.current_players(),
+            })
 
 ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
 ROOMS_LOCK = asyncio.Lock()
@@ -70,15 +82,3 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
             return pin
     raise RuntimeError("No available PINs")
 
-def update_players(room: Room) -> None:
-    current_players = [
-        {"id": p.id, "username": p.username, "amount": p.amount}
-        for p in room.players.values()
-    ]
-    for player in room.players.values():
-        player.websocket.send_json({
-            "type": "players_update",
-            #"players": [p.model_dump() for p in room.players.values()],
-            "players": current_players,
-            "putted": room.putted
-        })
