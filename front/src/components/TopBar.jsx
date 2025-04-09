@@ -19,8 +19,7 @@ const TopBar = ({ pin, players_amount, max_players }) => {
     return (
         <StyledWrapper>
             <div className="appName">
-                <img src="/table.png" alt="logo" />
-                <label>POKERCHIP$</label>
+                <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" />
             </div>
             <div className="roomInfo">
                 <div style={{ paddingBottom: "5px" }}>
@@ -48,8 +47,7 @@ const StyledWrapper = styled.div`
     .appName {
         display: flex;
         align-items: center;
-        font-size: 36px;
-        font-weight: inherit;
+        margin-left: -25px;
     }
     .roomInfo {
         display: flex;
