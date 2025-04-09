@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import styled from "styled-components";
 
 const OnBoard = ({ puttedAmount, yourPutted, onCenterChange }) => {
@@ -23,6 +23,13 @@ const OnBoard = ({ puttedAmount, yourPutted, onCenterChange }) => {
             }
         }
     }, [lastCenter, onCenterChange]);
+
+    useEffect(() => {
+        window.addEventListener("resize", onCenterChange);
+        return () => {
+            window.removeEventListener("resize", onCenterChange);
+        };
+    }, []);
 
     return (
         <StyledWrapper>
