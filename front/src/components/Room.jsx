@@ -162,33 +162,33 @@ const Room = () => {
             <TopBar pin={pin} players_amount={players.length} max_players={4}/>
 
             <div className="game-layout">
-                <div className="players-list">
-                    <label>Actions:</label>
-                    <div className="actions">
+                <div className="action-buttons">
+                    <div className="collect-buttons">
                         <CollectButton text="All" type="collect"/>
                         <CollectButton text="Yours" type="collect"/>
-                        <CollectButton text="Leave Room" type="leave"/>
                     </div>
+                    <div className="collect-buttons leave"></div>
+                        <CollectButton text="Leave Room" type="leave"/>
                 </div>
 
-                <div className="chat-section">
-                    <div className="messages">
-                        {messages.map((msg, i) => (
-                            <div key={i} className="message">
-                                <strong>{msg.sender}:</strong> {msg.content}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="message-input">
-                        <input
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                            placeholder="Type a message..."
-                        />
-                        <button onClick={sendMessage}>Send</button>
-                    </div>
-                </div>
+                {/*<div className="chat-section">*/}
+                {/*    <div className="messages">*/}
+                {/*        {messages.map((msg, i) => (*/}
+                {/*            <div key={i} className="message">*/}
+                {/*                <strong>{msg.sender}:</strong> {msg.content}*/}
+                {/*            </div>*/}
+                {/*        ))}*/}
+                {/*    </div>*/}
+                {/*    <div className="message-input">*/}
+                {/*        <input*/}
+                {/*            value={message}*/}
+                {/*            onChange={(e) => setMessage(e.target.value)}*/}
+                {/*            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}*/}
+                {/*            placeholder="Type a message..."*/}
+                {/*        />*/}
+                {/*        <button onClick={sendMessage}>Send</button>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
             <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
             {animatedToken && (

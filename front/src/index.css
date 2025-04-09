@@ -52,13 +52,13 @@ button:hover {
   padding-bottom: 20px;
 }
 
-.players-list {
+.action-buttons {
   flex: 1;
   background: #2a2a2a;
   padding: 20px;
   border-radius: 8px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 20px;
 }
 
@@ -179,8 +179,12 @@ button:hover {
     height: calc(100dvh - 40px);    /*Nadpisuje wartośc vh tylko jeśli przeglądakrka wspiera Dynamic Viewport Height (rozwiązanie dla starszych przeglądarek) */
 }
 
-.actions {
+.collect-buttons {
   display: flex;
   flex-direction: row;
   gap: 15px;
+}
+
+.leave {
+  margin-left: auto;
 }
