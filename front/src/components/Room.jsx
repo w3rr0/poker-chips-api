@@ -13,7 +13,7 @@ const Room = () => {
     const ws = useRef(null)
     const { pin } = useParams()
     const { state } = useLocation()
-    const { username, playerId } = state || {}
+    const { username, playerId, maxPlayers } = state || {}
     const navigate = useNavigate()
     const messageQueue = useRef([]);
     const [puttedAmount, setPuttedAmount] = useState(0)
@@ -105,16 +105,16 @@ const Room = () => {
         }
     };
 
-    const sendMessage = () => {
-        if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
-            ws.current.send(JSON.stringify({
-                type: 'message',
-                content: message.trim(),
-                sender: username
-            }))
-            setMessage('')
-        }
-    }
+    // const sendMessage = () => {
+    //     if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
+    //         ws.current.send(JSON.stringify({
+    //             type: 'message',
+    //             content: message.trim(),
+    //             sender: username
+    //         }))
+    //         setMessage('')
+    //     }
+    // }
 
     const animationProps = useSpring({
         from: {
@@ -159,7 +159,7 @@ const Room = () => {
 
     return (
         <div className="container room-container">
-            <TopBar pin={pin} players_amount={players.length} max_players={4}/>
+            <TopBar pin={pin} players_amount={players.length} max_players={maxPlayers}/>
 
             <div className="game-layout">
                 <div className="action-buttons">
