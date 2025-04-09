@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ text, type }) => {
+const Button = ({ text, type, onClick }) => {
     const addPrefix = () => {
         if (type === "collect") {
             return "Collect ";
@@ -11,7 +11,7 @@ const Button = ({ text, type }) => {
 
   return (
     <StyledWrapper $type={type}>
-      <button className="button">
+      <button className="button" onClick={onClick}>
         <div><span>{addPrefix()}{text}</span></div>
       </button>
     </StyledWrapper>

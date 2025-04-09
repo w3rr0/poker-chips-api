@@ -153,7 +153,18 @@ const Room = () => {
         setCenter(newCenter);
     }
 
-    console.log("Center:", center);
+    const handleCollectYours = () => {
+        console.log("CollectYours");
+    }
+    const handleCollectAll = () => {
+        console.log("CollectAll");
+    }
+    const handleLeaveRoom = () => {
+        if (ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.close()
+        }
+        navigate('/');
+    }
 
     if (!username) return null
 
@@ -164,11 +175,11 @@ const Room = () => {
             <div className="game-layout">
                 <div className="action-buttons">
                     <div className="collect-buttons">
-                        <CollectButton text="All" type="collect"/>
-                        <CollectButton text="Yours" type="collect"/>
+                        <CollectButton text="All" type="collect" onClick={handleCollectAll}/>
+                        <CollectButton text="Yours" type="collect" onClick={handleCollectYours}/>
                     </div>
                     <div className="collect-buttons leave"></div>
-                        <CollectButton text="Leave Room" type="leave"/>
+                        <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
                 </div>
 
                 {/*<div className="chat-section">*/}
