@@ -1,5 +1,5 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {redirect, useLocation, useNavigate} from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button.jsx";
 
 
@@ -16,7 +16,7 @@ const JoinRoom = () => {
 
     return (
         <div className="container">
-            <h1 className="center">Join Room</h1>
+            <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" style={{ display: 'block', margin: "0 auto", cursor: "pointer" }} onClick={() => navigate("/")} />
 
             <div className="section">
                 <h2>Join Existing Room</h2>

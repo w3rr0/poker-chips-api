@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import Button from "./Button.jsx";
 
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
 
     return (
         <div className="container">
-            <h1 className="center">Poker Rooms</h1>
+            <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" style={{ display: 'block', margin: "0 auto" }} />
 
             <div className="section">
                 <h2 className="center">Enter your username</h2>

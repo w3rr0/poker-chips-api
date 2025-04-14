@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import Button from "./Button.jsx";
 
@@ -34,7 +34,7 @@ const CreateRoom = () => {
 
     return (
         <div className="container">
-            <h1 className="center">Create Room</h1>
+            <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" style={{ display: 'block', margin: "0 auto", cursor: "pointer" }} onClick={() => navigate("/")} />
 
             <div className="section">
                 <h2>Create New Room</h2>
