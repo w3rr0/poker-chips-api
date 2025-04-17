@@ -29,6 +29,7 @@ const Home = () => {
                             onChange={(e) => setUsername(e.target.value.slice(0, 15))}
                         />
                         <label htmlFor="Username" className="form__label">Username</label>
+                        <label className="username-warning">Wrong username!!!</label>
                     </div>
                 </div>
                 <div className="button-container">
