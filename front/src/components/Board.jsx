@@ -32,16 +32,16 @@ const Board = ({ players, playerId, handlePutToken, puttedAmount, yourPutted, ha
 }
 
 const StyledWrapper = styled.div`
-    height: 100vh;
-    height: 100dvh;         // Nadpisuje wartośc vh tylko jeśli przeglądakrka wspiera Dynamic Viewport Height (rozwiązanie dla starszych przeglądarek)
+    height: calc(var(--vh, 1vh) * 100);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
+    overflow: hidden;
 
     .container {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 20px);
         background-color: #8B4513;
         border-radius: 20px;
         position: relative;

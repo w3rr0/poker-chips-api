@@ -1,9 +1,21 @@
-body {
+:root {
+  --vh: 1vh;
+}
+
+@supports (height: 100dvh) {
+    :root {
+        --vh: 1dvh;
+    }
+}
+
+html, body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 20px;
   background-color: #1a1a1a;
   color: white;
+  overflow: hidden;
+  height: 100%;
 }
 
 .container {
