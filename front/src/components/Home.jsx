@@ -7,6 +7,12 @@ const Home = () => {
     const [username, setUsername] = useState('')
     const playerId = useRef(localStorage.getItem('playerId') || crypto.randomUUID()).current
 
+    const checkUsername = () => {
+        if (username.length > 0 && username.length <= 15) {
+            return true
+        }
+    }
+
     return (
         <div className="container">
             <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" style={{ display: 'block', margin: "0 auto" }} />
@@ -26,8 +32,12 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="button-container">
-                    <Button caption={"Create room"} onClick={() => {navigate('/create-room', { state: { username, playerId } })}}></Button>
-                    <Button caption={"Join room"} onClick={() => {navigate('/join-room', { state: { username, playerId } })}}></Button>
+                    <Button caption={"Create room"} onClick={() => {if (checkUsername()) {
+                        navigate('/create-room', {state: {username, playerId}})
+                    }}}></Button>
+                    <Button caption={"Join room"} onClick={() => {if (checkUsername()) {
+                        navigate('/join-room', {state: {username, playerId}})
+                    }}}></Button>
                 </div>
             </div>
         </div>
