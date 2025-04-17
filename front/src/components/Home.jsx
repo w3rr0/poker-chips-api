@@ -12,11 +12,12 @@ const Home = () => {
     const checkUsername = () => {
         if (trim(username).length === 0) {
             setDisplayWarning("You must enter a username")
-            return false
         } else if (trim(username).length > 15) {
             setDisplayWarning("Username must be less than 15 characters")
-            return false
+        } else {
+            return true
         }
+        return false
     }
 
     return (
