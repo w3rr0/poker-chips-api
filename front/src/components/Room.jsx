@@ -97,8 +97,8 @@ const Room = () => {
     }, [pin, username, playerId, navigate])
 
     useEffect(() => {
-        console.log("Players updated:", players)
-    }, [players]);
+      setPlayersLimit(maxPlayers);
+    }, [maxPlayers]);
 
     const sendWhenOpen = (data) => {
         if (ws.current?.readyState === WebSocket.OPEN) {

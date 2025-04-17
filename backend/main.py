@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS
+from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -23,12 +23,12 @@ async def root():
 
 # Tworzy nowy pokój i zwraca do niego pin
 @app.post("/create_room")
-async def create_room(max_players: int = 4):
+async def create_room(request_data: RoomCreateRequest):
     async with ROOMS_LOCK:
         if len(ROOMS) >= MAX_ROOMS:
             return {"error": "Server room limit reached"}
         new_pin = generate_unique_pin()
-        room = Room(pin=new_pin, max_players=max_players, putted=0)
+        room = Room(pin=new_pin, max_players=request_data.max_players, putted=0)
         ROOMS[new_pin] = room
         print(f"Created new room {new_pin}")
     return {"PIN": room.pin}

@@ -4,6 +4,9 @@ from pydantic import BaseModel, PrivateAttr
 from starlette.websockets import WebSocket
 import asyncio
 
+class RoomCreateRequest(BaseModel):
+    max_players: int
+
 class AuthData(BaseModel):
     player_id: str
     username: str
