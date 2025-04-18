@@ -31,6 +31,7 @@ const StyledWrapper = styled.div`
     gap: 20px 50px;
     @media (max-width: 500px) {
         gap: 15px 15px;
+        margin-top: 20px;
     }
 `;
 
