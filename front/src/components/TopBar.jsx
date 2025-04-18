@@ -22,7 +22,7 @@ const TopBar = ({ pin, players_amount, max_players }) => {
                 <img className="logo" src="/pokerchips.png" alt="POKERCHIP$" />
             </div>
             <div className="roomInfo">
-                <div style={{ paddingBottom: "5px" }}>
+                <div className="pin-container" >
                     <label>PIN: </label>
                     <label className="boldText">{pin}</label>
                 </div>
@@ -56,6 +56,9 @@ const StyledWrapper = styled.div`
         text-align: right;
         font-size: 18px;
         gap: 5px;
+        @media (max-width: 500px) {
+            font-size: 15px;
+        }
     }
     .boldText {
         font-weight: bolder;
@@ -75,6 +78,10 @@ const StyledWrapper = styled.div`
             width: 16px;
             height: 16px;
         }
+    }
+    
+    .pin-container {
+        padding-bottom: 5px;
     }
 `
 
