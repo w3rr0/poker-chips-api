@@ -16,7 +16,7 @@ html, body {
 
 @media (max-width: 500px) {
   html, body {
-    padding: 10px;
+    padding: 0 10px 10px;
   }
 }
 

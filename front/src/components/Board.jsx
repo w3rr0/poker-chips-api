@@ -49,6 +49,12 @@ const StyledWrapper = styled.div`
         display: flex;
         flex-direction: column;
     }
+    
+    @media (max-width: 500px) {
+        .container {
+            height: 100%
+        }
+    }
 
     .container::before {
         content: '';
