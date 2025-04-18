@@ -6,11 +6,11 @@ const TopBar = ({ pin, players_amount, max_players }) => {
         const icons = []
 
         for (let i = players_amount; i < max_players; i++) {
-            icons.push(<img key={`occupied-${i}`} src="/checkbox-img/absent.png" alt="player present" width="24px" height="24px"/>)
+            icons.push(<img className="user-check" key={`occupied-${i}`} src="/checkbox-img/absent.png" alt="player present" />)
         }
 
         for (let i = 0; i < players_amount; i++) {
-            icons.push(<img key={`occupied-${i}`} src="/checkbox-img/present.png" alt="player present" width="24px" height="24px"/>);
+            icons.push(<img className="user-check" key={`occupied-${i}`} src="/checkbox-img/present.png" alt="player present" />);
         }
 
         return icons
@@ -65,6 +65,15 @@ const StyledWrapper = styled.div`
         width: 300px;
         @media (max-width: 500px) {
             width: 200px;
+        }
+    }
+    
+    .user-check {
+        width: 24px;
+        height: 24px;
+        @media (max-width: 500px) {
+            width: 16px;
+            height: 16px;
         }
     }
 `
