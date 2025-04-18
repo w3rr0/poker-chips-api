@@ -240,6 +240,10 @@ button:hover {
 .player-icon {
   height: 80px;
   width: 80px;
+  @media (max-width: 600px) {
+    width: 60px;
+    height: 60px;
+  }
   @media (max-width: 500px) {
     width: 44px;
     height: 44px;
@@ -268,6 +272,10 @@ button:hover {
 .chips-stack {
   width: 40px;
   height: 40px;
+  @media (max-width: 600px) {
+    width: 36px;
+    height: 36px;
+  }
   @media (max-width: 500px) {
     width: 32px;
     height: 32px;

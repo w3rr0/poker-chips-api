@@ -56,6 +56,9 @@ const StyledWrapper = styled.div`
         text-align: right;
         font-size: 18px;
         gap: 5px;
+        @media (max-width: 600px) {
+            font-size: 17px;
+        }
         @media (max-width: 500px) {
             font-size: 15px;
         }
@@ -66,6 +69,9 @@ const StyledWrapper = styled.div`
     
     .logo {
         width: 300px;
+        @media (max-width: 600px) {
+            width: 250px;
+        }
         @media (max-width: 500px) {
             width: 200px;
         }
@@ -74,6 +80,10 @@ const StyledWrapper = styled.div`
     .user-check {
         width: 24px;
         height: 24px;
+        @media (max-width: 600px) {
+            width: 20px;
+            height: 20px;
+        }
         @media (max-width: 500px) {
             width: 16px;
             height: 16px;

@@ -17,6 +17,10 @@ const StyledWrapper = styled.div`
     text-align: center;
     text-wrap: wrap;
     gap: 5px;
+    @media (max-width: 600px) {
+        font-size: 14px;
+        gap: 4px;
+    }
     @media (max-width: 500px) {
         font-size: 12px;
         gap: 3px;

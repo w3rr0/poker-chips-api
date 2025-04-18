@@ -30,6 +30,9 @@ const StyledWrapper = styled.div`
     margin-top: 30px;
     padding: 0 20px;
     gap: 20px 50px;
+    @media (max-width: 600px) {
+        gap: 15px 30px;
+    }
     @media (max-width: 500px) {
         gap: 10px 15px;
         margin-top: 20px;
