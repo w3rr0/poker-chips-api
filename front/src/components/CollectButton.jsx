@@ -57,19 +57,24 @@ const StyledWrapper = styled.div`
       3px 3px 0 2px var(--stone-50),
       3.5px 3.5px 0 2px var(--stone-50),
       4px 4px 0 2px var(--stone-50);
-
-    &:hover {
-      transform: translate(0, 0);
-      box-shadow: 0 0 0 2px var(--stone-50);
+      
+    @media (hover: hover) {
+        &:hover {
+            transform: translate(0, 0);
+            box-shadow: 0 0 0 2px var(--stone-50);
+        }
     }
 
-    &:active,
-    &:focus-visible {
-      outline-color: var(--yellow-400);
+
+    &:active {
+        transform: translate(0, 0);
+        box-shadow: 0 0 0 2px var(--stone-50);
+        outline-color: var(--yellow-400);
     }
 
     &:focus-visible {
       outline-style: dashed;
+      outline-color: var(--yellow-400);
     }
 
     & > div {
