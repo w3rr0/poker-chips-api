@@ -19,7 +19,7 @@ const TopBar = ({ pin, players_amount, max_players }) => {
     return (
         <StyledWrapper>
             <div className="appName">
-                <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" />
+                <img className="logo" src="/pokerchips.png" alt="POKERCHIP$" />
             </div>
             <div className="roomInfo">
                 <div style={{ paddingBottom: "5px" }}>
@@ -59,6 +59,13 @@ const StyledWrapper = styled.div`
     }
     .boldText {
         font-weight: bolder;
+    }
+    
+    .logo {
+        width: 300px;
+        @media (max-width: 500px) {
+            width: 200px;
+        }
     }
 `
 
