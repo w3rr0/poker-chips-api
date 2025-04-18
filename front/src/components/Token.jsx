@@ -24,6 +24,7 @@ const StyleWrapper = styled.button`
     background: transparent;
     cursor: default;
     padding: 10px 15px;
+    user-select: none;
     @media (max-width: 500px) {
         padding: 3px 5px;
     }
