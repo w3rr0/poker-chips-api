@@ -29,6 +29,9 @@ const StyledWrapper = styled.div`
     z-index: 1;
     margin-top: 30px;
     gap: 20px 50px;
+    @media (max-width: 500px) {
+        gap: 15px 30px;
+    }
 `;
 
 export default EnemyGroup
