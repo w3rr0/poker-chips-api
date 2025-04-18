@@ -13,10 +13,17 @@ const Button = ({ caption, onClick }) => {
 }
 
 const StyledWrapper = styled.div`
+    
+  @media (max-width: 500px) {
+      button {
+          font-size: 14px !important;
+      }
+  }
+    
   button {
     width: 10em;
     position: relative;
-    height: 3.8em;
+    height: 4em;
     border: 3px ridge #149CEA;
     outline: none;
     background-color: transparent;
