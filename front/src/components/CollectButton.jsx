@@ -58,6 +58,21 @@ const StyledWrapper = styled.div`
       3.5px 3.5px 0 2px var(--stone-50),
       4px 4px 0 2px var(--stone-50);
       
+    @media (max-width: 500px) {
+        font-size: 0.7rem;
+        padding: 0;
+        width: 70px;
+        height: 40px;
+        & > div {
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        & > div > span { padding: 0.25rem 0.8rem; }
+    }
+      
     @media (hover: hover) {
         &:hover {
             transform: translate(0, 0);
