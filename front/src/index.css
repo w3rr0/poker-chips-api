@@ -259,3 +259,10 @@ button:hover {
     align-items: flex-start;
   }
 }
+
+.current {
+  @media (max-width: 500px) {
+    height: 44px;
+    width: 44px;
+  }
+}
