@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,6 +33,19 @@ async def create_room(request_data: RoomCreateRequest):
         print(f"Created new room {new_pin}")
     return {"PIN": room.pin}
 
+# Sprawdza dostępność pokoju
+@app.get("/check_room/{pin}")
+async def check_room(pin: int):
+    async with ROOMS_LOCK:
+        if pin in ROOMS:
+            room = ROOMS[pin]
+            if room.is_full():
+                return {"allow": False, "room_status": "Room is full"}
+            else:
+                return {"allow": True, "room_status": "Ready to join"}
+        else:
+            return {"allow": False, "room_status": "Room not found"}
+
 # Dołącza gracza do pokoju
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
@@ -45,7 +58,14 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         print("🕒 Waiting for auth data...")
         raw_data = await websocket.receive_json()
         print(f"Received data: {raw_data}")
-        auth_data = AuthData(**raw_data)
+        try:
+            auth_data = AuthData(**raw_data)
+        except Exception as validation_error:
+            print(f"Auth Data Validation Error: {validation_error}")
+            await websocket.send_json({"error": "Invalid auth data"})
+            await websocket.close(code=4005)
+            return
+
         print(f"Auth Data: {auth_data}")
 
         player_id = auth_data.player_id
