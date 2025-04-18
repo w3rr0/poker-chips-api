@@ -14,6 +14,12 @@ html, body {
   height: 100%;
 }
 
+@media (max-width: 500px) {
+  html, body {
+    padding: 10px;
+  }
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -68,6 +74,12 @@ button:hover {
   display: flex;
   flex-direction: row;
   gap: 20px;
+}
+
+@media (max-width: 500px) {
+  .action-buttons {
+    padding: 15px;
+  }
 }
 
 .player-card {
