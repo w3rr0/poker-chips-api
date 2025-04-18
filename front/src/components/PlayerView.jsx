@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import Chips from "./Chips.jsx";
+import { useMediaQuery } from 'react-responsive';
 
 const PlayerView = ({ amount, handlePutToken }) => {
+    const isMobile = useMediaQuery({ maxWidth: 500 });
+
     return (
         <StyledWrapper>
             <div className="player-view">
                 <div className="current-player">
                     <img className="player-icon" src="/gambler.png" alt="Your icon" height="80px" width="80px" style={{ paddingRight: "5px" }} />
                     <div className="player-info">
-                        <label>You</label>
+                        {!isMobile ? <label>You</label> : null}
                         <label>${amount}</label>
                     </div>
                 </div>
