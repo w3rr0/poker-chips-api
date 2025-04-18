@@ -33,7 +33,7 @@ const OnBoard = ({ puttedAmount, yourPutted, onCenterChange }) => {
 
     return (
         <StyledWrapper>
-            <img ref={imgRef} src="/chips-stack.png" alt="token stack" width="40px" height="40px"/>
+            <img className="chips-stack" ref={imgRef} src="/chips-stack.png" alt="token stack" />
             <div className="bet-container">
                 <label style={{fontWeight: "bold"}}>${puttedAmount}</label>
                 <label>Your: ${yourPutted}</label>
@@ -55,6 +55,9 @@ const StyledWrapper = styled.div`
     .bet-container {
         display: flex;
         flex-direction: column;
+        @media (max-width: 500px) {
+            font-size: 14px;
+        }
     }
 `;
 
