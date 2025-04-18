@@ -25,6 +25,10 @@ const StyledWrapper = styled.div`
     margin-top: auto;
     padding: 30px;
     width: calc(100% - 60px);
+    @media (max-width: 500px) {
+        padding: 20px;
+        width: calc(100% - 40px);
+    }
     
     .player-view {
         display: flex;
