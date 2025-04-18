@@ -25,7 +25,7 @@ const StyleWrapper = styled.button`
     cursor: default;
     padding: 10px 15px;
     @media (max-width: 500px) {
-        padding: 5px 10px;
+        padding: 3px 5px;
     }
     
     &:hover {

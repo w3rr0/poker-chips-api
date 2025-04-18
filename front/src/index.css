@@ -249,3 +249,13 @@ button:hover {
     width: 34px;
   }
 }
+
+.current-player {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
