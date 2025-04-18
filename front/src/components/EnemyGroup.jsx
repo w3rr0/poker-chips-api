@@ -28,9 +28,10 @@ const StyledWrapper = styled.div`
     position: relative;
     z-index: 1;
     margin-top: 30px;
+    padding: 0 20px;
     gap: 20px 50px;
     @media (max-width: 500px) {
-        gap: 15px 15px;
+        gap: 10px 15px;
         margin-top: 20px;
     }
 `;
