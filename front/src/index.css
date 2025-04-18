@@ -198,7 +198,20 @@ button:hover {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 40px);
-    height: calc(100dvh - 40px);    /*Nadpisuje wartośc vh tylko jeśli przeglądakrka wspiera Dynamic Viewport Height (rozwiązanie dla starszych przeglądarek) */
+    @supports (height: 100dvh) {
+      height: calc(100dvh - 40px);
+    }
+}
+
+@media (max-width: 500px) {
+  .room-container {
+    height: calc(100vh - 20px);
+  }
+  @supports (height: 100dvh) {
+    .room-container {
+      height: calc(100dvh - 20px);
+    }
+  }
 }
 
 .collect-buttons {
