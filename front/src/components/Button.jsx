@@ -16,7 +16,7 @@ const StyledWrapper = styled.div`
   button {
     width: 10em;
     position: relative;
-    height: 3.6em;
+    height: 3.8em;
     border: 3px ridge #149CEA;
     outline: none;
     background-color: transparent;
@@ -26,6 +26,7 @@ const StyledWrapper = styled.div`
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
   button::after {
@@ -36,7 +37,7 @@ const StyledWrapper = styled.div`
     width: 95%;
     height: 40%;
     background-color: #2a2a2a;
-    transition: 0.5s;
+    transition: transform 0.5s;
     transform-origin: center;
   }
 
@@ -52,12 +53,22 @@ const StyledWrapper = styled.div`
     transition: 0.5s;
   }
 
-  button:hover::before, button:hover::after {
-    transform: scale(0)
-  }
+  @media (hover: hover) {
+      button:hover::before,
+      button:hover::after {
+          transform: scale(0);
+      }
 
-  button:hover {
-    box-shadow: inset 0 0 25px #1479EA;
+      button:hover {
+          box-shadow: inset 0 0 25px #1479EA;
+      }
+  }  
+
+  button:active {
+      box-shadow: inset 0 0 25px #1479EA;
+       &::before, &::after {
+           transform: scale(0);
+       }
   }`;
 
 export default Button;
