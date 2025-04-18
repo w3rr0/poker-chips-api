@@ -9,7 +9,7 @@ const PlayerView = ({ amount, handlePutToken }) => {
         <StyledWrapper>
             <div className="player-view">
                 <div className="current-player">
-                    <img className="player-icon current" src="/gambler.png" alt="Your icon" height="80px" width="80px" style={{ paddingRight: "5px" }} />
+                    <img className="player-icon" src="/gambler.png" alt="Your icon" height="80px" width="80px" style={{ paddingRight: "5px" }} />
                     <div className="player-info">
                         {!isMobile ? <label>You</label> : null}
                         <label>${amount}</label>
