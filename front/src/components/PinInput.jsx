@@ -87,7 +87,6 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 25px;
   }
   .password input {
     width: 30px;
