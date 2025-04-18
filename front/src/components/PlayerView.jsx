@@ -5,7 +5,7 @@ const PlayerView = ({ amount, handlePutToken }) => {
     return (
         <StyledWrapper>
             <div className="player-view">
-                <img src="/gambler.png" alt="Your icon" height="80px" width="80px" style={{ paddingRight: "5px" }} />
+                <img className="player-icon" src="/gambler.png" alt="Your icon" height="80px" width="80px" style={{ paddingRight: "5px" }} />
                 <div className="player-info">
                     <label>You</label>
                     <label>${amount}</label>
@@ -39,6 +39,10 @@ const StyledWrapper = styled.div`
         gap: 15px;
         padding-top: 15px;
         font-weight: bold;
+        @media (max-width: 500px) {
+            gap: 5px;
+            font-size: 14px;
+        }
     }
 `;
 

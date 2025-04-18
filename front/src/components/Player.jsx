@@ -5,7 +5,7 @@ const Player = ({ player }) => {
     return (
         <StyledWrapper>
             {player.username}
-            <img src="/gambler.png" alt="Player icon" height="80px" width="80px" />
+            <img className="player-icon" src="/gambler.png" alt="Player icon" />
             ${player.amount}
         </StyledWrapper>
     )
