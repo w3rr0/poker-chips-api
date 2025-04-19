@@ -281,3 +281,16 @@ button:hover {
     height: 32px;
   }
 }
+
+.board-and-chat {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 100px);
+  width: 100%;
+  @media (max-width: 600px) {
+    height: calc(100% - 90px);
+  }
+  @media (max-width: 500px) {
+    height: calc(100% - 70px)
+  }
+}
