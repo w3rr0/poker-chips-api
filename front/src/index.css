@@ -103,6 +103,8 @@ button:hover {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .messages {
@@ -287,6 +289,7 @@ button:hover {
   flex-direction: row;
   height: calc(100% - 100px);
   width: 100%;
+  gap: 20px;
   @media (max-width: 600px) {
     height: calc(100% - 90px);
   }

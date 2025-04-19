@@ -22,7 +22,7 @@ const Room = () => {
     const [center, setCenter] = useState({ x: 0, y: 0 });
     const [animatedToken, setAnimatedToken] = useState(null);
     const [playersLimit, setPlayersLimit] = useState(maxPlayers);
-    const isLargeScreen = useMediaQuery({ minWidth: 970 });
+    const isLargeScreen = useMediaQuery({ minWidth: 980 });
 
     useEffect(() => {
         if (!username || !playerId) {
