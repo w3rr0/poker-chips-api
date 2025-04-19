@@ -189,54 +189,58 @@ const Room = () => {
         <div className="container room-container">
             <TopBar pin={pin} players_amount={players.length} max_players={playersLimit}/>
 
-            <div className="game-layout">
-                <div className="action-buttons">
-                    <div className="collect-buttons">
-                        <CollectButton text="All" type="collect" onClick={handleCollectAll}/>
-                        <CollectButton text="Yours" type="collect" onClick={handleCollectYours}/>
-                    </div>
-                    <div className="collect-buttons leave"></div>
-                        <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
-                </div>
+            <div className="board-and-chat" >
+                <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                    <div className="game-layout">
+                        <div className="action-buttons">
+                            <div className="collect-buttons">
+                                <CollectButton text="All" type="collect" onClick={handleCollectAll}/>
+                                <CollectButton text="Yours" type="collect" onClick={handleCollectYours}/>
+                            </div>
+                            <div className="collect-buttons leave"></div>
+                            <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
+                        </div>
 
-                {/*<div className="chat-section">*/}
-                {/*    <div className="messages">*/}
-                {/*        {messages.map((msg, i) => (*/}
-                {/*            <div key={i} className="message">*/}
-                {/*                <strong>{msg.sender}:</strong> {msg.content}*/}
-                {/*            </div>*/}
-                {/*        ))}*/}
-                {/*    </div>*/}
-                {/*    <div className="message-input">*/}
-                {/*        <input*/}
-                {/*            value={message}*/}
-                {/*            onChange={(e) => setMessage(e.target.value)}*/}
-                {/*            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}*/}
-                {/*            placeholder="Type a message..."*/}
-                {/*        />*/}
-                {/*        <button onClick={sendMessage}>Send</button>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                        {/*<div className="chat-section">*/}
+                        {/*    <div className="messages">*/}
+                        {/*        {messages.map((msg, i) => (*/}
+                        {/*            <div key={i} className="message">*/}
+                        {/*                <strong>{msg.sender}:</strong> {msg.content}*/}
+                        {/*            </div>*/}
+                        {/*        ))}*/}
+                        {/*    </div>*/}
+                        {/*    <div className="message-input">*/}
+                        {/*        <input*/}
+                        {/*            value={message}*/}
+                        {/*            onChange={(e) => setMessage(e.target.value)}*/}
+                        {/*            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}*/}
+                        {/*            placeholder="Type a message..."*/}
+                        {/*        />*/}
+                        {/*        <button onClick={sendMessage}>Send</button>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                    </div>
+                    <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
+                    {animatedToken && (
+                        <animated.div
+                            style={{
+                                position: 'fixed',
+                                left: animationProps.x.to(x => `${x}px`),
+                                top: animationProps.y.to(y => `${y}px`),
+                                opacity: animationProps.opacity,
+                                pointerEvents: 'none',
+                                zIndex: 1000
+                            }}>
+                            <img
+                                src={`/tokens-img/${animatedToken.amount}.png`}
+                                alt="token"
+                                width="40px"
+                                height="40px"
+                            />
+                        </animated.div>
+                    )}
+                </div>
             </div>
-            <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
-            {animatedToken && (
-                <animated.div
-                    style={{
-                        position: 'fixed',
-                        left: animationProps.x.to(x => `${x}px`),
-                        top: animationProps.y.to(y => `${y}px`),
-                        opacity: animationProps.opacity,
-                        pointerEvents: 'none',
-                        zIndex: 1000
-                    }}>
-                    <img
-                        src={`/tokens-img/${animatedToken.amount}.png`}
-                        alt="token"
-                        width="40px"
-                        height="40px"
-                    />
-                </animated.div>
-            )}
         </div>
     )
 }
