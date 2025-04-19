@@ -68,7 +68,9 @@ const Room = () => {
                         setYourPutted(prev => prev + data.content)
                     }
                 } else if (data.type === 'claim_all') {
-                    setPlayers(Object.values(data.players))
+                    if (data.players) {
+                        setPlayers(Object.values(data.players))
+                    }
                     setPuttedAmount(0)
                     setYourPutted(0)
                 } else {
