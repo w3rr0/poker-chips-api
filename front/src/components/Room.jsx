@@ -5,6 +5,7 @@ import Board from "./Board.jsx";
 import { useSpring, animated } from '@react-spring/web';
 import TopBar from "./TopBar.jsx";
 import CollectButton from "./CollectButton.jsx";
+import {useMediaQuery} from "react-responsive";
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -21,6 +22,7 @@ const Room = () => {
     const [center, setCenter] = useState({ x: 0, y: 0 });
     const [animatedToken, setAnimatedToken] = useState(null);
     const [playersLimit, setPlayersLimit] = useState(maxPlayers);
+    const isLargeScreen = useMediaQuery({ minWidth: 970 });
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -111,16 +113,16 @@ const Room = () => {
         }
     };
 
-    // const sendMessage = () => {
-    //     if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
-    //         ws.current.send(JSON.stringify({
-    //             type: 'message',
-    //             content: message.trim(),
-    //             sender: username
-    //         }))
-    //         setMessage('')
-    //     }
-    // }
+    const sendMessage = () => {
+        if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.send(JSON.stringify({
+                type: 'message',
+                content: message.trim(),
+                sender: username
+            }))
+            setMessage('')
+        }
+    }
 
     const animationProps = useSpring({
         from: {
@@ -200,25 +202,6 @@ const Room = () => {
                             <div className="collect-buttons leave"></div>
                             <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
                         </div>
-
-                        {/*<div className="chat-section">*/}
-                        {/*    <div className="messages">*/}
-                        {/*        {messages.map((msg, i) => (*/}
-                        {/*            <div key={i} className="message">*/}
-                        {/*                <strong>{msg.sender}:</strong> {msg.content}*/}
-                        {/*            </div>*/}
-                        {/*        ))}*/}
-                        {/*    </div>*/}
-                        {/*    <div className="message-input">*/}
-                        {/*        <input*/}
-                        {/*            value={message}*/}
-                        {/*            onChange={(e) => setMessage(e.target.value)}*/}
-                        {/*            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}*/}
-                        {/*            placeholder="Type a message..."*/}
-                        {/*        />*/}
-                        {/*        <button onClick={sendMessage}>Send</button>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
                     </div>
                     <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
                     {animatedToken && (
@@ -240,6 +223,24 @@ const Room = () => {
                         </animated.div>
                     )}
                 </div>
+                {isLargeScreen && (<div className="chat-section">
+                    <div className="messages">
+                        {messages.map((msg, i) => (
+                            <div key={i} className="message">
+                                <strong>{msg.sender}:</strong> {msg.content}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="message-input">
+                        <input
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                            placeholder="Type a message..."
+                        />
+                        <button onClick={sendMessage}>Send</button>
+                    </div>
+                </div>)}
             </div>
         </div>
     )
