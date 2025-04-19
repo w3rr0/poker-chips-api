@@ -193,7 +193,7 @@ const Room = () => {
 
             <div className="board-and-chat" >
                 <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                    <div className="game-layout">
+                    {!isLargeScreen && (<div className="game-layout">
                         <div className="action-buttons">
                             <div className="collect-buttons">
                                 <CollectButton text="All" type="collect" onClick={handleCollectAll}/>
@@ -202,7 +202,7 @@ const Room = () => {
                             <div className="collect-buttons leave"></div>
                             <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
                         </div>
-                    </div>
+                    </div>)}
                     <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
                     {animatedToken && (
                         <animated.div
@@ -223,22 +223,31 @@ const Room = () => {
                         </animated.div>
                     )}
                 </div>
-                {isLargeScreen && (<div className="chat-section">
-                    <div className="messages">
-                        {messages.map((msg, i) => (
-                            <div key={i} className="message">
-                                <strong>{msg.sender}:</strong> {msg.content}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="message-input">
-                        <input
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                            placeholder="Type a message..."
-                        />
-                        <button onClick={sendMessage}>Send</button>
+                {isLargeScreen && (
+                    <div className="side-layout">
+                        <div className="control-buttons">
+                            <CollectButton text="All" type="collect" onClick={handleCollectAll}/>
+                            <CollectButton text="Yours" type="collect" onClick={handleCollectYours}/>
+                            <div className="gap15" />
+                            <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
+                        </div>
+                        <div className="chat-section">
+                        <div className="messages">
+                            {messages.map((msg, i) => (
+                                <div key={i} className="message">
+                                    <strong>{msg.sender}:</strong> {msg.content}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="message-input">
+                            <input
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                                placeholder="Type a message..."
+                            />
+                            <button onClick={sendMessage}>Send</button>
+                        </div>
                     </div>
                 </div>)}
             </div>
