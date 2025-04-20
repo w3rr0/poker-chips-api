@@ -125,7 +125,7 @@ const Room = () => {
     const sendMessage = () => {
         if (message.trim() && ws.current?.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify({
-                type: 'message',
+                type: "message",
                 content: message.trim(),
                 sender: username,
                 senderId: playerId,
@@ -251,7 +251,7 @@ const Room = () => {
 
                                 return (
                                     <div key={i} className={`message ${isMyMessage ? 'my-message' : isSystemJoin ? 'system-join' : isSystemLeft ? 'system-left' : isSystemWin ? 'system-win' : ''}`} >
-                                        <strong>{(msg.senderId && msg.senderId === playerId) ? "You" : msg.sender || "Unknown"}:</strong>{" "}{msg.content}
+                                        <strong>{(msg.senderId && msg.senderId === playerId) ? "You" : msg.sender || ""}{!isSystemLeft && !isSystemJoin && !isSystemWin && ": "}</strong>{msg.content}
                                     </div>
                                 )
                             })}

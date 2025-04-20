@@ -65,12 +65,18 @@ class Room(BaseModel):
             })
 
     async def claim_all(self, player_id: str) -> None:
-        self.players[player_id].amount += self.putted
+        win: int = self.putted
+        self.players[player_id].amount += win
         self.putted = 0
         for player in self.players.values():
             await player.websocket.send_json({
                 "type": "claim_all",
                 "players": self.current_players(),
+            })
+            await player.websocket.send_json({
+                "type": "message",
+                "content": f"{self.players[player_id].username} collected {win}",
+                "senderId": "system-win"
             })
 
 ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju

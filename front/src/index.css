@@ -360,6 +360,19 @@ button:hover {
 
 .message.my-message {
   background-color: #9b9b9b;
-  margin-left: auto;
-  text-align: right;
+}
+
+.message.system-join {
+  background-color: #4CAF50;
+  font-weight: bold;
+}
+
+.message.system-left {
+  background-color: crimson;
+  font-weight: bold;
+}
+
+.message.system-win {
+  background-color: darkgoldenrod;
+  font-weight: bold;
 }
