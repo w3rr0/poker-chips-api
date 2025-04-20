@@ -111,6 +111,8 @@ button:hover {
   margin-bottom: 10px;
   height: 100%;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .messages {
@@ -119,6 +121,8 @@ button:hover {
   margin-bottom: 10px;
   overflow-y: auto;
   height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .message {
@@ -126,11 +130,18 @@ button:hover {
   padding: 8px;
   background: #333;
   border-radius: 4px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .message-input {
   display: flex;
   gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .center {
@@ -319,6 +330,7 @@ button:hover {
   flex-direction: column;
   margin-top: 10px;
   height: calc(100% - 10px);
+  width: 270px;
 }
 
 .gap15 {
