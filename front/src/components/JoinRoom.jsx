@@ -42,7 +42,7 @@ const JoinRoom = () => {
 }
 
     return (
-        <div className="container">
+        <div className="menu-container">
             <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" style={{ display: 'block', margin: "0 auto", cursor: "pointer" }} onClick={() => navigate("/")} />
 
             <div className="section center">

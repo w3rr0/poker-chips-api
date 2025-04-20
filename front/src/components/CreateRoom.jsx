@@ -34,7 +34,7 @@ const CreateRoom = () => {
     }
 
     return (
-        <div className="container center">
+        <div className="menu-container center">
             <img src="/pokerchips.png" alt="POKERCHIP$" width="300px" style={{ display: 'block', margin: "0 auto", cursor: "pointer" }} onClick={() => navigate("/")} />
 
             <div className="section">
