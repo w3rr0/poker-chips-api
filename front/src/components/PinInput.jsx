@@ -73,6 +73,7 @@ const PinInput = ({ onChange }) => {
                             onChange={(e) => handleChange(index, e)}
                             onKeyDown={(e) => handleKeyDown(index, e)}
                             aria-label={`PIN digit ${index + 1}`}
+                            autoFocus={index === 0}
                         />
                 ))}
             </div>
