@@ -127,7 +127,8 @@ const Room = () => {
             ws.current.send(JSON.stringify({
                 type: 'message',
                 content: message.trim(),
-                sender: username
+                sender: username,
+                senderId: playerId,
             }))
             setMessage('')
         }
@@ -244,7 +245,7 @@ const Room = () => {
                         <div className="messages" ref={messagesContainerRef}>
                             {messages.map((msg, i) => (
                                 <div key={i} className="message">
-                                    <strong>{msg.sender || "System"}:</strong> {msg.content}
+                                    <strong>{(msg.senderId && msg.senderId === playerId) ? "You" : msg.sender || "Unknown"}:</strong>{" "}{msg.content}
                                 </div>
                             ))}
                         </div>
