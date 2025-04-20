@@ -97,7 +97,6 @@ button:hover {
 }
 
 .chat-section {
-  flex: 2;
   background: #2a2a2a;
   padding: 20px;
   border-radius: 8px;
@@ -106,10 +105,12 @@ button:hover {
   margin-top: 20px;
   margin-bottom: 10px;
   height: 100%;
+  overflow: hidden;
 }
 
 .messages {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 10px;
   overflow-y: auto;
   height: 100%;
@@ -306,7 +307,6 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  /*height: min(100%, 200px);*/
 }
 
 .side-layout {
