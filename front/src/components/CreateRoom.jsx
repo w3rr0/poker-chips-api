@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import Button from "./Button.jsx";
+import RadioButtons from "./RadioButtons.jsx";
 
 
 const CreateRoom = () => {
     const navigate = useNavigate()
-    const [maxPlayers, setMaxPlayers] = useState(4)
+    const [maxPlayers, setMaxPlayers] = useState(8)
     const playerId = useRef(localStorage.getItem('playerId') || crypto.randomUUID()).current
     const { state } = useLocation()
     const { username } = state || {}
@@ -38,15 +39,8 @@ const CreateRoom = () => {
 
             <div className="section">
                 <h2>Create New Room</h2>
-                <div className="input-group">
-                    <input
-                        type="number"
-                        min="2"
-                        max="8"
-                        value={maxPlayers}
-                        onChange={(e) => setMaxPlayers(Math.max(2, Math.min(8, e.target.valueAsNumber)))}
-                    />
-                </div>
+                <RadioButtons selectedValue={maxPlayers} onChange={setMaxPlayers} />
+                <div className="gap15"/>
                 <Button caption={"Create New Room"} onClick={createNewRoom}></Button>
             </div>
         </div>
