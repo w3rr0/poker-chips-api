@@ -23,6 +23,7 @@ const Room = () => {
     const [animatedToken, setAnimatedToken] = useState(null);
     const [playersLimit, setPlayersLimit] = useState(maxPlayers);
     const isLargeScreen = useMediaQuery({ minWidth: 980 });
+    const messagesContainerRef = useRef(null);
 
     useEffect(() => {
         if (!username || !playerId) {
@@ -98,11 +99,19 @@ const Room = () => {
                 ws.current.close()
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pin, username, playerId, navigate])
 
     useEffect(() => {
       setPlayersLimit(maxPlayers);
     }, [maxPlayers]);
+
+    useEffect(() => {
+        const container = messagesContainerRef.current;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    }, [messages]);
 
     const sendWhenOpen = (data) => {
         if (ws.current?.readyState === WebSocket.OPEN) {
@@ -199,8 +208,8 @@ const Room = () => {
                                 <CollectButton text="All" type="collect" onClick={handleCollectAll}/>
                                 <CollectButton text="Yours" type="collect" onClick={handleCollectYours}/>
                             </div>
-                            <div className="collect-buttons leave"></div>
-                            <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
+                            <div className="collect-buttons leave"/>
+                            <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom} />
                         </div>
                     </div>)}
                     <Board players={players} playerId={playerId} handlePutToken={putToken} puttedAmount={puttedAmount} yourPutted={yourPutted} handleCenterChange={handleCenterChange}></Board>
@@ -232,10 +241,10 @@ const Room = () => {
                             <CollectButton text="Leave Room" type="leave" onClick={handleLeaveRoom}/>
                         </div>
                         <div className="chat-section">
-                        <div className="messages">
+                        <div className="messages" ref={messagesContainerRef}>
                             {messages.map((msg, i) => (
                                 <div key={i} className="message">
-                                    <strong>{msg.sender}:</strong> {msg.content}
+                                    <strong>{msg.sender || "System"}:</strong> {msg.content}
                                 </div>
                             ))}
                         </div>
