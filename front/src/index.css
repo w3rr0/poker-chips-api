@@ -357,3 +357,9 @@ button:hover {
   margin: 0 auto;
   gap: 5px;
 }
+
+.message.my-message {
+  background-color: #9b9b9b;
+  margin-left: auto;
+  text-align: right;
+}

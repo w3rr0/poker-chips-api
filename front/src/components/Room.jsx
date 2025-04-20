@@ -243,11 +243,18 @@ const Room = () => {
                         </div>
                         <div className="chat-section">
                         <div className="messages" ref={messagesContainerRef}>
-                            {messages.map((msg, i) => (
-                                <div key={i} className="message">
-                                    <strong>{(msg.senderId && msg.senderId === playerId) ? "You" : msg.sender || "Unknown"}:</strong>{" "}{msg.content}
-                                </div>
-                            ))}
+                            {messages.map((msg, i) => {
+                                const isMyMessage = msg.senderId && msg.senderId === playerId;
+                                const isSystemJoin = msg.senderId && msg.senderId === "system-join";
+                                const isSystemLeft = msg.senderId && msg.senderId === "system-left";
+                                const isSystemWin = msg.senderId && msg.senderId === "system-win";
+
+                                return (
+                                    <div key={i} className={`message ${isMyMessage ? 'my-message' : isSystemJoin ? 'system-join' : isSystemLeft ? 'system-left' : isSystemWin ? 'system-win' : ''}`} >
+                                        <strong>{(msg.senderId && msg.senderId === playerId) ? "You" : msg.sender || "Unknown"}:</strong>{" "}{msg.content}
+                                    </div>
+                                )
+                            })}
                         </div>
                         <div className="message-input">
                             <input
