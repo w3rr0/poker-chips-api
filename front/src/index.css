@@ -319,3 +319,16 @@ button:hover {
 .gap15 {
   height: 15px;
 }
+
+.note {
+  margin-top: 5px;
+  padding-top: 5px;
+  font-size: 12px;
+  background-color: #444444;
+  width: 280px;
+  height: 20px;
+  text-align: center;
+  border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
+}

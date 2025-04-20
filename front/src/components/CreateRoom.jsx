@@ -40,6 +40,7 @@ const CreateRoom = () => {
             <div className="section">
                 <h2>Create New Room</h2>
                 <RadioButtons selectedValue={maxPlayers} onChange={setMaxPlayers} />
+                <div className="note">Note: if you don't need the limit just leave it at max</div>
                 <div className="gap15"/>
                 <Button caption={"Create New Room"} onClick={createNewRoom}></Button>
             </div>
