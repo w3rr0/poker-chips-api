@@ -337,3 +337,11 @@ button:hover {
   margin-left: auto;
   margin-right: auto;
 }
+
+.pin-input {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+  gap: 5px;
+}
