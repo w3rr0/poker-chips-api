@@ -6,7 +6,7 @@ import RadioButtons from "./RadioButtons.jsx";
 
 const CreateRoom = () => {
     const navigate = useNavigate()
-    const [maxPlayers, setMaxPlayers] = useState(8)
+    const [maxPlayers, setMaxPlayers] = useState(9)
     const playerId = useRef(localStorage.getItem('playerId') || crypto.randomUUID()).current
     const { state } = useLocation()
     const { username } = state || {}

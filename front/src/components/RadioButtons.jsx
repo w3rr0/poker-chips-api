@@ -11,12 +11,14 @@ const Radio = ({ selectedValue, onChange }) => {
   return (
     <StyledWrapper>
       <div className="radio-input">
-        <input checked={selectedValue === 3} onChange={handleChange} className="input green" type="radio" name="radio" value={3} />
-        <input checked={selectedValue === 4} onChange={handleChange} className="input green" type="radio" name="radio" value={4} />
-        <input checked={selectedValue === 5} onChange={handleChange} className="input yellow" type="radio" name="radio" value={5} />
-        <input checked={selectedValue === 6} onChange={handleChange} className="input yellow" type="radio" name="radio" value={6} />
-        <input checked={selectedValue === 7} onChange={handleChange} className="input red" type="radio" name="radio" value={7} />
-        <input checked={selectedValue === 8} onChange={handleChange} className="input red" type="radio" name="radio" value={8} />
+        <input checked={selectedValue === 2} onChange={handleChange} className="input green" type="radio" name="radio" value={2} />
+        <input checked={selectedValue === 3} onChange={handleChange} className="input yellow" type="radio" name="radio" value={3} />
+        <input checked={selectedValue === 4} onChange={handleChange} className="input orange" type="radio" name="radio" value={4} />
+        <input checked={selectedValue === 5} onChange={handleChange} className="input red" type="radio" name="radio" value={5} />
+        <input checked={selectedValue === 6} onChange={handleChange} className="input pink" type="radio" name="radio" value={6} />
+        <input checked={selectedValue === 7} onChange={handleChange} className="input purple" type="radio" name="radio" value={7} />
+        <input checked={selectedValue === 8} onChange={handleChange} className="input turquoise" type="radio" name="radio" value={8} />
+        <input checked={selectedValue === 9} onChange={handleChange} className="input blue" type="radio" name="radio" value={9} />
       </div>
     </StyledWrapper>
   );
@@ -57,6 +59,15 @@ const StyledWrapper = styled.div`
       hsla(50, 100%, 30%, 0) 70%
     );
   }
+    
+  .input.orange {
+    background-image: -webkit-radial-gradient(
+      hsla(30, 100%, 90%, 1) 0%,
+      hsla(30, 100%, 70%, 1) 15%,
+      hsla(30, 100%, 60%, 0.3) 28%,
+      hsla(30, 100%, 30%, 0) 70%
+    );
+  }
 
   .input.red {
     background-image: -webkit-radial-gradient(
@@ -64,6 +75,42 @@ const StyledWrapper = styled.div`
       hsla(0, 100%, 70%, 1) 15%,
       hsla(0, 100%, 60%, 0.3) 28%,
       hsla(0, 100%, 30%, 0) 70%
+    );
+  }
+    
+  .input.pink {
+    background-image: -webkit-radial-gradient(
+      hsla(330, 100%, 90%, 1) 0%,
+      hsla(330, 100%, 70%, 1) 15%,
+      hsla(330, 100%, 60%, 0.3) 28%,
+      hsla(330, 100%, 30%, 0) 70%
+    );
+  }
+    
+  .input.purple {
+    background-image: -webkit-radial-gradient(
+      hsla(270, 100%, 90%, 1) 0%,
+      hsla(270, 100%, 70%, 1) 15%,
+      hsla(270, 100%, 60%, 0.3) 28%,
+      hsla(270, 100%, 30%, 0) 70%
+    );
+  }
+    
+  .input.turquoise {
+    background-image: -webkit-radial-gradient(
+      hsla(180, 100%, 90%, 1) 0%,
+      hsla(180, 100%, 70%, 1) 15%,
+      hsla(180, 100%, 60%, 0.3) 28%,
+      hsla(180, 100%, 30%, 0) 70%
+    );
+  }
+    
+  .input.blue {
+    background-image: -webkit-radial-gradient(
+      hsla(210, 100%, 90%, 1) 0%,
+      hsla(210, 100%, 70%, 1) 15%,
+      hsla(210, 100%, 60%, 0.3) 28%,
+      hsla(210, 100%, 30%, 0) 70%
     );
   }
 
@@ -77,7 +124,6 @@ const StyledWrapper = styled.div`
     -webkit-transition: -webkit-transform 0.1s cubic-bezier(0, 0, 0.2, 1);
   }
 
-  /* The up/down direction logic */
 
   .input,
   .input:active {
