@@ -161,6 +161,12 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             print(f"Player {player_id} disconnected")
             room.remove_player(player_id)
             await room.update_players()
+            for p in list(room.players.values()):
+                await p.websocket.send_json({
+                    "type": "message",
+                    "content": f"{player.username} left room",
+                    "senderId": "system-left"
+                })
 
             # automatyczne usuwanie pokoi
             async with ROOMS_LOCK:
