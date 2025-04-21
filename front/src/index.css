@@ -363,12 +363,12 @@ button:hover {
 }
 
 .message.system-join {
-  background-color: #4CAF50;
+  background-color: darkgreen;
   font-weight: bold;
 }
 
 .message.system-left {
-  background-color: crimson;
+  background-color: darkred;
   font-weight: bold;
 }
 
