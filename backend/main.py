@@ -112,6 +112,12 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 print("trying to add player")
                 room.add_player(player)
                 await room.update_players()
+                for p in list(room.players.values()):
+                    await p.websocket.send_json({
+                        "type": "message",
+                        "content": f"{player.username} joined room",
+                        "senderId": "system-join"
+                    })
                 print("player added")
             except ValueError as e:
                 await websocket.send_json({"error": str(e)})
