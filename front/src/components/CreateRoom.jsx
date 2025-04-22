@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import Button from "./Button.jsx";
 import RadioButtons from "./RadioButtons.jsx";
+import { apiUrl } from "../../public/static.js";
 
 
 const CreateRoom = () => {
@@ -17,7 +18,7 @@ const CreateRoom = () => {
 
     const createNewRoom = async () => {
         try {
-            const response = await fetch('http://localhost:8000/create_room', {
+            const response = await fetch(`http://${apiUrl}/create_room`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ max_players: maxPlayers })

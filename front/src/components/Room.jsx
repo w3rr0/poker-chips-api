@@ -6,6 +6,7 @@ import { useSpring, animated } from '@react-spring/web';
 import TopBar from "./TopBar.jsx";
 import CollectButton from "./CollectButton.jsx";
 import {useMediaQuery} from "react-responsive";
+import { apiUrl } from "../../public/static.js";
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -32,7 +33,7 @@ const Room = () => {
         }
 
         const connectWebSocket = () => {
-            ws.current = new WebSocket(`ws://localhost:8000/ws/${pin}`)
+            ws.current = new WebSocket(`ws://${apiUrl}/ws/${pin}`)
 
             ws.current.onopen = () => {
                 console.log('WebSocket connected')

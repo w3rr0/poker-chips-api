@@ -2,7 +2,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button.jsx";
 import PinInput from "./PinInput.jsx";
-
+import {apiUrl} from "../../public/static.js";
 
 const JoinRoom = () => {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const JoinRoom = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/check_room/${pin}`);
+            const response = await fetch(`http://${apiUrl}/check_room/${pin}`);
 
             const data = await response.json();
 
