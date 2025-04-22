@@ -18,7 +18,7 @@ const CreateRoom = () => {
 
     const createNewRoom = async () => {
         try {
-            const response = await fetch(`http://${apiUrl}/create_room`, {
+            const response = await fetch(`${apiUrl}/create_room`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ max_players: maxPlayers })

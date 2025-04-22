@@ -23,7 +23,7 @@ const JoinRoom = () => {
         }
 
         try {
-            const response = await fetch(`http://${apiUrl}/check_room/${pin}`);
+            const response = await fetch(`${apiUrl}/check_room/${pin}`);
 
             const data = await response.json();
 
