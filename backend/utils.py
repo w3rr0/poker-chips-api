@@ -75,7 +75,7 @@ class Room(BaseModel):
             })
             await player.websocket.send_json({
                 "type": "message",
-                "content": f"{self.players[player_id].username} collected {win}",
+                "content": f"{self.players[player_id].username} collected ${win}",
                 "senderId": "system-win"
             })
 
