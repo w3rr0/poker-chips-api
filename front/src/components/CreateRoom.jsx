@@ -41,9 +41,13 @@ const CreateRoom = () => {
             <div className="section">
                 <h2>Create New Room</h2>
                 <div className="pin-input">
-                    <p>2</p>
+                    <div className="mobile">
+                        <p style={{ alignContent: "flex-start", marginLeft: "13px" }}>2</p>
+                        <p style={{ alignContent: "flex-end", marginRight: "13px" }}>9</p>
+                    </div>
+                    <p className="regular">2</p>
                     <RadioButtons selectedValue={maxPlayers} onChange={setMaxPlayers} />
-                    <p>9</p>
+                    <p className="regular">9</p>
                 </div>
                 <div className="note">Note: if you don't need the limit just leave it at max</div>
                 <div className="gap15"/>

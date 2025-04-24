@@ -356,6 +356,27 @@ button:hover {
   width: fit-content;
   margin: 0 auto;
   gap: 5px;
+  flex-direction: row;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+
+}
+
+.pin-input .regular {
+  @media (max-width: 500px) {
+    display: none;
+  }
+}
+
+.pin-input .mobile {
+  display: none;
+  @media (max-width: 500px) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    height: 30px;
+  }
 }
 
 .message.my-message {
