@@ -14,40 +14,42 @@ class AuthData(BaseModel):
     putted: int
 
 class Player(BaseModel):
-    id: str                     # unikalne id gracza
-    username: str               # nazwa gracza
-    amount: int                 # łączna wartość żetonów
-    putted: int             # żetony postawione przez gracza
+    id: str                     # Unique player ID
+    username: str               # Player username
+    amount: int                 # Total value
+    putted: int                 # Value on board
     websocket: WebSocket
 
     class Config:
-        arbitrary_types_allowed = True      # Pozwala na uzycie WebSocket w pytest
+        arbitrary_types_allowed = True      # Allows using websocket in pytest
 
 
 class Room(BaseModel):
-    pin: int
-    max_players: int
-    players: Dict[str, Player] = {}     # Unikatowy klucz id gracza
-    putted: int                         # Łączna wartość żetonów na stole
-    _lock: asyncio.Lock = PrivateAttr(default_factory=asyncio.Lock) # obiekty asyncio.Lock nie są serializowane (jawnie zdefiniowane), czyli muszą być prywatne aby przeszły walidacje pydantic
+    pin: int                            # Room pin
+    max_players: int                    # Maximum number of players at once
+    players: Dict[str, Player] = {}     # Dict of player ID and player object
+    putted: int                         # Total value on board
+    _lock: asyncio.Lock = PrivateAttr(default_factory=asyncio.Lock) # asyncio.Lock objects are not serializable (explicitly defined). They must be private to pass pedantic validations
 
     class Config:
-        arbitrary_types_allowed = True      # Polzwala na uzycie typow takich jak asyncio.Lock w pytest
+        arbitrary_types_allowed = True      # Allows types like asyncio.Lock to be used in pytest
 
-    # Sprawdza czy pokoj jest zapelniony
+    # Check weather room is full
     def is_full(self) -> bool:
         return len(self.players) >= self.max_players
 
-    # dodaje gracza do pokoju
+    # Add player to the room
     def add_player(self, player: Player) -> None:
         if player.id in self.players:
             raise ValueError("Player already in room")
         self.players[player.id] = player
 
+    # Remove player from the room
     def remove_player(self, player_id: str) -> None:
         if player_id in self.players:
             del self.players[player_id]
 
+    # Return the current players list
     def current_players(self) -> List[Dict]:
         current_players = [
             {"id": p.id, "username": p.username, "amount": p.amount}
@@ -55,6 +57,7 @@ class Room(BaseModel):
         ]
         return current_players
 
+    # Send an updated players list to all players
     async def update_players(self) -> None:
         for player in self.players.values():
             await player.websocket.send_json({
@@ -64,6 +67,7 @@ class Room(BaseModel):
                 "maxPlayers": self.max_players
             })
 
+    # Player claims all tokens on board
     async def claim_all(self, player_id: str) -> None:
         win: int = self.putted
         self.players[player_id].amount += win
@@ -79,11 +83,13 @@ class Room(BaseModel):
                 "senderId": "system-win"
             })
 
-ROOMS: Dict[int, Room] = {}     # Zawiera słownik par pin i obiekt pokoju
+ROOMS: Dict[int, Room] = {}     # Dict of a room pin and room object
 ROOMS_LOCK = asyncio.Lock()
 
+# Maximum number of rooms at once
 MAX_ROOMS: int = 100
 
+# Generate unique PIN
 def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
     for attempt in range(max_attempts):
         pin = uuid.uuid4().int % 1_000_000

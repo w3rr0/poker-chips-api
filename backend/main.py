@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Konfiguracja CORS
+# CORS Configuration
 app.add_middleware(
     CORSMiddleware,     # type: ignore
     allow_origins=["*"],
@@ -15,13 +15,15 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-# Zwraca status serwerow i ilosc obecnych pokoi
+
+# Check server status and current amount of room
 @app.get("/")
 async def root():
     print(f"ROOMS: {len(ROOMS)}")
     return {"status": True, "rooms": len(ROOMS)}
 
-# Tworzy nowy pokój i zwraca do niego pin
+
+# Create new room and returns pin
 @app.post("/create_room")
 async def create_room(request_data: RoomCreateRequest):
     async with ROOMS_LOCK:
@@ -33,7 +35,8 @@ async def create_room(request_data: RoomCreateRequest):
         print(f"Created new room {new_pin}")
     return {"PIN": room.pin}
 
-# Sprawdza dostępność pokoju
+
+# Check weather room is available
 @app.get("/check_room/{pin}")
 async def check_room(pin: int):
     async with ROOMS_LOCK:
@@ -46,7 +49,8 @@ async def check_room(pin: int):
         else:
             return {"allow": False, "room_status": "Room not found"}
 
-# Dołącza gracza do pokoju
+
+# Join player to the room
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
     print(f"🔵 Starting connection for room {pin}")
@@ -54,7 +58,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
     print(f"🟢 WebSocket accepted for room {pin}")
 
     try:
-        # Odbieranie ID gracza
+        # Receiving player data
         print("🕒 Waiting for auth data...")
         raw_data = await websocket.receive_json()
         print(f"Received data: {raw_data}")
@@ -77,16 +81,16 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             await websocket.close(code=4000)
             return
 
-        # Znajdowanie pokoju
+        # Finding room
         async with ROOMS_LOCK:
             room = ROOMS.get(pin, None)
-            print(f"znaleziono pokoj: {room}")
+            print(f"Room found: {room}")
             if not room:
                 await websocket.send_json({"error": "Room not found"})
                 await websocket.close(code=4001)
                 return
 
-        # Weryfikacja
+        # Verification
         async with room._lock:
             if player_id in room.players:
                 await websocket.send_json({"error": "Player already connected"})
@@ -98,8 +102,8 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 await websocket.close(code=4003)
                 return
 
-            print("rozpoczyna dodawanie gracza")
-            # dodawanie gracza
+            print("Joining player starts")
+            # Joining player
             player = Player(
                 id=player_id,
                 username=username,
@@ -133,7 +137,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         await websocket.close(code=4004)
         return
 
-    # główna pętla komunikacyjna
+    # Main communication loop
     try:
         while True:
             data = await websocket.receive_json()
@@ -148,7 +152,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 if data.get("type") == "claim_all":
                     await room.claim_all(data["playerId"])
 
-                for p in list(room.players.values()):   # Kopia listy zamiast oryginalnej dla bezpieczenstwa
+                for p in list(room.players.values()):
                     try:
                         await p.websocket.send_json(data)
                         print(f"Player {p.id}: {p}, sending {data}")
@@ -168,7 +172,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                     "senderId": "system-left"
                 })
 
-            # automatyczne usuwanie pokoi
+            # Delete room automatically
             async with ROOMS_LOCK:
                 if pin in ROOMS and len(ROOMS[pin].players) == 0:
                     del ROOMS[pin]
