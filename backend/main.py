@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,7 +7,7 @@ app = FastAPI()
 
 # Konfiguracja CORS
 app.add_middleware(
-    CORSMiddleware,
+    CORSMiddleware,     # type: ignore
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
