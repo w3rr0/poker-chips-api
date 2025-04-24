@@ -2,20 +2,27 @@ from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 import os
 
 app = FastAPI()
 
+# Load environment variables
+load_dotenv()
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+allow_credentials = os.getenv("ALLOW_CREDENTIALS", "False").lower() == "true"
+allowed_methods = os.getenv("ALLOWED_METHODS", "*").split(",")
+allowed_headers = os.getenv("ALLOWED_HEADERS", "*").split(",")
+expose_headers = os.getenv("EXPOSE_HEADERS", "*").split(",")
 
 # CORS Configuration
 app.add_middleware(
     CORSMiddleware,     # type: ignore
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
+    allow_origins=allowed_origins,
+    allow_credentials=allow_credentials,
+    allow_methods=allowed_methods,
+    allow_headers=allowed_headers,
+    expose_headers=expose_headers,
 )
 
 
