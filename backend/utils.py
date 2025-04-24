@@ -7,11 +7,13 @@ import asyncio
 class RoomCreateRequest(BaseModel):
     max_players: int
 
+
 class AuthData(BaseModel):
     player_id: str
     username: str
     amount: int
     putted: int
+
 
 class Player(BaseModel):
     id: str                     # Unique player ID
@@ -83,11 +85,13 @@ class Room(BaseModel):
                 "senderId": "system-win"
             })
 
+
 ROOMS: Dict[int, Room] = {}     # Dict of a room pin and room object
 ROOMS_LOCK = asyncio.Lock()
 
 # Maximum number of rooms at once
 MAX_ROOMS: int = 100
+
 
 # Generate unique PIN
 def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
