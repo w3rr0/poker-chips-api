@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button.jsx";
 import PinInput from "./PinInput.jsx";
 import {apiUrl} from "../../public/static.js";
+import GithubLink from "./GithubLink.jsx";
 
 const JoinRoom = () => {
     const navigate = useNavigate();
@@ -51,6 +52,7 @@ const JoinRoom = () => {
                 <label style={{ paddingBottom: "20px", display: "block", textAlign: "center" }} className="username-warning">{errorMessage}</label>
                 <Button caption={"Join Existing Room"} onClick={handleJoinRoom}></Button>
             </div>
+            <GithubLink/>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import {useNavigate} from "react-router-dom";
 import React, {useRef, useState} from "react";
 import Button from "./Button.jsx";
 import {trim} from "stylis";
+import GithubLink from "./GithubLink.jsx";
 
 const Home = () => {
     const navigate = useNavigate()
@@ -48,6 +49,7 @@ const Home = () => {
                     }}}></Button>
                 </div>
             </div>
+            <GithubLink/>
         </div>
     )
 }

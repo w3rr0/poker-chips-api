@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import Button from "./Button.jsx";
 import RadioButtons from "./RadioButtons.jsx";
 import { apiUrl } from "../../public/static.js";
+import GithubLink from "./GithubLink.jsx";
 
 
 const CreateRoom = () => {
@@ -53,6 +54,7 @@ const CreateRoom = () => {
                 <div className="gap15"/>
                 <Button caption={"Create New Room"} onClick={createNewRoom}></Button>
             </div>
+            <GithubLink/>
         </div>
     )
 }
