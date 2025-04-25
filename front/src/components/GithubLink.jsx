@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import {githubLink} from "../../public/static.js";
 
 const Button = () => {
+  const handleOnClick = () => {
+    window.open(githubLink, "_blank");
+  }
+
   return (
     <StyledWrapper>
-      <button className="button x">
+      <button className="button x" onClick={handleOnClick}>
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
           <g id="SVGRepo_bgCarrier" strokeWidth={0} />
           <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
