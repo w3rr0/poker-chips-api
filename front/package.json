@@ -14,7 +14,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-responsive": "^10.0.1",
-    "react-router-dom": "^7.4.0",
+    "react-router-dom": "^7.5.2",
     "styled-components": "^6.1.16",
     "stylis": "^4.3.6",
     "uuid": "^11.1.0"
