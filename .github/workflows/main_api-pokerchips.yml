@@ -38,6 +38,7 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
+          cd backend/requirements.txt .
           zip -r release.zip backend requirements.txt -x "backend/venv/*"
 
       - name: Upload artifact for deployment jobs
