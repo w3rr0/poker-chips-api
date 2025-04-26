@@ -24,11 +24,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-        working-directory: backend
+#      - name: Create and start virtual environment
+#        run: |
+#          python -m venv venv
+#          source venv/bin/activate
+#        working-directory: backend
       
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -37,7 +37,7 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip .
+        run: zip -r release.zip . -x "venv/*"
         working-directory: backend
 
       - name: Upload artifact for deployment jobs
@@ -49,9 +49,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+#    environment:
+#      name: 'Production'
+#      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
