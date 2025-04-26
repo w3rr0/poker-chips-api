@@ -38,7 +38,7 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
-          cd backedn
+          cd backend
           zip -r ../release.zip . -x "venv/*"
 
       - name: Upload artifact for deployment jobs
