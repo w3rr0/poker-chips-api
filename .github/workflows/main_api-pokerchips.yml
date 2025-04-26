@@ -37,14 +37,15 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip . -x "venv/*"
-        working-directory: backend
+        run: |
+          cd backedn
+          zip -r ../release.zip . -x "venv/*"
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: backend/release.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,8 +63,8 @@ jobs:
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip -d backend
+#      - name: Unzip artifact for deployment
+#        run: unzip release.zip -d backend
 
       
       - name: Login to Azure
