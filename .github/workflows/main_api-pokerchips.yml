@@ -79,5 +79,5 @@ jobs:
         with:
           app-name: 'api-pokerchips'
           # slot-name: 'Production'
-          package: .
+          package: backend
           
