@@ -24,11 +24,11 @@ jobs:
         with:
           python-version: '3.12'
 
-#      - name: Create and start virtual environment
-#        run: |
-#          python -m venv venv
-#          source venv/bin/activate
-#        working-directory: backend
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+        working-directory: backend
       
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -63,7 +63,7 @@ jobs:
           name: python-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d .
+        run: unzip release.zip -d backend
 
       
       - name: Login to Azure
@@ -79,5 +79,5 @@ jobs:
         with:
           app-name: 'api-pokerchips'
           # slot-name: 'Production'
-          package: backend
+          package: backend/release.zip
           
