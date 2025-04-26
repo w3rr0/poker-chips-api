@@ -78,6 +78,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'api-pokerchips'
-          slot-name: 'Production'
+          # slot-name: 'Production'
           package: .
           
