@@ -401,4 +401,16 @@ button:hover {
 .range-slider-input {
   padding: 0;
   border: 0;
+  width: 100%;
+}
+
+.range-slider-tooltip-inner {
+  position: relative;
+  top: -40px;
+}
+
+.slider-wrapper {
+  width: 270px;
+  margin: 0 auto;
+  padding-top: 20px;
 }

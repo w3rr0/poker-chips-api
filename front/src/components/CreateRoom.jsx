@@ -44,7 +44,7 @@ const CreateRoom = () => {
 
             <div className="section">
                 <h2>Create New Room</h2>
-                <div style={{ width: "270px", margin: "0 auto" }} >
+                <div className="slider-wrapper" >
                     <SliderInput value={startingAmount} onChange={setStartingAmount} />
                 </div>
                 <div className="pin-input">
