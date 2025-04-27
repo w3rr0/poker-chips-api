@@ -397,3 +397,8 @@ button:hover {
   background-color: darkgoldenrod;
   font-weight: bold;
 }
+
+.range-slider-input {
+  padding: 0;
+  border: 0;
+}

@@ -2,6 +2,9 @@ import React from "react";
 import { CRangeSlider } from "@coreui/react-pro"
 
 const SliderInput = ({ value, onChange }) => {
+    const customVars = {
+    }
+
     return <CRangeSlider
         value={value}
         labels={["0","2500" , "10000"]}
@@ -13,6 +16,7 @@ const SliderInput = ({ value, onChange }) => {
         tooltipsFormat={(val) => `$${val}`}
         track="fill"
         onChange={onChange}
+        style={customVars}
     />
 }
 
