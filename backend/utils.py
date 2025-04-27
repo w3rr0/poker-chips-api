@@ -24,6 +24,7 @@ class Player(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True      # Allows using websocket in pytest
+        exclude = {"websocket"}
 
 
 class Room(BaseModel):
@@ -51,9 +52,14 @@ class Room(BaseModel):
         self.players[player.id] = player
 
     # Remove player from the room
-    def remove_player(self, player_id: str) -> None:
+    async def remove_player(self, player_id: str) -> None:
         if player_id in self.players:
-            del self.players[player_id]
+            async with DISCONNECTED_LOCK:
+                if self.pin in LAST_DISCONNECTED:
+                    LAST_DISCONNECTED[self.pin][player_id] = self.players[player_id]
+                else:
+                    LAST_DISCONNECTED[self.pin] = {player_id: self.players[player_id]}
+                del self.players[player_id]
 
     # Return the current players list
     def current_players(self) -> List[Dict]:
@@ -92,11 +98,13 @@ class Room(BaseModel):
                 })
 
 
-ROOMS: Dict[int, Room] = {}     # Dict of a room pin and room object
+ROOMS: Dict[int, Room] = {}     # Dict containing a room pin and room object
 ROOMS_LOCK = asyncio.Lock()
 
-# Maximum number of rooms at once
-MAX_ROOMS: int = 100
+MAX_ROOMS: int = 100            # Maximum number of rooms at once
+
+LAST_DISCONNECTED: Dict[int, Dict[str, Player]] = {}   # Dict containing a room pin and Player object list
+DISCONNECTED_LOCK = asyncio.Lock()
 
 
 # Generate unique PIN
@@ -109,11 +117,9 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
 
 # Delete room after delay
 async def delete_room(pin: int) -> None:
-    await asyncio.sleep(10)
+    await asyncio.sleep(5)
 
     async with ROOMS_LOCK:
         if pin in ROOMS and ROOMS[pin].is_empty():
             del ROOMS[pin]
             print(f"Auto delete room {pin}")
-
-

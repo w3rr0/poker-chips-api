@@ -6,7 +6,7 @@ import { useSpring, animated } from '@react-spring/web';
 import TopBar from "./TopBar.jsx";
 import CollectButton from "./CollectButton.jsx";
 import {useMediaQuery} from "react-responsive";
-import {wsUrl} from "../../public/static.js";
+import {apiUrl, wsUrl} from "../../public/static.js";
 
 const Room = () => {
     const [players, setPlayers] = useState([])
@@ -15,10 +15,7 @@ const Room = () => {
     const ws = useRef(null)
     const { pin } = useParams()
     const { state } = useLocation()
-    const { username, playerId, maxPlayers, startingAmount } = state || {
-        username: localStorage.getItem("username"),
-        playerId: localStorage.getItem("playerId"),
-    }
+    const { username, playerId, maxPlayers, startingAmount } = state || {}
     const navigate = useNavigate()
     const messageQueue = useRef([]);
     const [puttedAmount, setPuttedAmount] = useState(0)
@@ -30,15 +27,7 @@ const Room = () => {
     const messagesContainerRef = useRef(null);
 
     useEffect(() => {
-        if (!username || !playerId) {
-            navigate("/")
-            return
-        }
-
-        localStorage.setItem("username", username);
-        localStorage.setItem("playerId", playerId);
-
-        const connectWebSocket = () => {
+        const connectWebSocket = (amount) => {
             ws.current = new WebSocket(`${wsUrl}/${pin}`)
 
             ws.current.onopen = () => {
@@ -51,7 +40,7 @@ const Room = () => {
                 sendWhenOpen({
                     player_id: playerId,
                     username: username,
-                    amount: startingAmount,
+                    amount: amount,
                     putted: puttedAmount,
                 });
             }
@@ -102,14 +91,36 @@ const Room = () => {
             }
         }
 
-        connectWebSocket()
+        const checkPlayer = async () => {
+            if (!username || !playerId) {
+                navigate("/")
+                return
+            }
 
-        return () => {
-            if (ws.current?.readyState === WebSocket.OPEN) {
-                ws.current.close()
+            try {
+                const response = await fetch(`${apiUrl}/check_player/${playerId}/${pin}`);
+
+                const data = await response.json();
+
+                if (response.ok && data.found) {
+                    const newAmount = data.player.amount;
+                    setYourPutted(data.player.putted);
+
+                    connectWebSocket(newAmount)
+                } else {
+                    connectWebSocket(startingAmount)
+                }
+            } catch (err) {
+                console.log("fetch error", err);
+            }
+
+            return () => {
+                if (ws.current?.readyState === WebSocket.OPEN) {
+                    ws.current.close()
+                }
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        checkPlayer();
     }, [pin, username, playerId, navigate])
 
     useEffect(() => {
