@@ -40,6 +40,10 @@ class Room(BaseModel):
     def is_full(self) -> bool:
         return len(self.players) >= self.max_players
 
+    # Check weather room is empty
+    def is_empty(self) -> bool:
+        return len(self.players) == 0
+
     # Add player to the room
     def add_player(self, player: Player) -> None:
         if player.id in self.players:
@@ -102,4 +106,14 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
         if pin >= 100_000 and pin not in ROOMS:
             return pin
     raise RuntimeError("No available PINs")
+
+# Delete room after delay
+async def delete_room(pin: int) -> None:
+    await asyncio.sleep(10)
+
+    async with ROOMS_LOCK:
+        if pin in ROOMS and ROOMS[pin].is_empty():
+            del ROOMS[pin]
+            print(f"Auto delete room {pin}")
+
 

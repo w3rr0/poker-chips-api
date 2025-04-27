@@ -15,7 +15,10 @@ const Room = () => {
     const ws = useRef(null)
     const { pin } = useParams()
     const { state } = useLocation()
-    const { username, playerId, maxPlayers, startingAmount } = state || {}
+    const { username, playerId, maxPlayers, startingAmount } = state || {
+        username: localStorage.getItem("username"),
+        playerId: localStorage.getItem("playerId"),
+    }
     const navigate = useNavigate()
     const messageQueue = useRef([]);
     const [puttedAmount, setPuttedAmount] = useState(0)
@@ -28,9 +31,12 @@ const Room = () => {
 
     useEffect(() => {
         if (!username || !playerId) {
-            navigate('/')
+            navigate("/")
             return
         }
+
+        localStorage.setItem("username", username);
+        localStorage.setItem("playerId", playerId);
 
         const connectWebSocket = () => {
             ws.current = new WebSocket(`${wsUrl}/${pin}`)
@@ -44,7 +50,7 @@ const Room = () => {
 
                 sendWhenOpen({
                     player_id: playerId,
-                    username,
+                    username: username,
                     amount: startingAmount,
                     putted: puttedAmount,
                 });
@@ -77,6 +83,9 @@ const Room = () => {
                     }
                     setPuttedAmount(0)
                     setYourPutted(0)
+                } else if (data.type === "reconnect") {
+                    setYourPutted(data.yourPutted)
+                    setPuttedAmount(data.puttedAmount)
                 } else {
                     console.log('Unhandled message:', data)
                 }

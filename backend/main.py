@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest
+from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest, delete_room
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from pydantic import ValidationError
+import asyncio
 
 app = FastAPI()
 
@@ -64,6 +66,15 @@ async def check_room(pin: int):
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
     print(f"🔵 Starting connection for room {pin}")
+
+    # Finding room
+    async with ROOMS_LOCK:
+        room = ROOMS.get(pin, None)
+        if not room:
+            print(f"Room not found: {pin}")
+            await websocket.close(code=4001)
+            return
+
     await websocket.accept()
     print(f"🟢 WebSocket accepted for room {pin}")
 
@@ -74,9 +85,9 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         print(f"Received data: {raw_data}")
         try:
             auth_data = AuthData(**raw_data)
-        except Exception as validation_error:
-            print(f"Auth Data Validation Error: {validation_error}")
-            await websocket.send_json({"error": "Invalid auth data"})
+        except ValidationError as e:
+            print(f"Auth Data Validation Error: {e}")
+            await websocket.send_json({"error": "Invalid auth data: " + str(e.errors())})
             await websocket.close(code=4005)
             return
 
@@ -91,17 +102,21 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             await websocket.close(code=4000)
             return
 
-        # Finding room
-        async with ROOMS_LOCK:
-            room = ROOMS.get(pin, None)
-            print(f"Room found: {room}")
-            if not room:
-                await websocket.send_json({"error": "Room not found"})
-                await websocket.close(code=4001)
-                return
-
         # Verification
         async with room._lock:
+            existing_player = room.players.get(player_id)
+
+            if existing_player:
+
+                #await room.update_players()
+                await websocket.send_json({
+                    "type": "reconnect",
+                    "playerId": existing_player.id,
+                    "yourPutted": existing_player.putted,
+                    "puttedAmount": room.putted
+                })
+
+
             if player_id in room.players:
                 await websocket.send_json({"error": "Player already connected"})
                 await websocket.close(code=4002)
@@ -184,9 +199,8 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
             # Delete room automatically
             async with ROOMS_LOCK:
-                if pin in ROOMS and len(ROOMS[pin].players) == 0:
-                    del ROOMS[pin]
-                    print(f"Auto delete room {pin}")
+                if pin in ROOMS and ROOMS[pin].is_empty():
+                    asyncio.create_task(delete_room(pin))
 
     except Exception as e:
         print(f"Connection error: {e}")
