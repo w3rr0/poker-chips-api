@@ -15,7 +15,7 @@ const Room = () => {
     const ws = useRef(null)
     const { pin } = useParams()
     const { state } = useLocation()
-    const { username, playerId, maxPlayers } = state || {}
+    const { username, playerId, maxPlayers, startingAmount } = state || {}
     const navigate = useNavigate()
     const messageQueue = useRef([]);
     const [puttedAmount, setPuttedAmount] = useState(0)
@@ -45,7 +45,7 @@ const Room = () => {
                 sendWhenOpen({
                     player_id: playerId,
                     username,
-                    amount: 1000,
+                    amount: startingAmount,
                     putted: puttedAmount,
                 });
             }

@@ -30,8 +30,10 @@ const CreateRoom = () => {
 
             if (!response.ok) throw new Error('Failed to create room')
 
+            console.log(startingAmount)
+
             const { PIN } = await response.json()
-            navigate(`/room/${PIN}`, { state: { username, playerId, maxPlayers } })
+            navigate(`/room/${PIN}`, { state: { username, playerId, maxPlayers, startingAmount } })
         } catch (error) {
             console.error('Error creating room:', error)
             alert('Failed to create room')
@@ -45,7 +47,7 @@ const CreateRoom = () => {
             <div className="section">
                 <h2>Create New Room</h2>
                 <div className="slider-wrapper" >
-                    <SliderInput value={startingAmount} onChange={setStartingAmount} />
+                    <SliderInput value={startingAmount} handleChange={setStartingAmount} />
                 </div>
                 <div className="pin-input">
                     <div className="mobile">
