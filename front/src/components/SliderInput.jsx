@@ -9,6 +9,9 @@ const SliderInput = ({ value, onChange }) => {
         min={0}
         max={10000}
         step={10}
+        tooltips={true}
+        tooltipsFormat={(val) => `$${val}`}
+        track="fill"
         onChange={onChange}
     />
 }
