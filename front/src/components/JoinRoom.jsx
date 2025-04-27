@@ -4,6 +4,8 @@ import Button from "./Button.jsx";
 import PinInput from "./PinInput.jsx";
 import {apiUrl} from "../../public/static.js";
 import GithubLink from "./GithubLink.jsx";
+import { defaultAmount } from "../../public/static.js";
+import SliderInput from "./SliderInput.jsx";
 
 const JoinRoom = () => {
     const navigate = useNavigate();
@@ -12,6 +14,7 @@ const JoinRoom = () => {
     const {state} = useLocation()
     const {username} = state || {}
     const [errorMessage, setErrorMessage] = useState('')
+    const [startingAmount, setStartingAmount] = useState(defaultAmount)
 
     useEffect(() => {
         localStorage.setItem('playerId', playerId)
@@ -30,7 +33,7 @@ const JoinRoom = () => {
 
             if (response.ok) {
                 if (data.allow) {
-                    navigate(`/room/${pin}`, {state: {username, playerId}})
+                    navigate(`/room/${pin}`, {state: { username, playerId, startingAmount }})
                 } else {
                     setErrorMessage(data.room_status || "Unknown error")
                 }
@@ -48,6 +51,10 @@ const JoinRoom = () => {
 
             <div className="section center">
                 <h2>Join Existing Room</h2>
+                <div className="slider-wrapper" >
+                    <SliderInput value={startingAmount} handleChange={setStartingAmount} />
+                </div>
+                <div className="gap15" />
                 <PinInput onChange={setPin}/>
                 <label style={{ paddingBottom: "20px", display: "block", textAlign: "center" }} className="username-warning">{errorMessage}</label>
                 <Button caption={"Join Existing Room"} onClick={handleJoinRoom}></Button>

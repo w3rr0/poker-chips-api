@@ -30,8 +30,6 @@ const CreateRoom = () => {
 
             if (!response.ok) throw new Error('Failed to create room')
 
-            console.log(startingAmount)
-
             const { PIN } = await response.json()
             navigate(`/room/${PIN}`, { state: { username, playerId, maxPlayers, startingAmount } })
         } catch (error) {
