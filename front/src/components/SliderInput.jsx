@@ -7,7 +7,7 @@ const SliderInput = ({ value, onChange }) => {
 
     return <CRangeSlider
         value={value}
-        labels={["0","2500" , "10000"]}
+        labels={["0","2500", "", "", "10000"]}
         clickableLabels={true}
         min={0}
         max={10000}

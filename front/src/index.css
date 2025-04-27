@@ -414,3 +414,18 @@ button:hover {
   margin: 0 auto;
   padding-top: 20px;
 }
+
+.range-slider-label .clickable {
+  cursor: pointer;
+}
+
+.range-slider-labels-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  top: -15px;
+}
+
+.range-slider {
+  height: 50px;
+}
