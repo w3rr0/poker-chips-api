@@ -415,7 +415,7 @@ button:hover {
   padding-top: 20px;
 }
 
-.range-slider-label .clickable {
+.clickable {
   cursor: pointer;
 }
 
