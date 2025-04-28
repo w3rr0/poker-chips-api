@@ -4,6 +4,7 @@ from pydantic import BaseModel, PrivateAttr
 from starlette.websockets import WebSocket
 import asyncio
 
+
 class RoomCreateRequest(BaseModel):
     max_players: int
 
@@ -54,12 +55,19 @@ class Room(BaseModel):
     # Remove player from the room
     async def remove_player(self, player_id: str) -> None:
         if player_id in self.players:
+
+            # Add player to LAST_DICONNECTED
             async with DISCONNECTED_LOCK:
                 if self.pin in LAST_DISCONNECTED:
                     LAST_DISCONNECTED[self.pin][player_id] = self.players[player_id]
                 else:
                     LAST_DISCONNECTED[self.pin] = {player_id: self.players[player_id]}
-                del self.players[player_id]
+
+            # Delete player from the room
+            del self.players[player_id]
+
+            # Delete player from LAST_DISCONNECTED after delay
+            asyncio.create_task(del_from_last_disconnected(player_id=player_id, pin=self.pin))
 
     # Return the current players list
     def current_players(self) -> List[Dict]:
@@ -129,3 +137,15 @@ async def delete_room(pin: int) -> None:
     async with DISCONNECTED_LOCK:
         if pin in LAST_DISCONNECTED:
             del LAST_DISCONNECTED[pin]
+
+
+# Delete player from LAST_DISCONNECTED after delay
+async def del_from_last_disconnected(player_id: str, pin: int):
+    await asyncio.sleep(5)
+
+    async with DISCONNECTED_LOCK:
+        if pin in LAST_DISCONNECTED:
+            if player_id in LAST_DISCONNECTED[pin]:
+                del LAST_DISCONNECTED[pin][player_id]
+            if len(LAST_DISCONNECTED[pin]) == 0:
+                del LAST_DISCONNECTED[pin]
