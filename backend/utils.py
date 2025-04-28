@@ -119,7 +119,13 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
 async def delete_room(pin: int) -> None:
     await asyncio.sleep(5)
 
+    # Delete room
     async with ROOMS_LOCK:
         if pin in ROOMS and ROOMS[pin].is_empty():
             del ROOMS[pin]
             print(f"Auto delete room {pin}")
+
+    # Delete room from LAST_DISCONNECTED
+    async with DISCONNECTED_LOCK:
+        if pin in LAST_DISCONNECTED:
+            del LAST_DISCONNECTED[pin]
