@@ -406,7 +406,7 @@ button:hover {
 
 .range-slider-tooltip-inner {
   position: relative;
-  top: -40px;
+  top: -50px;
 }
 
 .slider-wrapper {
@@ -428,4 +428,43 @@ button:hover {
 
 .range-slider {
   height: 50px;
+}
+
+.styled-slider input[type="range"] {
+  -webkit-appearance: none;
+  background: #149CEA;
+  height: 6px;
+  cursor: pointer;
+}
+
+/* Chrome, Safari */
+.styled-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ffffff;
+  border: 2px solid #1479EA;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Firefox */
+.styled-slider input[type="range"]::-moz-range-thumb {
+  background: #ffffff;
+  border: 2px solid #1479EA;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Edge (old engine) */
+.styled-slider input[type="range"]::-ms-thumb {
+  background: #ffffff;
+  border: 2px solid #1479EA;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  cursor: pointer;
 }
