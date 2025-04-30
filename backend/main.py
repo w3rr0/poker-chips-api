@@ -200,7 +200,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         print(f"WebSocket closed for room {pin}")
 
 
-# Check weather room is available
+# Check whether room is available
 @app.get("/check_player/{player_id}/{pin}")
 async def check_player(player_id: str, pin: int):
     async with DISCONNECTED_LOCK:
