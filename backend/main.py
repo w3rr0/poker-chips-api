@@ -10,9 +10,9 @@ import asyncio
 app = FastAPI()
 
 # Load environment variables
-load_dotenv()
+env = load_dotenv()
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
-allow_credentials = False
+allow_credentials = os.getenv("ALLOW_CREDENTIALS", False) or os.getenv("ALLOW_CREDENTIALS", False).lower() == "true"
 allowed_methods = os.getenv("ALLOWED_METHODS", "*").split(",")
 allowed_headers = os.getenv("ALLOWED_HEADERS", "*").split(",")
 expose_headers = os.getenv("EXPOSE_HEADERS", "*").split(",")
