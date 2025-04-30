@@ -27,7 +27,7 @@ const Room = () => {
     const messagesContainerRef = useRef(null);
 
     useEffect(() => {
-        const connectWebSocket = (amount) => {
+        const connectWebSocket = (amount, putted) => {
             ws.current = new WebSocket(`${wsUrl}/${pin}`)
 
             ws.current.onopen = () => {
@@ -41,7 +41,7 @@ const Room = () => {
                     player_id: playerId,
                     username: username,
                     amount: amount,
-                    putted: puttedAmount,
+                    putted: putted,
                 });
             }
 
@@ -104,11 +104,11 @@ const Room = () => {
 
                 if (response.ok && data.found) {
                     const newAmount = data.player.amount;
-                    setYourPutted(data.player.putted);
-
-                    connectWebSocket(newAmount)
+                    const newPutted = data.player.putted
+                    setYourPutted(newPutted);
+                    connectWebSocket(newAmount, newPutted)
                 } else {
-                    connectWebSocket(startingAmount)
+                    connectWebSocket(startingAmount, yourPutted)
                 }
             } catch (err) {
                 console.log("fetch error", err);
@@ -121,7 +121,7 @@ const Room = () => {
             }
         }
         checkPlayer();
-    }, [pin, username, playerId, navigate])
+    }, [])
 
     useEffect(() => {
       setPlayersLimit(maxPlayers);
