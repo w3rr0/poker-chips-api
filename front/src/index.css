@@ -397,3 +397,74 @@ button:hover {
   background-color: darkgoldenrod;
   font-weight: bold;
 }
+
+.range-slider-input {
+  padding: 0;
+  border: 0;
+  width: 100%;
+}
+
+.range-slider-tooltip-inner {
+  position: relative;
+  top: -50px;
+}
+
+.slider-wrapper {
+  width: 270px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.range-slider-labels-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  top: -15px;
+}
+
+.range-slider {
+  height: 50px;
+}
+
+.styled-slider input[type="range"] {
+  -webkit-appearance: none;
+  background: #149CEA;
+  height: 6px;
+  cursor: pointer;
+}
+
+/* Chrome, Safari */
+.styled-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ffffff;
+  border: 2px solid #1479EA;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Firefox */
+.styled-slider input[type="range"]::-moz-range-thumb {
+  background: #ffffff;
+  border: 2px solid #1479EA;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Edge (old engine) */
+.styled-slider input[type="range"]::-ms-thumb {
+  background: #ffffff;
+  border: 2px solid #1479EA;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  cursor: pointer;
+}

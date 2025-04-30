@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 from starlette.websockets import WebSocket, WebSocketDisconnect
-from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest
+from backend.utils import Player, Room, ROOMS_LOCK, ROOMS, LAST_DISCONNECTED, DISCONNECTED_LOCK, generate_unique_pin, AuthData, MAX_ROOMS, RoomCreateRequest, delete_room
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from pydantic import ValidationError
+import asyncio
 
 app = FastAPI()
 
 # Load environment variables
-load_dotenv()
+env = load_dotenv()
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
-allow_credentials = os.getenv("ALLOW_CREDENTIALS", "False").lower() == "true"
+allow_credentials = os.getenv("ALLOW_CREDENTIALS", False) or os.getenv("ALLOW_CREDENTIALS", "False").lower() == "true"
 allowed_methods = os.getenv("ALLOWED_METHODS", "*").split(",")
 allowed_headers = os.getenv("ALLOWED_HEADERS", "*").split(",")
 expose_headers = os.getenv("EXPOSE_HEADERS", "*").split(",")
@@ -64,6 +66,15 @@ async def check_room(pin: int):
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
     print(f"🔵 Starting connection for room {pin}")
+
+    # Finding room
+    async with ROOMS_LOCK:
+        room = ROOMS.get(pin, None)
+        if not room:
+            print(f"Room not found: {pin}")
+            await websocket.close(code=4001)
+            return
+
     await websocket.accept()
     print(f"🟢 WebSocket accepted for room {pin}")
 
@@ -74,9 +85,9 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
         print(f"Received data: {raw_data}")
         try:
             auth_data = AuthData(**raw_data)
-        except Exception as validation_error:
-            print(f"Auth Data Validation Error: {validation_error}")
-            await websocket.send_json({"error": "Invalid auth data"})
+        except ValidationError as e:
+            print(f"Auth Data Validation Error: {e}")
+            await websocket.send_json({"error": "Invalid auth data: " + str(e.errors())})
             await websocket.close(code=4005)
             return
 
@@ -91,17 +102,11 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
             await websocket.close(code=4000)
             return
 
-        # Finding room
-        async with ROOMS_LOCK:
-            room = ROOMS.get(pin, None)
-            print(f"Room found: {room}")
-            if not room:
-                await websocket.send_json({"error": "Room not found"})
-                await websocket.close(code=4001)
-                return
-
         # Verification
         async with room._lock:
+            # async with DISCONNECTED_LOCK:
+            #     pass
+
             if player_id in room.players:
                 await websocket.send_json({"error": "Player already connected"})
                 await websocket.close(code=4002)
@@ -157,6 +162,7 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                 if data.get("type") == "put_token":
                     ROOMS[pin].putted += data["content"]
                     ROOMS[pin].players[data["playerId"]].amount -= data["content"]
+                    ROOMS[pin].players[data["playerId"]].putted += data["content"]
                     await room.update_players()
 
                 if data.get("type") == "claim_all":
@@ -168,12 +174,12 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
                         print(f"Player {p.id}: {p}, sending {data}")
                     except (WebSocketDisconnect, RuntimeError):
                         print(f"WebSocket disconnected for room {p.id}")
-                        room.remove_player(p.id)
+                        await room.remove_player(p.id)
 
     except WebSocketDisconnect:
         async with room._lock:
             print(f"Player {player_id} disconnected")
-            room.remove_player(player_id)
+            await room.remove_player(player_id)
             await room.update_players()
             for p in list(room.players.values()):
                 await p.websocket.send_json({
@@ -184,12 +190,30 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
             # Delete room automatically
             async with ROOMS_LOCK:
-                if pin in ROOMS and len(ROOMS[pin].players) == 0:
-                    del ROOMS[pin]
-                    print(f"Auto delete room {pin}")
+                if pin in ROOMS and ROOMS[pin].is_empty():
+                    asyncio.create_task(delete_room(pin))
 
     except Exception as e:
         print(f"Connection error: {e}")
     finally:
         await websocket.close()
         print(f"WebSocket closed for room {pin}")
+
+
+# Check whether room is available
+@app.get("/check_player/{player_id}/{pin}")
+async def check_player(player_id: str, pin: int):
+    async with DISCONNECTED_LOCK:
+        if pin in LAST_DISCONNECTED:
+            if player_id in LAST_DISCONNECTED[pin]:
+                player = LAST_DISCONNECTED[pin].pop(player_id, None)
+            if len(LAST_DISCONNECTED[pin]) == 0:
+                del LAST_DISCONNECTED[pin]
+            return {"found": True, "player": {
+                "username": player.username,
+                "id": player.id,
+                "amount": player.amount,
+                "putted": player.putted
+            }}
+        else:
+            return {"found": False}

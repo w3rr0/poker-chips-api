@@ -4,6 +4,7 @@ from pydantic import BaseModel, PrivateAttr
 from starlette.websockets import WebSocket
 import asyncio
 
+
 class RoomCreateRequest(BaseModel):
     max_players: int
 
@@ -24,6 +25,7 @@ class Player(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True      # Allows using websocket in pytest
+        exclude = {"websocket"}
 
 
 class Room(BaseModel):
@@ -40,6 +42,10 @@ class Room(BaseModel):
     def is_full(self) -> bool:
         return len(self.players) >= self.max_players
 
+    # Check weather room is empty
+    def is_empty(self) -> bool:
+        return len(self.players) == 0
+
     # Add player to the room
     def add_player(self, player: Player) -> None:
         if player.id in self.players:
@@ -47,9 +53,21 @@ class Room(BaseModel):
         self.players[player.id] = player
 
     # Remove player from the room
-    def remove_player(self, player_id: str) -> None:
+    async def remove_player(self, player_id: str) -> None:
         if player_id in self.players:
+
+            # Add player to LAST_DICONNECTED
+            async with DISCONNECTED_LOCK:
+                if self.pin in LAST_DISCONNECTED:
+                    LAST_DISCONNECTED[self.pin][player_id] = self.players[player_id]
+                else:
+                    LAST_DISCONNECTED[self.pin] = {player_id: self.players[player_id]}
+
+            # Delete player from the room
             del self.players[player_id]
+
+            # Delete player from LAST_DISCONNECTED after delay
+            asyncio.create_task(del_from_last_disconnected(player_id=player_id, pin=self.pin))
 
     # Return the current players list
     def current_players(self) -> List[Dict]:
@@ -71,26 +89,30 @@ class Room(BaseModel):
 
     # Player claims all tokens on board
     async def claim_all(self, player_id: str) -> None:
+        winner = self.players[player_id]
         win: int = self.putted
-        self.players[player_id].amount += win
+        winner.amount += win
         self.putted = 0
-        for player in self.players.values():
-            await player.websocket.send_json({
-                "type": "claim_all",
-                "players": self.current_players(),
-            })
-            await player.websocket.send_json({
-                "type": "message",
-                "content": f"{self.players[player_id].username} collected ${win}",
-                "senderId": "system-win"
-            })
+        if win:
+            for player in self.players.values():
+                await player.websocket.send_json({
+                    "type": "claim_all",
+                    "players": self.current_players(),
+                })
+                await player.websocket.send_json({
+                    "type": "message",
+                    "content": f"{winner.username} collected ${win}",
+                    "senderId": "system-win"
+                })
 
 
-ROOMS: Dict[int, Room] = {}     # Dict of a room pin and room object
+ROOMS: Dict[int, Room] = {}     # Dict containing a room pin and room object
 ROOMS_LOCK = asyncio.Lock()
 
-# Maximum number of rooms at once
-MAX_ROOMS: int = 100
+MAX_ROOMS: int = 100            # Maximum number of rooms at once
+
+LAST_DISCONNECTED: Dict[int, Dict[str, Player]] = {}   # Dict containing a room pin and Player object list
+DISCONNECTED_LOCK = asyncio.Lock()
 
 
 # Generate unique PIN
@@ -101,3 +123,29 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
             return pin
     raise RuntimeError("No available PINs")
 
+# Delete room after delay
+async def delete_room(pin: int) -> None:
+    await asyncio.sleep(5)
+
+    # Delete room
+    async with ROOMS_LOCK:
+        if pin in ROOMS and ROOMS[pin].is_empty():
+            del ROOMS[pin]
+            print(f"Auto delete room {pin}")
+
+    # Delete room from LAST_DISCONNECTED
+    async with DISCONNECTED_LOCK:
+        if pin in LAST_DISCONNECTED:
+            del LAST_DISCONNECTED[pin]
+
+
+# Delete player from LAST_DISCONNECTED after delay
+async def del_from_last_disconnected(player_id: str, pin: int):
+    await asyncio.sleep(5)
+
+    async with DISCONNECTED_LOCK:
+        if pin in LAST_DISCONNECTED:
+            if player_id in LAST_DISCONNECTED[pin]:
+                del LAST_DISCONNECTED[pin][player_id]
+            if len(LAST_DISCONNECTED[pin]) == 0:
+                del LAST_DISCONNECTED[pin]

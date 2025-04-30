@@ -4,6 +4,8 @@ import Button from "./Button.jsx";
 import RadioButtons from "./RadioButtons.jsx";
 import { apiUrl } from "../../public/static.js";
 import GithubLink from "./GithubLink.jsx";
+import SliderInput from "./SliderInput.jsx";
+import { defaultAmount } from "../../public/static.js";
 
 
 const CreateRoom = () => {
@@ -12,6 +14,7 @@ const CreateRoom = () => {
     const playerId = useRef(localStorage.getItem('playerId') || crypto.randomUUID()).current
     const { state } = useLocation()
     const { username } = state || {}
+    const [startingAmount, setStartingAmount] = useState(defaultAmount)
 
     useEffect(() => {
         localStorage.setItem('playerId', playerId)
@@ -28,7 +31,7 @@ const CreateRoom = () => {
             if (!response.ok) throw new Error('Failed to create room')
 
             const { PIN } = await response.json()
-            navigate(`/room/${PIN}`, { state: { username, playerId, maxPlayers } })
+            navigate(`/room/${PIN}`, { state: { username, playerId, maxPlayers, startingAmount } })
         } catch (error) {
             console.error('Error creating room:', error)
             alert('Failed to create room')
@@ -41,6 +44,9 @@ const CreateRoom = () => {
 
             <div className="section">
                 <h2>Create New Room</h2>
+                <div className="slider-wrapper" >
+                    <SliderInput value={startingAmount} handleChange={setStartingAmount} />
+                </div>
                 <div className="pin-input">
                     <div className="mobile">
                         <p style={{ alignContent: "flex-start", marginLeft: "13px" }}>2</p>
