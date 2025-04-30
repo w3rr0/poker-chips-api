@@ -11,7 +11,7 @@ app = FastAPI()
 
 # Load environment variables
 load_dotenv()
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 allow_credentials = False
 allowed_methods = os.getenv("ALLOWED_METHODS", "*").split(",")
 allowed_headers = os.getenv("ALLOWED_HEADERS", "*").split(",")
