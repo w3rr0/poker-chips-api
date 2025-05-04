@@ -9,6 +9,13 @@
     ".png": "image/png"
   },
   "globalHeaders": {
-    "Content-Security-Policy": "default-src 'self' https//*.github.com;"
-  }
+    "Content-Security-Policy": "default-src 'self' https://*.github.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.githubusercontent.com; font-src 'self' data:; connect-src 'self' https://api.github.com"
+  },
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  ]
 }
