@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import {githubLink} from "../../public/static.js";
 
 const Button = () => {
-  const handleOnClick = () => {
-    window.open(githubLink, "_blank");
-  }
-
   return (
     <StyledWrapper>
-      <button className="button x" onClick={handleOnClick}>
+      <a
+          className="button x"
+          href={githubLink}
+          target="_blank"
+          rel="noopener noreferrer"
+      >
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
           <g id="SVGRepo_bgCarrier" strokeWidth={0} />
           <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
@@ -20,7 +21,7 @@ const Button = () => {
           </g>
         </svg>
         Check on Github
-      </button>
+      </a>
     </StyledWrapper>
   );
 }
