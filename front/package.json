@@ -4,16 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "preinstall": "npx npm-force-reolutions",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
-  },
-  "overrides": {
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "@react-spring/web": "9.7.5"
   },
   "dependencies": {
     "@coreui/react-pro": "^5.13.0",
