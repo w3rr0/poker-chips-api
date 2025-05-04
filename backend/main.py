@@ -48,7 +48,7 @@ async def create_room(request_data: RoomCreateRequest):
     return {"PIN": room.pin}
 
 
-# Check weather room is available
+# Check whether room is available
 @app.get("/check_room/{pin}")
 async def check_room(pin: int):
     async with ROOMS_LOCK:

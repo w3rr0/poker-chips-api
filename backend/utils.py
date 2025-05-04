@@ -38,11 +38,11 @@ class Room(BaseModel):
     class Config:
         arbitrary_types_allowed = True      # Allows types like asyncio.Lock to be used in pytest
 
-    # Check weather room is full
+    # Check whether the room is full
     def is_full(self) -> bool:
         return len(self.players) >= self.max_players
 
-    # Check weather room is empty
+    # Check whether the room is empty
     def is_empty(self) -> bool:
         return len(self.players) == 0
 
