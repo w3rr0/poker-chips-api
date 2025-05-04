@@ -63,9 +63,6 @@ jobs:
         with:
           name: python-app
 
-#      - name: Unzip artifact for deployment
-#        run: unzip release.zip -d backend
-
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -79,6 +76,5 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'api-pokerchips'
-          # slot-name: 'Production'
           package: release.zip
           
