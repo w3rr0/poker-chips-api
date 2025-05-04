@@ -46,7 +46,7 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
-          VITE_GITHUB_URL: ${{ secrets.VITE_GITHUB_LINK }}
+          VITE_GITHUB_LINK: ${{ secrets.VITE_GITHUB_LINK }}
 
       - name: Build And Deploy
         id: builddeploy
