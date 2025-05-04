@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {githubLink} from "../../public/static.js";
 
 const Button = () => {
+  console.log(githubLink)
   return (
     <StyledWrapper>
       <a
