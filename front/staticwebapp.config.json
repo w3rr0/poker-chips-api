@@ -1,9 +1,11 @@
 {
   "navigationFallback": {
-    "rewrite": "/index.html"
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/checkbox-img/*", "/tokens-img/*", "/*.png", "/*.js", "/*.css"]
   },
   "mimeTypes": {
-    ".js": "application/javascript",
-    ".css": "text/css"
+    ".js": "text/javascript",
+    ".css": "text/css",
+    ".png": "image/png"
   }
 }
