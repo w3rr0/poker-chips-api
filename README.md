@@ -30,7 +30,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/w3rr0/pokerchips">
     <img src="front/public/favicon.ico" alt="Logo" width="80" height="80">
   </a>
 
