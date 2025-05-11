@@ -35,7 +35,10 @@
   </a>
 
   <p align="center">
-    project_description
+    Pokerchip$ is an application that allows you to play poker without physical chips.
+    Thanks to it, players can simulate their chips in real time,
+    which allows for comfortable gameplay even when they do not have traditional poker accessories with them.
+    The perfect solution for playing on the go when taking a poker set would be a big problem.
     <br />
     <a href="https://github.com/w3rr0/pokerchips"><strong>Explore the docs »</strong></a>
     <br />
