@@ -18,11 +18,11 @@
     which allows for comfortable gameplay even when they do not have traditional poker accessories with them.
     The perfect solution for playing on the go when taking a poker set would be a big problem.
     <br />
-    <a href="https://github.com/w3rr0/pokerchips"><strong>Explore the docs »</strong></a>
+    <a href="https://www.poker-chips.tech"><strong>Try Yourself »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/w3rr0/pokerchips">View Demo</a>
-    &middot;
+    <!-- <a href="https://github.com/w3rr0/pokerchips">View Demo</a>
+    &middot; -->
     <a href="https://github.com/w3rr0/pokerchips/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
     <a href="https://github.com/w3rr0/pokerchips/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
@@ -62,7 +62,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+
 
 Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license`
 
@@ -104,7 +104,7 @@ This is an example of how to list things you need to use the software and how to
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/w3rr0/pokerchips.git
    ```
 3. Install NPM packages
    ```sh
@@ -116,7 +116,7 @@ This is an example of how to list things you need to use the software and how to
    ```
 5. Change git remote url to avoid accidental pushes to base project
    ```sh
-   git remote set-url origin github_username/repo_name
+   git remote set-url origin w3rr0/pokerchips
    git remote -v # confirm the changes
    ```
 
@@ -143,7 +143,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/github_username/pokerchips/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -168,7 +168,7 @@ Don't forget to give the project a star! Thanks again!
 ### Top contributors:
 
 <a href="https://github.com/w3rr0/pokerchips/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=github_username/repo_name" alt="contrib.rocks image" />
+  <img src="https://contrib.rocks/image?repo=github_username/pokerchips" alt="contrib.rocks image" />
 </a>
 
 
