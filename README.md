@@ -62,14 +62,29 @@
 <!-- ABOUT THE PROJECT -->
 # About The Project
 
+### For who?
 
+For all those who, whether away or at home,
+want to play poker with friends but do not have a poker set with them.
+Now all you need to play is cards.
 
-Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license`
+### Why pokerchip$?
 
-<div style="display: flex;" align="center">
-    <img src="assets/screenshots/Home-mobile.png" alt="home-mobile" height="400" style="margin-right: 10px;">
-    <p>Pokerchip$ to aplikacja pozwalająca na grę w pokera bez fizycznych żetonów. Dzięki niej gracze mogą symulować swoje żetony w czasie rzeczywistym.</p>
-</div>
+It's simple! Pokerchip$ is simple, free, and gives you full control over your chips.
+It doesn't restrict your style of play in any way.
+You can play by your own rules and the chip system won't limit you.
+
+### Background
+
+The idea was born when I noticed that on many trips with friends we wanted to play poker,
+but we almost never took poker accessories.
+Someone always had cards, and they were not a problem,
+and playing online is not the same as playing live, so pokerchip$ was perfect for such situations.
+
+### What's next?
+
+I've already added all the key things that I thought were necessary for the app to work well. However, if new plans appear, I'll be introducing them on an ongoing basis.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -97,6 +112,24 @@ Here's a blank template to get started. To avoid retyping too much info, do a se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+### Design
+
+Here's a design sample from the current version of the app:
+
+<div style="display: flex; gap: 15px" align="center">
+    <img src="assets/screenshots/Home-mobile.png" alt="home-mobile" height="400">
+    <img src="assets/screenshots/Create-mobile.png" alt="create-mobile" height="400">
+    <img src="assets/screenshots/Join-mobile.png" alt="join-mobile" height="400">
+</div>
+
+<div style="display: flex; gap: 15px; margin-top: 25px;" align="center">
+    <img src="assets/screenshots/Gameplay-mobile.png" alt="gameplay-mobile" height="400">
+    <img src="assets/screenshots/Gameplay-tablet.png" alt="gameplay-tablet" height="400">
+</div>
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- GETTING STARTED -->
@@ -141,7 +174,7 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 # Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -157,7 +190,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/github_username/pokerchips/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/w3rr0/pokerchips/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -228,8 +261,3 @@ Project Link: [https://github.com/w3rr0/pokerchips](https://github.com/w3rr0/pok
 [license-url]: https://github.com/w3rr0/pokerchips/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/konrad-mateja-00bbbb335
-[product-screenshot]: images/screenshot.png
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Fastapi-logo]: assets/icons/FastAPI.svg
-[Fastapi-url]: https://fastapi.tiangolo.com/
