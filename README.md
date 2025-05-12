@@ -38,7 +38,12 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#for-who">For Who</a></li>
+        <li><a href="#why-pokerchip">Why Pokerchip$</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#whats-next">What's Next</a></li>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#design">Design</a></li>
       </ul>
     </li>
     <li>
@@ -62,13 +67,13 @@
 <!-- ABOUT THE PROJECT -->
 # About The Project
 
-### For who?
+### For who
 
 For all those who, whether away or at home,
 want to play poker with friends but do not have a poker set with them.
 Now all you need to play is cards.
 
-### Why pokerchip$?
+### Why pokerchip$
 
 It's simple! Pokerchip$ is simple, free, and gives you full control over your chips.
 It doesn't restrict your style of play in any way.
@@ -81,7 +86,7 @@ but we almost never took poker accessories.
 Someone always had cards, and they were not a problem,
 and playing online is not the same as playing live, so pokerchip$ was perfect for such situations.
 
-### What's next?
+### What's next
 
 I've already added all the key things that I thought were necessary for the app to work well. However, if new plans appear, I'll be introducing them on an ongoing basis.
 
