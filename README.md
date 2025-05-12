@@ -179,6 +179,25 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 # Usage
 
+### Home
+
+To start the game, you have 2 options either join a friend's room or create your own.
+Enter your nickname (between 1 and 15 characters) and select one of these options by clicking the appropriate button.
+
+### Join
+
+When joining, you must enter the PIN of the room you want to join and choose your starting token value (from 0 to 10,000,
+the default is 2,500). Once you do this, confirm with the button, and you will be transferred to the game
+
+### Create
+
+If you are the one creating the room, you also have to choose your starting value of your tokens and the maximum number of players that can play at the same time
+(from 2 to 9, but if you don't care about the limit, I recommend leaving it at 9, you never know if someone will want to join you 😉)
+
+### Gameplay
+
+TODO
+
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
