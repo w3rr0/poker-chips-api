@@ -297,7 +297,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 # Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Linkedin: [Konrad Mateja][linkedin-url]
 
 Project Link: [https://github.com/w3rr0/pokerchips](https://github.com/w3rr0/pokerchips)
 
