@@ -305,17 +305,6 @@ Project Link: [https://github.com/w3rr0/pokerchips](https://github.com/w3rr0/pok
 
 
 
-<!-- ACKNOWLEDGMENTS -->
-# Acknowledgments
-
-* []()
-* []()
-* []()
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [stars-shield]: https://img.shields.io/github/stars/w3rr0/pokerchips.svg?style=for-the-badge
