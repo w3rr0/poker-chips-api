@@ -262,7 +262,7 @@ See the [open issues](https://github.com/w3rr0/pokerchips/issues) for a full lis
 <!-- CONTRIBUTING -->
 # Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Any contributions you make are **greatly appreciated**!
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
@@ -275,12 +275,14 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!--
 ## Top contributors:
 
 <a href="https://github.com/w3rr0/pokerchips/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=github_username/pokerchips" alt="contrib.rocks image" />
+  <img src="https://contrib.rocks/image?repo=w3rr0/pokerchips" alt="contrib.rocks image" />
 </a>
 
+-->
 
 
 <!-- LICENSE -->
