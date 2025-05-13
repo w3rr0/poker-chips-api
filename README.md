@@ -226,9 +226,12 @@ An additional section for controlling the game where you will find:
     - left
     - win (and how much)
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
+To place a bet, simply click on a chip with the appropriate value.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+All events are updated continuously for each player without the need to refresh the page.
+
+For a more detailed explanation of how everything works under the hood,
+please visit the documentation for the individual functions found in the project source files.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
