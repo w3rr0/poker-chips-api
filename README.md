@@ -213,6 +213,19 @@ A table that simulates the one during live play, containing:
 - At the top
   - avatars of the rest of the players along with the amount they have (If you are alone in the room, a message will be displayed that there are no other players)
 
+An additional section for controlling the game where you will find:
+
+- control buttons
+  - collecting your chips from the table
+  - collecting the winnings, i.e., all the chips on the table
+  - leaving the room
+- an additional chat section (if you are using a device with a large enough screen, such as a PC, laptop, or some tablets), where you will find:
+  - messages sent by other users since you joined the room
+  - gameplay history, from which you can learn about who:
+    - join
+    - left
+    - win (and how much)
+
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
