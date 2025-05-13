@@ -196,7 +196,22 @@ If you are the one creating the room, you also have to choose your starting valu
 
 ### Gameplay
 
-TODO
+Once you join a room, you will see all the information about the room such as:
+
+- PIN
+- Current number of players
+- Player limit in room
+
+A table that simulates the one during live play, containing:
+
+- At the bottom
+  - your avatar with information about the current value of all tokens
+  - tokens corresponding to the amount you selected
+- In the middle
+  - the amount currently placed on the table by all players
+  - the value of the bet you are currently placing
+- At the top
+  - avatars of the rest of the players along with the amount they have (If you are alone in the room, a message will be displayed that there are no other players)
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
 
