@@ -62,11 +62,9 @@
         <li><a href="#gameplay">Gameplay</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -297,6 +295,6 @@ Project Link: [https://github.com/w3rr0/pokerchips](https://github.com/w3rr0/pok
 [issues-shield]: https://img.shields.io/github/issues/w3rr0/pokerchips.svg?style=for-the-badge
 [issues-url]: https://github.com/w3rr0/pokerchips/issues
 [license-shield]: https://img.shields.io/github/license/w3rr0/pokerchips.svg?style=for-the-badge
-[license-url]: https://github.com/w3rr0/pokerchips/blob/master/LICENSE.txt
+[license-url]: https://github.com/w3rr0/pokerchips/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/konrad-mateja-00bbbb335
