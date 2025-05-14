@@ -152,27 +152,104 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
+
+* Python
+
+    check if you have the required version of python installed
+
+    ```sh
+    python3.12 --version
+    ```
+
+    if you don't have it installed, download it from the official website: [python.org](https://www.python.org/downloads/) (or other preferred source)
+
 * npm
   ```sh
   npm install npm@latest -g
   ```
+  or if you don't have npm installed, download it from: [nodejs.org](https://nodejs.org)
+
+
+* pip
+    ```sh
+    pip install --upgrade pip
+    ```
 
 ## Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/w3rr0/pokerchips.git
    ```
-3. Install NPM packages
+
+   #### Frontend:
+
+2. Go to the front directory
+    ```sh
+    cd front
+    ```
+   
+3. create environment
+
+    **Linux**/**Mac**:
+    ```sh
+    echo -e "VITE_API_URL=http://localhost:8000\nVITE_WS_URL=ws://localhost:8000/ws\nVITE_GITHUB_LINK=https://github.com/w3rr0/pokerchips" > .env.development
+    ```
+   **Windows**:
+    ```sh
+    echo VITE_API_URL=http://localhost:8000 > .env.development
+    echo VITE_WS_URL=ws://localhost:8000/ws >> .env.development
+    echo VITE_GITHUB_LINK=https://github.com/w3rr0/pokerchips >> .env.development
+    ```
+   or if necessary, replace the values with yours
+
+
+4. Install NPM packages
    ```sh
-   npm install
+   npm install --legacy-peer-deps
    ```
-4. Enter your API in `config.js`
+   
+#### Backend:
+
+5. go back to root and create virtual env
+    ```sh
+    cd ..
+    python3 -m venv .venv
+    ```
+   
+6. Activate virtual env
+
+    **Linux**/**Mac**:
+
+    ```sh
+    source .venv/bin/activate
+    ```
+   
+    **Windows**
+    ```sh
+    .venv\Scripts\activate
+    ```
+7. Install dependencies
+    ```sh
+    pip3 install -r requirements.txt
+    ```
+8. create env
+   
+   **Linux**/**Mac**:
+     ```sh
+     echo -e "ALLOW_CREDENTIALS=True\nALLOWED_ORIGINS=http://localhost:5173" > .env
+     ```
+   
+    **Windows**:
+    ```sh
+    echo ALLOW_CREDENTIALS=True > .env && echo ALLOWED_ORIGINS=http://localhost:5173 >> .env
+    ```
+
+3. Enter your API in `config.js`
    ```js
    const API_KEY = 'ENTER YOUR API';
    ```
-5. Change git remote url to avoid accidental pushes to base project
+4. Change git remote url to avoid accidental pushes to base project
    ```sh
    git remote set-url origin w3rr0/pokerchips
    git remote -v # confirm the changes
