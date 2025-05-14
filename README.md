@@ -50,7 +50,15 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li>
+          <a href="#installation">Installation</a>
+          <ul>
+            <li><a href="#git">Git</a></li>
+            <li><a href="#frontend">Frontend</a></li>
+            <li><a href="#backend">Backend</a></li>
+            <li><a href="#startup">Startup</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li>
