@@ -177,19 +177,29 @@ This is an example of how to list things you need to use the software and how to
 
 ## Installation
 
+#### Git:
+
 1. Clone the repo
    ```sh
    git clone https://github.com/w3rr0/pokerchips.git
    ```
+   or fork this repo to your account and clone it from there
+   
 
-   #### Frontend:
+2. Change git remote url to avoid accidental pushes to a base project
+   ```sh
+   git remote set-url origin git remote set-url origin https://github.com/github_username/repo_name.git
+   git remote -v # confirm the changes
+   ```
 
-2. Go to the front directory
+#### Frontend:
+
+3. Go to the front directory
     ```sh
     cd front
     ```
    
-3. create environment
+4. create environment
 
     **Linux**/**Mac**:
     ```sh
@@ -204,20 +214,24 @@ This is an example of how to list things you need to use the software and how to
    or if necessary, replace the values with yours
 
 
-4. Install NPM packages
+5. Install NPM packages
    ```sh
    npm install --legacy-peer-deps
    ```
    
 #### Backend:
 
-5. go back to root and create virtual env
+6. Go back to root
     ```sh
     cd ..
+    ```
+   
+7. Create virtual env
+    ```sh
     python3 -m venv .venv
     ```
    
-6. Activate virtual env
+8. Activate virtual env
 
     **Linux**/**Mac**:
 
@@ -229,11 +243,17 @@ This is an example of how to list things you need to use the software and how to
     ```sh
     .venv\Scripts\activate
     ```
-7. Install dependencies
+   
+9. go to the backend directory
+    ```sh
+    cd backend
+    ```
+
+10. Install dependencies
     ```sh
     pip3 install -r requirements.txt
     ```
-8. create env
+11. create env
    
    **Linux**/**Mac**:
      ```sh
@@ -244,16 +264,24 @@ This is an example of how to list things you need to use the software and how to
     ```sh
     echo ALLOW_CREDENTIALS=True > .env && echo ALLOWED_ORIGINS=http://localhost:5173 >> .env
     ```
+   
+    or change values if u need to
 
-3. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-4. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin w3rr0/pokerchips
-   git remote -v # confirm the changes
-   ```
+
+#### Startup
+
+12. Open root in a new terminal window and start the backend server
+    ```sh
+    uvicorn backend.main:app --reload
+    ```
+
+13. Repeat this action but with the frontend
+    ```sh
+    cd front
+    npm run dev
+    ```
+
+14. Go to the URL you get this way, and you're done!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
