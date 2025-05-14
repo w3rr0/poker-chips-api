@@ -89,9 +89,9 @@ Now all you need to play is cards.
 
 ### Why pokerchip$
 
-It's simple! Pokerchip$ is simple, free, and gives you full control over your chips.
+It's simple! Pokerchip$ is easy to understand, free, and gives you full control over your chips.
 It doesn't restrict your style of play in any way.
-You can play by your own rules and the chip system won't limit you.
+You can play by your own rules, and the chip system won't limit you.
 
 ### Background
 
@@ -155,7 +155,7 @@ Here's a design sample from the current version of the app:
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running, follow these simple example steps.
 
 ### Prerequisites
 
@@ -300,7 +300,7 @@ This is an example of how to list things you need to use the software and how to
 
 ### Home
 
-To start the game, you have 2 options either join a friend's room or create your own.
+To start the game, you have two options, either to join a friend's room or create your own.
 Enter your nickname (between 1 and 15 characters) and select one of these options by clicking the appropriate button.
 
 ### Join
