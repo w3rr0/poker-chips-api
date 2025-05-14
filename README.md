@@ -382,7 +382,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 # License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -406,6 +406,6 @@ Project Link: [https://github.com/w3rr0/pokerchips](https://github.com/w3rr0/pok
 [issues-shield]: https://img.shields.io/github/issues/w3rr0/pokerchips.svg?style=for-the-badge
 [issues-url]: https://github.com/w3rr0/pokerchips/issues
 [license-shield]: https://img.shields.io/github/license/w3rr0/pokerchips.svg?style=for-the-badge
-[license-url]: https://github.com/w3rr0/pokerchips/blob/main/LICENSE.txt
+[license-url]: https://github.com/w3rr0/pokerchips/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/konrad-mateja-00bbbb335
