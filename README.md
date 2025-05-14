@@ -111,13 +111,11 @@ I've already added all the key things that I thought were necessary for the app 
 
 ## Built With
 
-<div style="display: flex; align-items: center; font-size: 32px; gap: 10px; justify-content: center;">
+<p align="center">
     <img src="assets/icons/FastAPI.svg" height="64" alt="fastapi">
-    +
     <img src="assets/icons/React.svg" height="64" alt="react">
-    +
     <img src="assets/icons/Azure.svg" height="64" alt="azure">
-</div>
+</p>
 
 - Backend
   - FastAPI 0.115
