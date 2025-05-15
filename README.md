@@ -260,8 +260,7 @@ This is an example of how to list things you need to use the software and how to
     pip3 install -r requirements.txt
     ```
 11. create env
-   
-   **Linux**/**Mac**:
+     **Linux**/**Mac**:
      ```sh
      echo -e "ALLOW_CREDENTIALS=True\nALLOWED_ORIGINS=http://localhost:5173" > .env
      ```
