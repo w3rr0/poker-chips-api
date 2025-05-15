@@ -234,7 +234,7 @@ This is an example of how to list things you need to use the software and how to
    
 7. Create virtual env
     ```sh
-    python3 -m venv .venv
+    python3.12 -m venv .venv
     ```
    
 8. Activate virtual env
