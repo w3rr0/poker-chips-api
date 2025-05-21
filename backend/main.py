@@ -29,15 +29,34 @@ app.add_middleware(
 
 
 # Check server status and current amount of room
-@app.get("/")
+@app.get(
+    "/",
+    summary="Server Status",
+    description="Check server status and current amount of room"
+    )
 async def root():
+    """
+    Check server status and current amount of room.
+    :return: Dictionary with status (true if the server is running), and number of active rooms.
+    :rtype: dict
+    """
     print(f"ROOMS: {len(ROOMS)}")
     return {"status": True, "rooms": len(ROOMS)}
 
 
-# Create new room and returns pin
-@app.post("/create_room")
+# Create a new room and returns pin
+@app.post(
+    "/create_room",
+    summary="Create Room",
+    description="Creates a new room and returns a pin to it"
+    )
 async def create_room(request_data: RoomCreateRequest):
+    """
+    Creates a new room and returns a pin to it.
+    :param request_data: Data in RoomCreateRequest format.
+    :return: Dictionary with newly created room pin.
+    :rtype: dict
+    """
     async with ROOMS_LOCK:
         if len(ROOMS) >= MAX_ROOMS:
             return {"error": "Server room limit reached"}
@@ -49,8 +68,18 @@ async def create_room(request_data: RoomCreateRequest):
 
 
 # Check whether room is available
-@app.get("/check_room/{pin}")
+@app.get(
+    "/check_room/{pin}",
+    summary="Check Room",
+    description="Check whether a room with a given pin is available"
+    )
 async def check_room(pin: int):
+    """
+    Check whether a room with a given pin is available.
+    :param pin: Room pin.
+    :return: Dictionary with room availability and room status (reason behind room availability).
+    :rtype: dict
+    """
     async with ROOMS_LOCK:
         if pin in ROOMS:
             room = ROOMS[pin]
@@ -65,6 +94,13 @@ async def check_room(pin: int):
 # Join player to the room
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
+    """
+    Handles websocket connections for a given room.
+    Join player to the room and handle communication between players and server.
+    :param websocket: WebSocket connection instance.
+    :param pin: Room pin.
+    :return: None
+    """
     print(f"🔵 Starting connection for room {pin}")
 
     # Finding room
@@ -104,8 +140,6 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
         # Verification
         async with room._lock:
-            # async with DISCONNECTED_LOCK:
-            #     pass
 
             if player_id in room.players:
                 await websocket.send_json({"error": "Player already connected"})
@@ -201,8 +235,20 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
 
 # Check whether room is available
-@app.get("/check_player/{player_id}/{pin}")
+@app.get(
+    "/check_player/{player_id}/{pin}",
+    summary="Check Player",
+    description="Check whether a player with a given id is in a room with a given pin last disconnected, then delete the player from this list and returns player data"
+    )
 async def check_player(player_id: str, pin: int):
+    """
+    Check whether a player with a given id is in a room with a given pin last disconnected,
+    then delete the player from this list and returns player data.
+    :param player_id: Player id.
+    :param pin: Room pin.
+    :return: Dictionary with found status and player data if player was found.
+    :rtype: dict
+    """
     async with DISCONNECTED_LOCK:
         if pin in LAST_DISCONNECTED:
             if player_id in LAST_DISCONNECTED[pin]:
