@@ -12,6 +12,21 @@ def client():
         yield client
 
 
+TEST_PLAYER: Player = Player(
+    id="abc",
+    username="test_player",
+    amount=1000,
+    putted=0,
+    websocket=MagicMock(spec=WebSocket)
+)
+
+TEST_ROOM: Room = Room(
+    pin=123456,
+    max_players=4,
+    putted=0,
+)
+
+
 def test_generate_unique_pin():
     pin = generate_unique_pin()
     assert isinstance(pin, int)
@@ -21,26 +36,15 @@ def test_generate_unique_pin():
 
 @pytest.mark.asyncio
 async def test_delete_room():
-    pin = 123456
-    max_players = 4
-    putted = 0
-    room = Room(pin=pin, max_players=max_players, putted=putted)
-    ROOMS[pin] = room
-    assert pin in ROOMS
-    await delete_room(pin)
-    assert pin not in ROOMS
+    ROOMS[TEST_ROOM.pin] = TEST_ROOM
+    assert TEST_ROOM.pin in ROOMS
+    await delete_room(TEST_ROOM.pin)
+    assert TEST_ROOM.pin not in ROOMS
 
 
 @pytest.mark.asyncio
 async def test_delete_from_last_disconnected():
-    pin = 123456
-    player_id = "abc"
-    username = "test_player"
-    amount = 1000
-    putted = 0
-    websocket = MagicMock(spec=WebSocket)
-    player = Player(id=player_id, username=username, amount=amount, putted=putted, websocket=websocket)
-    LAST_DISCONNECTED[pin] = {player_id: player}
-    assert pin in LAST_DISCONNECTED
-    await del_from_last_disconnected(player_id=player_id, pin=pin)
-    assert pin not in LAST_DISCONNECTED
+    LAST_DISCONNECTED[TEST_ROOM.pin] = {TEST_PLAYER.id: TEST_PLAYER}
+    assert TEST_ROOM.pin in LAST_DISCONNECTED
+    await del_from_last_disconnected(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
+    assert TEST_ROOM.pin not in LAST_DISCONNECTED
