@@ -35,7 +35,7 @@ async def root():
     return {"status": True, "rooms": len(ROOMS)}
 
 
-# Create new room and returns pin
+# Create a new room and returns pin
 @app.post("/create_room")
 async def create_room(request_data: RoomCreateRequest):
     async with ROOMS_LOCK:
@@ -104,8 +104,6 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
         # Verification
         async with room._lock:
-            # async with DISCONNECTED_LOCK:
-            #     pass
 
             if player_id in room.players:
                 await websocket.send_json({"error": "Player already connected"})
