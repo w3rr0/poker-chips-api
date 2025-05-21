@@ -68,8 +68,18 @@ async def create_room(request_data: RoomCreateRequest):
 
 
 # Check whether room is available
-@app.get("/check_room/{pin}")
+@app.get(
+    "/check_room/{pin}",
+    summary="Check Room",
+    description="Check whether a room with a given pin is available"
+    )
 async def check_room(pin: int):
+    """
+    Check whether a room with a given pin is available
+    :param pin:
+    :return: Dictionary with room availability and room status (reason behind room availability)
+    :rtype: dict
+    """
     async with ROOMS_LOCK:
         if pin in ROOMS:
             room = ROOMS[pin]
