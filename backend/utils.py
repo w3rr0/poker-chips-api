@@ -6,10 +6,21 @@ import asyncio
 
 
 class RoomCreateRequest(BaseModel):
+    """
+    Request model for creating a new room.
+    :param max_players: The Maximum allowed number of players in the room at once
+    """
     max_players: int
 
 
 class AuthData(BaseModel):
+    """
+    Request model for player authentication.
+    :param player_id: The unique identifier for the player.
+    :param username: The username of the player.
+    :param amount: The initial amount of chips the player has.
+    :param putted: The initial amount of chips the player has putted.
+    """
     player_id: str
     username: str
     amount: int
