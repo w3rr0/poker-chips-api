@@ -8,7 +8,7 @@ import asyncio
 class RoomCreateRequest(BaseModel):
     """
     Request model for creating a new room.
-    :param max_players: The Maximum allowed number of players in the room at once
+    :param max_players: The Maximum allowed number of players in the room at once.
     """
     max_players: int
 

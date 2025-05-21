@@ -36,8 +36,8 @@ app.add_middleware(
     )
 async def root():
     """
-    Check server status and current amount of room
-    :return: Dictionary with status (true if server is running), and number of active rooms
+    Check server status and current amount of room.
+    :return: Dictionary with status (true if the server is running), and number of active rooms.
     :rtype: dict
     """
     print(f"ROOMS: {len(ROOMS)}")
@@ -52,9 +52,9 @@ async def root():
     )
 async def create_room(request_data: RoomCreateRequest):
     """
-    Creates a new room and returns a pin to it
+    Creates a new room and returns a pin to it.
     :param request_data:
-    :return: Dictionary with newly created room pin
+    :return: Dictionary with newly created room pin.
     :rtype: dict
     """
     async with ROOMS_LOCK:
@@ -75,9 +75,9 @@ async def create_room(request_data: RoomCreateRequest):
     )
 async def check_room(pin: int):
     """
-    Check whether a room with a given pin is available
+    Check whether a room with a given pin is available.
     :param pin:
-    :return: Dictionary with room availability and room status (reason behind room availability)
+    :return: Dictionary with room availability and room status (reason behind room availability).
     :rtype: dict
     """
     async with ROOMS_LOCK:
@@ -236,10 +236,10 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 async def check_player(player_id: str, pin: int):
     """
     Check whether a player with a given id is in a room with a given pin last disconnected,
-    then delete the player from this list and returns player data
+    then delete the player from this list and returns player data.
     :param player_id:
     :param pin:
-    :return: Dictionary with found status and player data if player was found
+    :return: Dictionary with found status and player data if player was found.
     :rtype: dict
     """
     async with DISCONNECTED_LOCK:
