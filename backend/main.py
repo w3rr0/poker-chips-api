@@ -31,7 +31,7 @@ app.add_middleware(
 # Check server status and current amount of room
 @app.get(
     "/",
-    summary="Server status check",
+    summary="Server Status",
     description="Check server status and current amount of room"
     )
 async def root():
@@ -228,8 +228,20 @@ async def websocket_endpoint(websocket: WebSocket, pin: int):
 
 
 # Check whether room is available
-@app.get("/check_player/{player_id}/{pin}")
+@app.get(
+    "/check_player/{player_id}/{pin}",
+    summary="Check Player",
+    description="Check whether a player with a given id is in a room with a given pin last disconnected, then delete the player from this list and returns player data"
+    )
 async def check_player(player_id: str, pin: int):
+    """
+    Check whether a player with a given id is in a room with a given pin last disconnected,
+    then delete the player from this list and returns player data
+    :param player_id:
+    :param pin:
+    :return: Dictionary with found status and player data if player was found
+    :rtype: dict
+    """
     async with DISCONNECTED_LOCK:
         if pin in LAST_DISCONNECTED:
             if player_id in LAST_DISCONNECTED[pin]:
