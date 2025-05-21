@@ -147,7 +147,7 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
     """
     Generates a unique 6-digit PIN for a new room.
     :param max_attempts: Max attempts that can be made in order to generate a new pin.
-    :return: new pin.
+    :return: New pin.
     :rtype: int
     """
     for attempt in range(max_attempts):
@@ -161,8 +161,8 @@ async def delete_room(pin: int) -> None:
     """
     Deletes a room from a room list and last disconnected list after a delay (if the room still exists there),
     otherwise it does nothing.
-    :param pin:
-    :return: None
+    :param pin: Room pin.
+    :return: None.
     """
     await asyncio.sleep(5)
 
@@ -182,9 +182,9 @@ async def delete_room(pin: int) -> None:
 async def del_from_last_disconnected(player_id: str, pin: int):
     """
     Delete room from last disconnected after a delay (if the room still exists there).
-    :param player_id:
-    :param pin:
-    :return: None
+    :param player_id: Player id.
+    :param pin: Room pin.
+    :return: None.
     """
     await asyncio.sleep(5)
 
