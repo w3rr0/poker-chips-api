@@ -29,7 +29,10 @@ app.add_middleware(
 
 
 # Check server status and current amount of room
-@app.get("/")
+@app.get(
+    "/",
+    summary="Server status check",
+    description="Check server status and current amount of room")
 async def root():
     """
     Check server status and current amount of room
