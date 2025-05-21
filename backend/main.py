@@ -53,7 +53,7 @@ async def root():
 async def create_room(request_data: RoomCreateRequest):
     """
     Creates a new room and returns a pin to it.
-    :param request_data:
+    :param request_data: Data in RoomCreateRequest format.
     :return: Dictionary with newly created room pin.
     :rtype: dict
     """
@@ -76,7 +76,7 @@ async def create_room(request_data: RoomCreateRequest):
 async def check_room(pin: int):
     """
     Check whether a room with a given pin is available.
-    :param pin:
+    :param pin: Room pin.
     :return: Dictionary with room availability and room status (reason behind room availability).
     :rtype: dict
     """
@@ -237,8 +237,8 @@ async def check_player(player_id: str, pin: int):
     """
     Check whether a player with a given id is in a room with a given pin last disconnected,
     then delete the player from this list and returns player data.
-    :param player_id:
-    :param pin:
+    :param player_id: Player id.
+    :param pin: Room pin.
     :return: Dictionary with found status and player data if player was found.
     :rtype: dict
     """
