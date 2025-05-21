@@ -32,7 +32,8 @@ app.add_middleware(
 @app.get(
     "/",
     summary="Server status check",
-    description="Check server status and current amount of room")
+    description="Check server status and current amount of room"
+    )
 async def root():
     """
     Check server status and current amount of room
@@ -44,8 +45,18 @@ async def root():
 
 
 # Create a new room and returns pin
-@app.post("/create_room")
+@app.post(
+    "/create_room",
+    summary="Create Room",
+    description="Creates a new room and returns a pin to it"
+    )
 async def create_room(request_data: RoomCreateRequest):
+    """
+    Creates a new room and returns a pin to it
+    :param request_data:
+    :return: Dictionary with newly created room pin
+    :rtype: dict
+    """
     async with ROOMS_LOCK:
         if len(ROOMS) >= MAX_ROOMS:
             return {"error": "Server room limit reached"}
