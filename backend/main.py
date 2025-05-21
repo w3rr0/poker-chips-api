@@ -31,6 +31,11 @@ app.add_middleware(
 # Check server status and current amount of room
 @app.get("/")
 async def root():
+    """
+    Check server status and current amount of room
+    :return: Dictionary with status (true if server is running), and number of active rooms
+    :rtype: dict
+    """
     print(f"ROOMS: {len(ROOMS)}")
     return {"status": True, "rooms": len(ROOMS)}
 
