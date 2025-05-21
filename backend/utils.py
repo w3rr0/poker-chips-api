@@ -144,6 +144,12 @@ DISCONNECTED_LOCK = asyncio.Lock()
 
 # Generate unique PIN
 def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
+    """
+    Generates a unique 6-digit PIN for a new room.
+    :param max_attempts: Max attempts that can be made in order to generate a new pin.
+    :return: new pin.
+    :rtype: int
+    """
     for attempt in range(max_attempts):
         pin = uuid.uuid4().int % 1_000_000
         if pin >= 100_000 and pin not in ROOMS:
