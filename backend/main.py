@@ -94,6 +94,13 @@ async def check_room(pin: int):
 # Join player to the room
 @app.websocket("/ws/{pin}")
 async def websocket_endpoint(websocket: WebSocket, pin: int):
+    """
+    Handles websocket connections for a given room.
+    Join player to the room and handle communication between players and server.
+    :param websocket: WebSocket connection instance.
+    :param pin: Room pin.
+    :return: None
+    """
     print(f"🔵 Starting connection for room {pin}")
 
     # Finding room
