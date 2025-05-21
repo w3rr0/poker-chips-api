@@ -28,6 +28,14 @@ class AuthData(BaseModel):
 
 
 class Player(BaseModel):
+    """
+    Represents a player in a room.
+    :param id: The unique identifier for the player.
+    :param username: The username of the player.
+    :param amount: The total amount of chips the player has.
+    :param putted: The amount of chips the player has putted on the board.
+    :param websocket: The WebSocket connection for the player.
+    """
     id: str                     # Unique player ID
     username: str               # Player username
     amount: int                 # Total value
