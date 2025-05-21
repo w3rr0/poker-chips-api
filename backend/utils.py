@@ -48,6 +48,14 @@ class Player(BaseModel):
 
 
 class Room(BaseModel):
+    """
+    Represents a game room.
+    :param pin: The unique PIN for the room.
+    :param max_players: The maximum number of players allowed in the room.
+    :param players: A dictionary of players in the room, keyed by player ID.
+    :param putted: The total amount of chips currently on the board.
+    :param _lock: An asyncio.Lock for synchronizing access to the room data.
+    """
     pin: int                            # Room pin
     max_players: int                    # Maximum number of players at once
     players: Dict[str, Player] = {}     # Dict of player ID and player object
