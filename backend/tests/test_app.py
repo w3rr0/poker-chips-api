@@ -1,6 +1,10 @@
+import asyncio
+from time import sleep
+
 import pytest
 from fastapi.testclient import TestClient
 from backend.main import app
+from backend.utils import ROOMS, generate_unique_pin, delete_room, Room
 
 
 @pytest.fixture
@@ -8,13 +12,36 @@ def client():
     with TestClient(app) as client:
         yield client
 
-# Test tworzenia pokoju
+
+def test_generate_unique_pin():
+    pin = generate_unique_pin()
+    assert isinstance(pin, int)
+    assert 100000 <= pin <= 999999
+    assert pin not in ROOMS
+
+
+@pytest.mark.asyncio
+async def test_delete_room():
+    pin = 123456
+    max_players = 4
+    putted = 0
+    room = Room(pin=pin, max_players=max_players, putted=putted)
+    ROOMS[pin] = room
+    assert pin in ROOMS
+    await delete_room(pin)
+    assert pin not in ROOMS
+
+
+
+# Creating room
 def test_create_room(client):
-    response = client.post("/create_room")
+    ROOMS.clear()
+    response = client.post("/create_room", json={"max_players": 4})
     assert response.status_code == 200
     room_data = response.json()
     assert 'PIN' in room_data
-    assert 100000 <= room_data['PIN'] <= 999999  # Sprawdzamy, czy PIN jest 6-cyfrowym intem
+    assert isinstance(room_data["PIN"], int)
+    assert 100000 <= room_data["PIN"] <= 999999  # Sprawdzamy, czy PIN jest 6-cyfrowym intem
 
 
 def test_websocket_connection(client):
