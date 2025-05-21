@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app
+from backend.main import app, check_player
 from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected
 from unittest.mock import MagicMock
 from starlette.websockets import WebSocket
@@ -48,3 +48,18 @@ async def test_delete_from_last_disconnected():
     assert TEST_ROOM.pin in LAST_DISCONNECTED
     await del_from_last_disconnected(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
     assert TEST_ROOM.pin not in LAST_DISCONNECTED
+
+
+@pytest.mark.asyncio
+async def test_check_player():
+    response = await check_player(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
+    assert not response["found"]
+    LAST_DISCONNECTED[TEST_ROOM.pin] = {TEST_PLAYER.id: TEST_PLAYER}
+    response = await check_player(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
+    assert response["found"]
+    assert response["player"] == {
+        "username": TEST_PLAYER.username,
+        "id": TEST_PLAYER.id,
+        "amount": TEST_PLAYER.amount,
+        "putted": TEST_PLAYER.putted
+    }
