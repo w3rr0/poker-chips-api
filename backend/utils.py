@@ -180,6 +180,12 @@ async def delete_room(pin: int) -> None:
 
 # Delete player from LAST_DISCONNECTED after delay
 async def del_from_last_disconnected(player_id: str, pin: int):
+    """
+    Delete room from last disconnected after a delay (if the room still exists there).
+    :param player_id:
+    :param pin:
+    :return: None
+    """
     await asyncio.sleep(5)
 
     async with DISCONNECTED_LOCK:
