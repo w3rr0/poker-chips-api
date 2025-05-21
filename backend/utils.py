@@ -158,6 +158,12 @@ def generate_unique_pin(max_attempts: int = MAX_ROOMS*100) -> int:
 
 # Delete room after delay
 async def delete_room(pin: int) -> None:
+    """
+    Deletes a room from a room list and last disconnected list after a delay (if the room still exists there),
+    otherwise it does nothing.
+    :param pin:
+    :return: None
+    """
     await asyncio.sleep(5)
 
     # Delete room
