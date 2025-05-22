@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app, check_player, root, create_room, check_room, websocket_endpoint
+from backend.main import app, check_player, root, create_room, check_room
 from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 from unittest.mock import MagicMock
 from starlette.websockets import WebSocket, WebSocketDisconnect
