@@ -1,9 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app, check_player, root, create_room, check_room
+from backend.main import app, check_player, root, create_room, check_room, websocket_endpoint
 from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 from unittest.mock import MagicMock
-from starlette.websockets import WebSocket
+from starlette.websockets import WebSocket, WebSocketDisconnect
 
 
 @pytest.fixture
@@ -107,3 +107,11 @@ async def test_check_room(client):
     assert not response["allow"]
     assert response["room_status"] == "Room is full"
     del ROOMS[TEST_ROOM.pin]
+
+
+@pytest.mark.asyncio
+async def test_websocket_endpoint_disconnect_4001(client):
+    with pytest.raises(WebSocketDisconnect) as exc:
+        with client.websocket_connect(f"/ws/{TEST_ROOM.pin}") as websocket:
+            pass    # We shouldn't get here, the connection should be closed immediately
+    assert exc.value.code == 4001
