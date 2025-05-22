@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app, check_player, root
-from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected
+from backend.main import app, check_player, root, create_room
+from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 from unittest.mock import MagicMock
 from starlette.websockets import WebSocket
 
@@ -72,3 +72,11 @@ async def test_check_player():
         "amount": TEST_PLAYER.amount,
         "putted": TEST_PLAYER.putted
     }
+
+
+@pytest.mark.asyncio
+async def test_create_room(client):
+    assert len(ROOMS) == 0
+    response = await create_room(RoomCreateRequest(max_players=4))
+    assert len(ROOMS) == 1
+    assert response["PIN"] in ROOMS
