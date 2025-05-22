@@ -58,6 +58,7 @@
             <li><a href="#backend">Backend</a></li>
             <li><a href="#startup">Startup</a></li>
           </ul>
+          <li><a href="#tests">Tests</a></li>
         </li>
       </ul>
     </li>
@@ -287,6 +288,18 @@ This is an example of how to list things you need to use the software and how to
     ```
 
 14. Go to the URL you get this way, and you're done!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Tests
+
+To make sure everything on the backend has been set up correctly, you can run tests
+
+In the new terminal (with an active virtual environment):
+```sh
+pytest backend/tests/test_app.py
+```
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
