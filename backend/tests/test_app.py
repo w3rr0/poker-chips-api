@@ -112,6 +112,6 @@ async def test_check_room(client):
 @pytest.mark.asyncio
 async def test_websocket_endpoint_disconnect_4001(client):
     with pytest.raises(WebSocketDisconnect) as exc:
-        with client.websocket_connect(f"/ws/{TEST_ROOM.pin}") as websocket:
+        with client.websocket_connect(f"/ws/{TEST_ROOM.pin}"):
             pass    # We shouldn't get here, the connection should be closed immediately
     assert exc.value.code == 4001
