@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app, check_player, root, create_room
+from backend.main import app, check_player, root, create_room, check_room
 from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 from unittest.mock import MagicMock
 from starlette.websockets import WebSocket
@@ -20,9 +20,17 @@ TEST_PLAYER: Player = Player(
     websocket=MagicMock(spec=WebSocket)
 )
 
+TEST_PLAYER_2: Player = Player(
+    id="def",
+    username="test_player_2",
+    amount=0,
+    putted=1000,
+    websocket=MagicMock(spec=WebSocket)
+)
+
 TEST_ROOM: Room = Room(
     pin=123456,
-    max_players=4,
+    max_players=2,
     putted=0,
 )
 
@@ -80,3 +88,22 @@ async def test_create_room(client):
     response = await create_room(RoomCreateRequest(max_players=4))
     assert len(ROOMS) == 1
     assert response["PIN"] in ROOMS
+
+
+@pytest.mark.asyncio
+async def test_check_room(client):
+    response = await check_room(pin=TEST_ROOM.pin)
+    assert "allow" in response
+    assert "room_status" in response
+    assert not response["allow"]
+    assert response["room_status"] == "Room not found"
+    ROOMS[TEST_ROOM.pin] = TEST_ROOM
+    response = await check_room(pin=TEST_ROOM.pin)
+    assert response["allow"]
+    assert response["room_status"] == "Ready to join"
+    TEST_ROOM.add_player(TEST_PLAYER)
+    TEST_ROOM.add_player(TEST_PLAYER_2)
+    response = await check_room(pin=TEST_ROOM.pin)
+    assert not response["allow"]
+    assert response["room_status"] == "Room is full"
+    del ROOMS[TEST_ROOM.pin]
