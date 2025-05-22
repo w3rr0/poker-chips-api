@@ -1,9 +1,17 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app, check_player, root, create_room, check_room
-from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 from unittest.mock import MagicMock
 from starlette.websockets import WebSocket, WebSocketDisconnect
+import os
+import sys
+
+# For the import from the backend directory to work
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from backend.main import app, check_player, root, create_room, check_room
+from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 
 
 @pytest.fixture
