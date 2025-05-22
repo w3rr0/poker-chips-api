@@ -1,6 +1,17 @@
 import pytest
 from fastapi.testclient import TestClient
-from backend.main import app
+from unittest.mock import MagicMock
+from starlette.websockets import WebSocket, WebSocketDisconnect
+import os
+import sys
+
+# For the import from the backend directory to work
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from backend.main import app, check_player, root, create_room, check_room
+from backend.utils import ROOMS, generate_unique_pin, delete_room, Room, LAST_DISCONNECTED, Player, del_from_last_disconnected, RoomCreateRequest
 
 
 @pytest.fixture
@@ -8,39 +19,107 @@ def client():
     with TestClient(app) as client:
         yield client
 
-# Test tworzenia pokoju
-def test_create_room(client):
-    response = client.post("/create_room")
-    assert response.status_code == 200
-    room_data = response.json()
-    assert 'PIN' in room_data
-    assert 100000 <= room_data['PIN'] <= 999999  # Sprawdzamy, czy PIN jest 6-cyfrowym intem
+
+TEST_PLAYER: Player = Player(
+    id="abc",
+    username="test_player",
+    amount=1000,
+    putted=0,
+    websocket=MagicMock(spec=WebSocket)
+)
+
+TEST_PLAYER_2: Player = Player(
+    id="def",
+    username="test_player_2",
+    amount=0,
+    putted=1000,
+    websocket=MagicMock(spec=WebSocket)
+)
+
+TEST_ROOM: Room = Room(
+    pin=123456,
+    max_players=2,
+    putted=0,
+)
 
 
-def test_websocket_connection(client):
-    response = client.post("/create_room")
-    pin = response.json()["PIN"]
+@pytest.mark.asyncio
+async def test_root(client):
+    response = await root()
+    assert response == {
+        "status": True,
+        "rooms": len(ROOMS)
+    }
 
-    # Gracz 1
-    with client.websocket_connect(f"/ws/{pin}") as ws1:
-        ws1.send_json({
-            "player_id": "player1",
-            "username": "Gracz 1",
-            "amount": 1000
-        })
 
-        # Gracz 2
-        with client.websocket_connect(f"/ws/{pin}") as ws2:
-            ws2.send_json({
-                "player_id": "player2",
-                "username": "Gracz 2",
-                "amount": 2000
-            })
+def test_generate_unique_pin():
+    pin = generate_unique_pin()
+    assert isinstance(pin, int)
+    assert 100000 <= pin <= 999999
+    assert pin not in ROOMS
 
-            # Test komunikacji
-            test_msg = {"action": "bet", "value": 100}
-            ws1.send_json(test_msg)
 
-            # Odbierz wiadomość
-            response = ws2.receive_json()
-            assert response == test_msg
+@pytest.mark.asyncio
+async def test_delete_room():
+    ROOMS[TEST_ROOM.pin] = TEST_ROOM
+    assert TEST_ROOM.pin in ROOMS
+    await delete_room(TEST_ROOM.pin)
+    assert TEST_ROOM.pin not in ROOMS
+
+
+@pytest.mark.asyncio
+async def test_delete_from_last_disconnected():
+    LAST_DISCONNECTED[TEST_ROOM.pin] = {TEST_PLAYER.id: TEST_PLAYER}
+    assert TEST_ROOM.pin in LAST_DISCONNECTED
+    await del_from_last_disconnected(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
+    assert TEST_ROOM.pin not in LAST_DISCONNECTED
+
+
+@pytest.mark.asyncio
+async def test_check_player():
+    response = await check_player(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
+    assert not response["found"]
+    LAST_DISCONNECTED[TEST_ROOM.pin] = {TEST_PLAYER.id: TEST_PLAYER}
+    response = await check_player(player_id=TEST_PLAYER.id, pin=TEST_ROOM.pin)
+    assert response["found"]
+    assert response["player"] == {
+        "username": TEST_PLAYER.username,
+        "id": TEST_PLAYER.id,
+        "amount": TEST_PLAYER.amount,
+        "putted": TEST_PLAYER.putted
+    }
+
+
+@pytest.mark.asyncio
+async def test_create_room(client):
+    assert len(ROOMS) == 0
+    response = await create_room(RoomCreateRequest(max_players=4))
+    assert len(ROOMS) == 1
+    assert response["PIN"] in ROOMS
+
+
+@pytest.mark.asyncio
+async def test_check_room(client):
+    response = await check_room(pin=TEST_ROOM.pin)
+    assert "allow" in response
+    assert "room_status" in response
+    assert not response["allow"]
+    assert response["room_status"] == "Room not found"
+    ROOMS[TEST_ROOM.pin] = TEST_ROOM
+    response = await check_room(pin=TEST_ROOM.pin)
+    assert response["allow"]
+    assert response["room_status"] == "Ready to join"
+    TEST_ROOM.add_player(TEST_PLAYER)
+    TEST_ROOM.add_player(TEST_PLAYER_2)
+    response = await check_room(pin=TEST_ROOM.pin)
+    assert not response["allow"]
+    assert response["room_status"] == "Room is full"
+    del ROOMS[TEST_ROOM.pin]
+
+
+@pytest.mark.asyncio
+async def test_websocket_endpoint_disconnect_4001(client):
+    with pytest.raises(WebSocketDisconnect) as exc:
+        with client.websocket_connect(f"/ws/{TEST_ROOM.pin}"):
+            pass    # We shouldn't get here, the connection should be closed immediately
+    assert exc.value.code == 4001
